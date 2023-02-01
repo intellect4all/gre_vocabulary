@@ -1,1 +1,0 @@
-typedef WordsListKey = String;

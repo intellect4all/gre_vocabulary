@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../domain/core/constants.dart';
-import '../../../domain/core/failures.dart';
+import '../../../core/constants.dart';
+import '../../../core/failures.dart';
 import '../../models/word_model.dart';
 import '../words_lists/base_words_list.dart';
 

@@ -1,4 +1,4 @@
-import '../../../domain/core/constants.dart';
+import '../../../core/constants.dart';
 import '../wordlists_csv_parsers/wordlist_parser.dart';
 
 abstract class BaseWordsList {

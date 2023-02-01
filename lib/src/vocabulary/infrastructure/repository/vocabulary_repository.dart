@@ -1,13 +1,15 @@
 import 'package:dartz/dartz.dart';
 import 'package:gre_vocabulary/src/core/common_domains/entities/success.dart';
-import 'package:gre_vocabulary/src/vocabulary/domain/core/constants.dart';
-import 'package:gre_vocabulary/src/vocabulary/domain/core/failures.dart';
+import 'package:gre_vocabulary/src/core/errors.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/get_words_response.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word_details.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/services/vocabulary_service.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/data_source/local_data_source.dart';
 
+import '../../core/constants.dart';
+import '../../core/failures.dart';
+import '../../domain/value_objects/value_objects.dart';
 import 'wordlists_csv_parsers/csv_parser.dart';
 
 class VocabularyRepository implements VocabularyServiceFacade {
@@ -40,12 +42,38 @@ class VocabularyRepository implements VocabularyServiceFacade {
             await _localDataSource
                 .saveWordsToSource(parsingResponse.wordsToSource);
           } catch (e) {
-            return left(const VocabularyFailure.unexpected());
+            return left(
+              const VocabularyFailure.unexpected(),
+            );
           }
           return right(const Success(message: 'Words are loaded'));
         },
       );
       return res;
+    } catch (e) {
+      return left(const VocabularyFailure.unexpected());
+    }
+  }
+
+  @override
+  Future<Either<VocabularyFailure, GetWordsResponse<Word>>> getAllWords({
+    required PaginationLimit limit,
+    required PaginationOffSet offset,
+  }) async {
+    try {
+      final res = await _localDataSource.getAllWords(
+        limit: limit.getOrCrash(),
+        offset: offset.getOrCrash(),
+      );
+      return right(res);
+    } on UnexpectedValueError catch (e) {
+      final res = e.valueFailure.maybeWhen<String>(
+        limitExceedMaxWordsFetch: (String message) => message,
+        limitNotUpToMinimum: (String message) => message,
+        orElse: () => "Unexpected Error",
+      );
+
+      return left(VocabularyFailure.unexpected(message: res));
     } catch (e) {
       return left(const VocabularyFailure.unexpected());
     }
@@ -59,8 +87,16 @@ class VocabularyRepository implements VocabularyServiceFacade {
   }
 
   @override
+  Future<Either<VocabularyFailure, WordDetails>> removeWordFromToBeRemembered(
+      {required int word}) {
+    // TODO: implement removeWordFromToBeRemembered
+    throw UnimplementedError();
+  }
+
+  @override
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
-      getAllShownWords({required int limit, required int offset}) {
+      getAllShownWords(
+          {required PaginationLimit limit, required PaginationOffSet offset}) {
     // TODO: implement getAllShownWords
     throw UnimplementedError();
   }
@@ -75,25 +111,18 @@ class VocabularyRepository implements VocabularyServiceFacade {
   @override
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
       getAllWordDetails(
-          {required int limit,
-          required int offset,
+          {required PaginationLimit limit,
+          required PaginationOffSet offset,
           required int shownThreshold}) {
     // TODO: implement getAllWordDetails
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<VocabularyFailure, GetWordsResponse<Word>>> getAllWords(
-      {required int limit, required int offset}) {
-    // TODO: implement getAllWords
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Either<VocabularyFailure, GetWordsResponse<Word>>>
       getAllWordsForSource(
-          {required int limit,
-          required int offset,
+          {required PaginationLimit limit,
+          required PaginationOffSet offset,
           required WordsListKey source}) {
     // TODO: implement getAllWordsForSource
     throw UnimplementedError();
@@ -108,21 +137,21 @@ class VocabularyRepository implements VocabularyServiceFacade {
 
   @override
   Future<Either<VocabularyFailure, WordDetails>> markWordAsMemorized(
-      {required int word}) {
+      {required String word}) {
     // TODO: implement markWordAsMemorized
     throw UnimplementedError();
   }
 
   @override
   Future<Either<VocabularyFailure, WordDetails>> markWordAsNotShown(
-      {required int word}) {
+      {required String word}) {
     // TODO: implement markWordAsNotShown
     throw UnimplementedError();
   }
 
   @override
   Future<Either<VocabularyFailure, WordDetails>> markWordAsShown(
-      {required int word}) {
+      {required String word}) {
     // TODO: implement markWordAsShown
     throw UnimplementedError();
   }
@@ -136,15 +165,8 @@ class VocabularyRepository implements VocabularyServiceFacade {
 
   @override
   Future<Either<VocabularyFailure, WordDetails>> removeWordFromMemorized(
-      {required int word}) {
+      {required String word}) {
     // TODO: implement removeWordFromMemorized
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<VocabularyFailure, WordDetails>> removeWordFromToBeRemembered(
-      {required int word}) {
-    // TODO: implement removeWordFromToBeRemembered
     throw UnimplementedError();
   }
 }

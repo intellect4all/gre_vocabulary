@@ -1,4 +1,6 @@
-class GetWordsResponse<T> {
+import 'package:equatable/equatable.dart';
+
+class GetWordsResponse<T> extends Equatable {
   final List<T> words;
   final int totalWords;
   final int currentPage;
@@ -12,4 +14,13 @@ class GetWordsResponse<T> {
     required this.totalPages,
     required this.wordsPerPage,
   });
+
+  @override
+  List<Object?> get props => [
+        words,
+        totalWords,
+        currentPage,
+        totalPages,
+        wordsPerPage,
+      ];
 }
