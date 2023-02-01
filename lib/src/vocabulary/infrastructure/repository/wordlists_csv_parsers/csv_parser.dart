@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 
-import '../../domain/core/failures.dart';
-import '../models/word_model.dart';
-import '../repository/words_lists/base_words_list.dart';
-import '../repository/words_lists/word_lists.dart';
+import '../../../domain/core/constants.dart';
+import '../../../domain/core/failures.dart';
+import '../../models/word_model.dart';
+import '../words_lists/base_words_list.dart';
 
 abstract class CSVListsParser {
-  final List<WordsList> wordsLists;
+  final List<BaseWordsList> wordsLists;
 
   const CSVListsParser(this.wordsLists);
 

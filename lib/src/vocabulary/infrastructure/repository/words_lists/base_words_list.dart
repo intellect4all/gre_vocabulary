@@ -1,15 +1,14 @@
-import '../../wordlists_csv_parsers/wordlist_parser.dart';
+import '../../../domain/core/constants.dart';
+import '../wordlists_csv_parsers/wordlist_parser.dart';
 
-class BaseWordsList {
+abstract class BaseWordsList {
   final WordListParser wordsParser;
   final String path;
-  final WordsListKey key;
+  final WordsListKey wordsListKey;
 
   const BaseWordsList({
     required this.wordsParser,
     required this.path,
-    required this.key,
+    required this.wordsListKey,
   });
 }
-
-typedef WordsListKey = String;

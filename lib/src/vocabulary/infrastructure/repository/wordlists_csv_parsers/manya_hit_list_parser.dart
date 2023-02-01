@@ -33,7 +33,7 @@ class ManyaHitListParser extends WordListParser {
         words.add(
           Word(
             value: currentWord,
-            meaning: currentWordMeaning,
+            definition: currentWordMeaning,
             example: '',
             isHitWord: true,
           ),
@@ -48,7 +48,7 @@ class ManyaHitListParser extends WordListParser {
       words.add(
         Word(
           value: currentWord,
-          meaning: currentWordMeaning,
+          definition: currentWordMeaning,
           example: '',
           isHitWord: true,
         ),

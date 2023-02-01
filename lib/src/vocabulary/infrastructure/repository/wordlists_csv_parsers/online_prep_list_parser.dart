@@ -26,7 +26,7 @@ class OnlinePrepListParser extends WordListParser {
         words.add(
           Word(
             value: currentWord,
-            meaning: currentWordMeaning,
+            definition: currentWordMeaning,
             example: example,
           ),
         );

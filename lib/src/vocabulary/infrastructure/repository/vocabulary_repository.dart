@@ -1,10 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:gre_vocabulary/src/core/common_domains/entities/success.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/core/constants.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/core/failures.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/entities/get_words_response.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/entities/word_details.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/services/vocabulary_service.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/data_source/local_data_source.dart';
 
-import '../wordlists_csv_parsers/csv_parser.dart';
+import 'wordlists_csv_parsers/csv_parser.dart';
 
 class VocabularyRepository implements VocabularyServiceFacade {
   final LocalDataSource _localDataSource;
@@ -26,17 +30,121 @@ class VocabularyRepository implements VocabularyServiceFacade {
         return right(const Success(message: 'Words are already loaded'));
       }
       final parsingResponseOrFailure = _csvListsParser.parse();
-      return parsingResponseOrFailure.fold(
-        (failure) => left(failure),
+      final res = parsingResponseOrFailure
+          .fold<Future<Either<VocabularyFailure, Success>>>(
+        (failure) async => left(failure),
         (parsingResponse) async {
-          await _localDataSource.saveAllWords(parsingResponse.allWords);
-          await _localDataSource
-              .saveWordsToSource(parsingResponse.wordsToSource);
+          try {
+            await _localDataSource.saveAllWords(parsingResponse.allWords);
+
+            await _localDataSource
+                .saveWordsToSource(parsingResponse.wordsToSource);
+          } catch (e) {
+            return left(const VocabularyFailure.unexpected());
+          }
           return right(const Success(message: 'Words are loaded'));
         },
       );
+      return res;
     } catch (e) {
       return left(const VocabularyFailure.unexpected());
     }
+  }
+
+  @override
+  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
+      getAllMemorizedWords({required int limit, required int offset}) {
+    // TODO: implement getAllMemorizedWords
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
+      getAllShownWords({required int limit, required int offset}) {
+    // TODO: implement getAllShownWords
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
+      getAllToBeRememberedWords({required int limit, required int offset}) {
+    // TODO: implement getAllToBeRememberedWords
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
+      getAllWordDetails(
+          {required int limit,
+          required int offset,
+          required int shownThreshold}) {
+    // TODO: implement getAllWordDetails
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, GetWordsResponse<Word>>> getAllWords(
+      {required int limit, required int offset}) {
+    // TODO: implement getAllWords
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, GetWordsResponse<Word>>>
+      getAllWordsForSource(
+          {required int limit,
+          required int offset,
+          required WordsListKey source}) {
+    // TODO: implement getAllWordsForSource
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
+      getAllWordsShownToday({required int limit, required int offset}) {
+    // TODO: implement getAllWordsShownToday
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, WordDetails>> markWordAsMemorized(
+      {required int word}) {
+    // TODO: implement markWordAsMemorized
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, WordDetails>> markWordAsNotShown(
+      {required int word}) {
+    // TODO: implement markWordAsNotShown
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, WordDetails>> markWordAsShown(
+      {required int word}) {
+    // TODO: implement markWordAsShown
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, WordDetails>> markWordAsToBeRemembered(
+      {required int word}) {
+    // TODO: implement markWordAsToBeRemembered
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, WordDetails>> removeWordFromMemorized(
+      {required int word}) {
+    // TODO: implement removeWordFromMemorized
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, WordDetails>> removeWordFromToBeRemembered(
+      {required int word}) {
+    // TODO: implement removeWordFromToBeRemembered
+    throw UnimplementedError();
   }
 }

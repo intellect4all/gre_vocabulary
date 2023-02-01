@@ -15,7 +15,7 @@ class GrePreListParser extends WordListParser {
       words.add(
         Word(
           value: row.first.toString().toLowerCase().trim(),
-          meaning: row[1].toString().toLowerCase().trim(),
+          definition: row[1].toString().toLowerCase().trim(),
           example: '',
         ),
       );

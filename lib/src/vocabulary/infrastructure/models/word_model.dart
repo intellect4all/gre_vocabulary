@@ -1,10 +1,28 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
 import '../../domain/entities/word.dart';
 
-part 'word_model.freezed.dart';
+class WordModel extends Word {
+  WordModel({
+    required super.value,
+    required super.definition,
+    required super.example,
+    super.isHitWord = false,
+  });
 
-@freezed
-class WordModel extends Word with _$WordModel {
-  const factory WordModel() = _WordModel;
+  factory WordModel.fromJson(Map<String, dynamic> json) {
+    return WordModel(
+      value: json['value'],
+      definition: json['definition'],
+      example: json['example'] ?? '',
+      isHitWord: json['isHitWord'] ?? false,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'value': value,
+      'definition': definition,
+      'example': example,
+      'isHitWord': isHitWord,
+    };
+  }
 }

@@ -39,7 +39,7 @@ class ManyaPrincetonHitListParser extends WordListParser {
         words.add(
           Word(
             value: currentWord,
-            meaning: "$currentWordMeaning $pending",
+            definition: "$currentWordMeaning $pending",
             example: '',
             isHitWord: false,
           ),
@@ -56,7 +56,7 @@ class ManyaPrincetonHitListParser extends WordListParser {
       words.add(
         Word(
           value: currentWord,
-          meaning: "$currentWordMeaning $pending",
+          definition: "$currentWordMeaning $pending",
           example: '',
           isHitWord: false,
         ),

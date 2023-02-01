@@ -1,22 +1,57 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
 import 'base_words_list.dart';
 
-part 'word_lists.freezed.dart';
+class EconomicsHitList extends BaseWordsList {
+  const EconomicsHitList({
+    required super.wordsParser,
+    required super.path,
+    required super.wordsListKey,
+  });
+}
 
-@freezed
-class WordsList extends BaseWordsList with _$WordsList {
-  const factory WordsList.economicsHitList() = _EconomicsWordsList;
+class GrePrepList extends BaseWordsList {
+  const GrePrepList({
+    required super.wordsParser,
+    required super.path,
+    required super.wordsListKey,
+  });
+}
 
-  const factory WordsList.grePrepList() = _GrePrepWordsList;
+class OnlinePrepList extends BaseWordsList {
+  const OnlinePrepList({
+    required super.wordsParser,
+    required super.path,
+    required super.wordsListKey,
+  });
+}
 
-  const factory WordsList.onlinePrepList() = _OnlinePrepWordsList;
+class ManyaList extends BaseWordsList {
+  const ManyaList({
+    required super.wordsParser,
+    required super.path,
+    required super.wordsListKey,
+  });
+}
 
-  const factory WordsList.manya() = _ManyaWordsList;
+class ManyaPrinceton extends BaseWordsList {
+  const ManyaPrinceton({
+    required super.wordsParser,
+    required super.path,
+    required super.wordsListKey,
+  });
+}
 
-  const factory WordsList.manyaPrinceton() = _ManyaPrincetonWordsList;
+class BarrenHitList extends BaseWordsList {
+  const BarrenHitList({
+    required super.wordsParser,
+    required super.path,
+    required super.wordsListKey,
+  });
+}
 
-  const factory WordsList.barrenHitList() = _BarrenHitWordsList;
-
-  const factory WordsList.manyaHitList() = _ManyaHitWordsList;
+class ManyaHitList extends BaseWordsList {
+  const ManyaHitList({
+    required super.wordsParser,
+    required super.path,
+    required super.wordsListKey,
+  });
 }

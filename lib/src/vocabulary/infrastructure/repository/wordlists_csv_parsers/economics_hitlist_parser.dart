@@ -34,7 +34,7 @@ class EconomicsHitListParser extends WordListParser {
         words.add(
           Word(
             value: currentWord,
-            meaning: currentWordMeaning,
+            definition: currentWordMeaning,
             example: example,
             isHitWord: true,
           ),

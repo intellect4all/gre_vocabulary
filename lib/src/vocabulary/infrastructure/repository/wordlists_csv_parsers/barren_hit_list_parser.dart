@@ -92,7 +92,7 @@ class BarrenHitListParser extends WordListParser {
         }
 
         words.add(
-          Word(value: currentWord, meaning: currentWordMeaning, example: ''),
+          Word(value: currentWord, definition: currentWordMeaning, example: ''),
         );
 
         lastWord = currentWord.toString();
