@@ -80,10 +80,21 @@ class VocabularyRepository implements VocabularyServiceFacade {
   }
 
   @override
-  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
-      getAllMemorizedWords({required int limit, required int offset}) {
-    // TODO: implement getAllMemorizedWords
-    throw UnimplementedError();
+  Future<Either<VocabularyFailure, GetWordsResponse<Word>>>
+      getAllWordsForSource(
+          {required PaginationLimit limit,
+          required PaginationOffSet offset,
+          required WordsListKey source}) async {
+    try {
+      final res = await _localDataSource.getAllWordsForSource(
+        source: source,
+        limit: limit.getOrCrash(),
+        offset: offset.getOrCrash(),
+      );
+      return right(res);
+    } catch (e) {
+      return left(const VocabularyFailure.unexpected());
+    }
   }
 
   @override
@@ -103,35 +114,11 @@ class VocabularyRepository implements VocabularyServiceFacade {
 
   @override
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
-      getAllToBeRememberedWords({required int limit, required int offset}) {
-    // TODO: implement getAllToBeRememberedWords
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
       getAllWordDetails(
           {required PaginationLimit limit,
           required PaginationOffSet offset,
           required int shownThreshold}) {
     // TODO: implement getAllWordDetails
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<VocabularyFailure, GetWordsResponse<Word>>>
-      getAllWordsForSource(
-          {required PaginationLimit limit,
-          required PaginationOffSet offset,
-          required WordsListKey source}) {
-    // TODO: implement getAllWordsForSource
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
-      getAllWordsShownToday({required int limit, required int offset}) {
-    // TODO: implement getAllWordsShownToday
     throw UnimplementedError();
   }
 
@@ -167,6 +154,36 @@ class VocabularyRepository implements VocabularyServiceFacade {
   Future<Either<VocabularyFailure, WordDetails>> removeWordFromMemorized(
       {required String word}) {
     // TODO: implement removeWordFromMemorized
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
+      getAllMemorizedWords({
+    required PaginationLimit limit,
+    required PaginationOffSet offset,
+  }) {
+    // TODO: implement getAllMemorizedWords
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
+      getAllToBeRememberedWords({
+    required PaginationLimit limit,
+    required PaginationOffSet offset,
+  }) {
+    // TODO: implement getAllToBeRememberedWords
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
+      getAllWordsShownToday({
+    required PaginationLimit limit,
+    required PaginationOffSet offset,
+  }) {
+    // TODO: implement getAllWordsShownToday
     throw UnimplementedError();
   }
 }

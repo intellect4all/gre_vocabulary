@@ -21,6 +21,25 @@ void main() {
   late MockCSVListsParser csvListsParser;
   late VocabularyRepository vocabularyRepository;
   late CSVParsingResponse tCsvParsingResponse;
+
+  final tWordModels = [
+    // generate 10 random Words
+    for (var i = 0; i < 10; i++)
+      WordModel(
+        value: 'word$i',
+        definition: 'meaning$i',
+        example: 'example$i',
+        isHitWord: i % 2 == 0,
+      )
+  ];
+
+  final tGetWordsResponseModel = GetWordsResponseModel<WordModel>(
+    words: tWordModels,
+    totalWords: 100,
+    currentPage: 1,
+    totalPages: 10,
+    wordsPerPage: 10,
+  );
   setUp(() {
     localDataSource = MockLocalDataSource();
     csvListsParser = MockCSVListsParser();
@@ -36,6 +55,7 @@ void main() {
     );
   });
 
+  /// Test for loadAllWordsIntoDb()
   group('loadAllWordsIntoLocalDb', () {
     setUp(() {
       when(localDataSource.saveAllWords(any))
@@ -138,25 +158,6 @@ void main() {
   });
 
   group('getAllWords', () {
-    final tData = [
-      // generate 10 random Words
-      for (var i = 0; i < 10; i++)
-        WordModel(
-          value: 'word$i',
-          definition: 'meaning$i',
-          example: 'example$i',
-          isHitWord: i % 2 == 0,
-        )
-    ];
-
-    final tGetWordsResponseModel = GetWordsResponseModel<WordModel>(
-      words: tData,
-      totalWords: 100,
-      currentPage: 1,
-      totalPages: 10,
-      wordsPerPage: 10,
-    );
-
     test(
         'should return [VocabularyFailure] when limit is more than maxWordsFetchLimit',
         () async {
@@ -166,7 +167,9 @@ void main() {
 
       // act
       final result = await vocabularyRepository.getAllWords(
-          limit: tLimit, offset: tOffset);
+        limit: tLimit,
+        offset: tOffset,
+      );
       // assert
 
       expect(result.isLeft(), true);
@@ -183,7 +186,9 @@ void main() {
 
       // act
       final result = await vocabularyRepository.getAllWords(
-          limit: tLimit, offset: tOffset);
+        limit: tLimit,
+        offset: tOffset,
+      );
 
       // assert
       expect(result.isLeft(), true);
@@ -197,7 +202,9 @@ void main() {
 
       // act
       final result = await vocabularyRepository.getAllWords(
-          limit: tLimit, offset: tOffset);
+        limit: tLimit,
+        offset: tOffset,
+      );
 
       // assert
       expect(result.isLeft(), true);
@@ -262,7 +269,152 @@ void main() {
       expect(result.isRight(), true);
 
       expect(result.fold(id, id), isA<GetWordsResponse<Word>>());
-      expect((result.fold(id, id) as GetWordsResponse<Word>).words, tData);
+      expect(
+          (result.fold(id, id) as GetWordsResponse<Word>).words, tWordModels);
+    });
+  });
+
+  /// getAllWordsForSource
+  group('getAllWordsForSource', () {
+    const tSource = 'source';
+
+    test(
+        'should return [VocabularyFailure] when limit is more than maxWordsFetchLimit',
+        () async {
+      // arrange
+      final tLimit = PaginationLimit(101);
+      final tOffset = PaginationOffSet(0);
+
+      // act
+      final result = await vocabularyRepository.getAllWordsForSource(
+        source: tSource,
+        limit: tLimit,
+        offset: tOffset,
+      );
+      // assert
+
+      expect(result.isLeft(), true);
+
+      expect(result.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test(
+        'should return [VocabularyFailure] when limit is less than minWordsFetchLimit',
+        () async {
+      // arrange
+      final tLimit = PaginationLimit(4);
+      final tOffset = PaginationOffSet(0);
+
+      // act
+      final result = await vocabularyRepository.getAllWordsForSource(
+        source: tSource,
+        limit: tLimit,
+        offset: tOffset,
+      );
+
+      // assert
+      expect(result.isLeft(), true);
+      expect(result.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should return [VocabularyFailure] when offset is negative', () async {
+      // arrange
+      final tLimit = PaginationLimit(10);
+      final tOffset = PaginationOffSet(-1);
+
+      // act
+      final result = await vocabularyRepository.getAllWordsForSource(
+        source: tSource,
+        limit: tLimit,
+        offset: tOffset,
+      );
+
+      // assert
+      expect(result.isLeft(), true);
+      expect(result.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should call local data source once to get all words for source',
+        () async {
+      // arrange
+      final tLimit = PaginationLimit(10);
+      final tOffset = PaginationOffSet(0);
+
+      when(
+        localDataSource.getAllWordsForSource(
+          source: anyNamed('source'),
+          limit: anyNamed('limit'),
+          offset: anyNamed(
+            'offset',
+          ),
+        ),
+      ).thenAnswer((_) async => tGetWordsResponseModel);
+
+      // act
+      final result = await vocabularyRepository.getAllWordsForSource(
+          source: tSource, limit: tLimit, offset: tOffset);
+
+      // assert
+      verify(
+        localDataSource.getAllWordsForSource(
+          source: tSource,
+          limit: tLimit.getOrElse(10),
+          offset: tOffset.getOrElse(0),
+        ),
+      ).called(1);
+    });
+
+    test('should return a [VocabularyFailure] when the local data source fails',
+        () async {
+      // arrange
+      final tLimit = PaginationLimit(10);
+      final tOffset = PaginationOffSet(0);
+
+      when(
+        localDataSource.getAllWordsForSource(
+          source: anyNamed('source'),
+          limit: anyNamed('limit'),
+          offset: anyNamed(
+            'offset',
+          ),
+        ),
+      ).thenThrow(Exception('Unable to get words'));
+
+      // act
+      final result = await vocabularyRepository.getAllWordsForSource(
+          source: tSource, limit: tLimit, offset: tOffset);
+
+      // assert
+      expect(result.isLeft(), true);
+    });
+
+    test(
+        'should return a GetWordsResponse<Word> of words when everything goes well',
+        () async {
+      // arrange
+      final tLimit = PaginationLimit(10);
+      final tOffset = PaginationOffSet(0);
+
+      when(
+        localDataSource.getAllWordsForSource(
+          source: anyNamed('source'),
+          limit: anyNamed('limit'),
+          offset: anyNamed(
+            'offset',
+          ),
+        ),
+      ).thenAnswer((_) async => tGetWordsResponseModel);
+
+      // act
+      final result = await vocabularyRepository.getAllWordsForSource(
+          source: tSource, limit: tLimit, offset: tOffset);
+
+      // assert
+      expect(result.isRight(), true);
+
+      expect(result.fold(id, id), isA<GetWordsResponse<Word>>());
+      expect(
+          (result.fold(id, id) as GetWordsResponse<Word>).words, tWordModels);
     });
   });
 }

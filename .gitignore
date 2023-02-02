@@ -32,6 +32,16 @@ migrate_working_dir/
 .pub/
 /build/
 
+# ignore all .mocks.dart files
+**/*.mocks.dart
+**/*.g.dart
+
+
+# ignore or freezed generated files
+**/*.freezed.dart
+
+
+
 # Symbolication related
 app.*.symbols
 

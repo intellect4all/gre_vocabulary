@@ -14,4 +14,10 @@ abstract class LocalDataSource {
 
   Future<GetWordsResponseModel<WordModel>> getAllWords(
       {required int limit, required int offset});
+
+  Future<GetWordsResponseModel<WordModel>> getAllWordsForSource({
+    required WordsListKey source,
+    required int limit,
+    required int offset,
+  });
 }

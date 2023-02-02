@@ -42,8 +42,8 @@ abstract class VocabularyServiceFacade {
 
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
       getAllMemorizedWords({
-    required int limit,
-    required int offset,
+    required PaginationLimit limit,
+    required PaginationOffSet offset,
   });
 
   Future<Either<VocabularyFailure, WordDetails>> markWordAsShown({
@@ -70,13 +70,13 @@ abstract class VocabularyServiceFacade {
 
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
       getAllToBeRememberedWords({
-    required int limit,
-    required int offset,
+    required PaginationLimit limit,
+    required PaginationOffSet offset,
   });
 
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
       getAllWordsShownToday({
-    required int limit,
-    required int offset,
+    required PaginationLimit limit,
+    required PaginationOffSet offset,
   });
 }
