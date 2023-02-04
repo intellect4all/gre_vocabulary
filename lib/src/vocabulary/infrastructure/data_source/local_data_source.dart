@@ -31,4 +31,10 @@ abstract class LocalDataSource {
   Future<WordDetailsModel> getWordDetails({required String word});
 
   Future<SuccessModel> markWordAsShown({required String word});
+
+  Future<SuccessModel> markWordAsToBeRemembered({
+    required String word,
+  });
+
+  Future<SuccessModel> clearWordShowHistory({required String word});
 }

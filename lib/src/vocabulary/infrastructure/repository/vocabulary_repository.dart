@@ -100,12 +100,13 @@ class VocabularyRepository implements VocabularyServiceFacade {
   }) async {
     return _handleValidateValueObjects(
       () async {
-        final res = await _localDataSource.getAllWordDetails(
-          limit: limit.getOrCrash(),
-          offset: offset.getOrCrash(),
-          shownThreshold: shownThreshold,
+        return right(
+          await _localDataSource.getAllWordDetails(
+            limit: limit.getOrCrash(),
+            offset: offset.getOrCrash(),
+            shownThreshold: shownThreshold,
+          ),
         );
-        return right(res);
       },
     );
   }
@@ -116,10 +117,11 @@ class VocabularyRepository implements VocabularyServiceFacade {
   }) async {
     return _handleValidateValueObjects(
       () async {
-        final res = await _localDataSource.getWordDetails(
-          word: word.getOrCrash(),
+        return right(
+          await _localDataSource.getWordDetails(
+            word: word.getOrCrash(),
+          ),
         );
-        return right(res);
       },
     );
   }
@@ -130,18 +132,50 @@ class VocabularyRepository implements VocabularyServiceFacade {
   }) async {
     return _handleValidateValueObjects(
       () async {
-        final res = await _localDataSource.markWordAsShown(
-          word: word.getOrCrash(),
+        return right(
+          await _localDataSource.markWordAsShown(
+            word: word.getOrCrash(),
+          ),
         );
-        return right(res);
+      },
+    );
+  }
+
+  @override
+  Future<Either<VocabularyFailure, Success>> markWordAsToBeRemembered(
+      {required WordObject word}) async {
+    return _handleValidateValueObjects(
+      () async {
+        return right(
+          await _localDataSource.markWordAsToBeRemembered(
+            word: word.getOrCrash(),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Future<Either<VocabularyFailure, Success>> clearWordShowHistory({
+    required WordObject word,
+  }) async {
+    return _handleValidateValueObjects(
+      () async {
+        return right(
+          await _localDataSource.clearWordShowHistory(
+            word: word.getOrCrash(),
+          ),
+        );
       },
     );
   }
 
   @override
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
-      getAllMemorizedWords(
-          {required PaginationLimit limit, required PaginationOffSet offset}) {
+      getAllMemorizedWords({
+    required PaginationLimit limit,
+    required PaginationOffSet offset,
+  }) {
     // TODO: implement getAllMemorizedWords
     throw UnimplementedError();
   }
@@ -171,35 +205,21 @@ class VocabularyRepository implements VocabularyServiceFacade {
   }
 
   @override
-  Future<Either<VocabularyFailure, WordDetails>> markWordAsMemorized(
+  Future<Either<VocabularyFailure, Success>> markWordAsMemorized(
       {required WordObject word}) {
     // TODO: implement markWordAsMemorized
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<VocabularyFailure, WordDetails>> markWordAsNotShown(
-      {required WordObject word}) {
-    // TODO: implement markWordAsNotShown
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<VocabularyFailure, WordDetails>> markWordAsToBeRemembered(
-      {required WordObject word}) {
-    // TODO: implement markWordAsToBeRemembered
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<VocabularyFailure, WordDetails>> removeWordFromMemorized(
+  Future<Either<VocabularyFailure, Success>> removeWordFromMemorized(
       {required WordObject word}) {
     // TODO: implement removeWordFromMemorized
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<VocabularyFailure, WordDetails>> removeWordFromToBeRemembered(
+  Future<Either<VocabularyFailure, Success>> removeWordFromToBeRemembered(
       {required WordObject word}) {
     // TODO: implement removeWordFromToBeRemembered
     throw UnimplementedError();

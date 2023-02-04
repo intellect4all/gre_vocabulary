@@ -37,11 +37,11 @@ abstract class VocabularyServiceFacade {
     required WordObject word,
   });
 
-  Future<Either<VocabularyFailure, WordDetails>> markWordAsMemorized({
+  Future<Either<VocabularyFailure, Success>> markWordAsMemorized({
     required WordObject word,
   });
 
-  Future<Either<VocabularyFailure, WordDetails>> removeWordFromMemorized({
+  Future<Either<VocabularyFailure, Success>> removeWordFromMemorized({
     required WordObject word,
   });
 
@@ -55,7 +55,7 @@ abstract class VocabularyServiceFacade {
     required WordObject word,
   });
 
-  Future<Either<VocabularyFailure, WordDetails>> markWordAsNotShown({
+  Future<Either<VocabularyFailure, Success>> clearWordShowHistory({
     required WordObject word,
   });
 
@@ -65,11 +65,11 @@ abstract class VocabularyServiceFacade {
     required PaginationOffSet offset,
   });
 
-  Future<Either<VocabularyFailure, WordDetails>> markWordAsToBeRemembered({
+  Future<Either<VocabularyFailure, Success>> markWordAsToBeRemembered({
     required WordObject word,
   });
 
-  Future<Either<VocabularyFailure, WordDetails>> removeWordFromToBeRemembered({
+  Future<Either<VocabularyFailure, Success>> removeWordFromToBeRemembered({
     required WordObject word,
   });
 

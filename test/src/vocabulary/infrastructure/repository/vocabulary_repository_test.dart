@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gre_vocabulary/src/core/common_domains/entities/success.dart';
 import 'package:gre_vocabulary/src/core/common_domains/models/success_model.dart';
 import 'package:gre_vocabulary/src/vocabulary/core/failures.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/get_words_response.dart';
@@ -746,6 +747,179 @@ void main() {
       expect(result.isRight(), true);
 
       expect(result.fold(id, id), isA<SuccessModel>());
+    });
+  });
+
+  group("markWordAsToBeRemembered", () {
+    final tWordModel = WordModel(
+      value: WordObject('test'),
+      definition: "test",
+      example: "test",
+      isHitWord: false,
+    );
+
+    final tWordDetailsModel = WordDetailsModel(
+      word: tWordModel,
+      timesShown: 0,
+      show: false,
+      isMemorized: false,
+      lastShownDate: DateTime.now(),
+    );
+
+    setUp(() {
+      when(localDataSource.markWordAsToBeRemembered(word: anyNamed('word')))
+          .thenAnswer((_) async => const SuccessModel());
+    });
+
+    test('should return a failure if word is not valid', () async {
+      // act
+      final t1 = await vocabularyRepository.markWordAsToBeRemembered(
+        word: WordObject(''),
+      );
+
+      final t2 = await vocabularyRepository.markWordAsToBeRemembered(
+        word: WordObject('a445dd'),
+      );
+      final t3 = await vocabularyRepository.markWordAsToBeRemembered(
+        word: WordObject('8308_4'),
+      );
+
+      // assert
+      expect(t1.isLeft(), true);
+      expect(t1.fold(id, id), isA<VocabularyFailure>());
+      expect(t2.isLeft(), true);
+      expect(t2.fold(id, id), isA<VocabularyFailure>());
+      expect(t3.isLeft(), true);
+      expect(t3.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should call local data source markWordAsToBeRemembered once',
+        () async {
+      // act
+      await vocabularyRepository.markWordAsToBeRemembered(
+        word: tWordModel.value,
+      );
+
+      // assert
+      verify(
+        localDataSource.markWordAsToBeRemembered(word: "test"),
+      ).called(1);
+    });
+
+    test(
+        'should return a failure when markWordAsToBeRemembered throws an exception',
+        () async {
+      // arrange
+
+      when(localDataSource.markWordAsToBeRemembered(word: anyNamed('word')))
+          .thenThrow(Exception('Unable to mark word as to be remembered'));
+
+      // act
+      final res = await vocabularyRepository.markWordAsToBeRemembered(
+        word: tWordModel.value,
+      );
+
+      // assert
+      expect(res.isLeft(), true);
+      expect(res.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should return a Success when everything goes well', () async {
+      // act
+      final result = await vocabularyRepository.markWordAsToBeRemembered(
+        word: tWordModel.value,
+      );
+
+      // assert
+      expect(result.isRight(), true);
+
+      expect(result.fold(id, id), isA<Success>());
+    });
+  });
+
+  group("clearWordShowHistory", () {
+    final tWordModel = WordModel(
+      value: WordObject('test'),
+      definition: "test",
+      example: "test",
+      isHitWord: false,
+    );
+
+    final tWordDetailsModel = WordDetailsModel(
+      word: tWordModel,
+      timesShown: 0,
+      show: false,
+      isMemorized: false,
+      lastShownDate: DateTime.now(),
+    );
+
+    setUp(() {
+      when(localDataSource.clearWordShowHistory(word: anyNamed('word')))
+          .thenAnswer((_) async => const SuccessModel());
+    });
+
+    test('should return a failure if word is not valid', () async {
+      // act
+      final t1 = await vocabularyRepository.clearWordShowHistory(
+        word: WordObject(''),
+      );
+
+      final t2 = await vocabularyRepository.clearWordShowHistory(
+        word: WordObject('a445dd'),
+      );
+      final t3 = await vocabularyRepository.clearWordShowHistory(
+        word: WordObject('8308_4'),
+      );
+
+      // assert
+      expect(t1.isLeft(), true);
+      expect(t1.fold(id, id), isA<VocabularyFailure>());
+      expect(t2.isLeft(), true);
+      expect(t2.fold(id, id), isA<VocabularyFailure>());
+      expect(t3.isLeft(), true);
+      expect(t3.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should call local data source clearWordShowHistory once', () async {
+      // act
+      await vocabularyRepository.clearWordShowHistory(
+        word: tWordModel.value,
+      );
+
+      // assert
+      verify(
+        localDataSource.clearWordShowHistory(word: "test"),
+      ).called(1);
+    });
+
+    test(
+        'should return a failure when clearWordShowHistory throws an exception',
+        () async {
+      // arrange
+
+      when(localDataSource.clearWordShowHistory(word: anyNamed('word')))
+          .thenThrow(Exception('Unable to clear word show history'));
+
+      // act
+      final res = await vocabularyRepository.clearWordShowHistory(
+        word: tWordModel.value,
+      );
+
+      // assert
+      expect(res.isLeft(), true);
+      expect(res.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should return a Success when everything goes well', () async {
+      // act
+      final result = await vocabularyRepository.clearWordShowHistory(
+        word: tWordModel.value,
+      );
+
+      // assert
+      expect(result.isRight(), true);
+
+      expect(result.fold(id, id), isA<Success>());
     });
   });
 }
