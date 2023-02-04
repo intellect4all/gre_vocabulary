@@ -60,41 +60,53 @@ class VocabularyRepository implements VocabularyServiceFacade {
     required PaginationLimit limit,
     required PaginationOffSet offset,
   }) async {
-    try {
-      final res = await _localDataSource.getAllWords(
-        limit: limit.getOrCrash(),
-        offset: offset.getOrCrash(),
-      );
-      return right(res);
-    } on UnexpectedValueError catch (e) {
-      final res = e.valueFailure.maybeWhen<String>(
-        limitExceedMaxWordsFetch: (String message) => message,
-        limitNotUpToMinimum: (String message) => message,
-        orElse: () => "Unexpected Error",
-      );
-
-      return left(VocabularyFailure.unexpected(message: res));
-    } catch (e) {
-      return left(const VocabularyFailure.unexpected());
-    }
+    return _handleLimitAndOffSetChecks(
+      () async {
+        final res = await _localDataSource.getAllWords(
+          limit: limit.getOrCrash(),
+          offset: offset.getOrCrash(),
+        );
+        return right(res);
+      },
+    );
   }
 
   @override
   Future<Either<VocabularyFailure, GetWordsResponse<Word>>>
-      getAllWordsForSource(
-          {required PaginationLimit limit,
-          required PaginationOffSet offset,
-          required WordsListKey source}) async {
-    try {
-      final res = await _localDataSource.getAllWordsForSource(
-        source: source,
-        limit: limit.getOrCrash(),
-        offset: offset.getOrCrash(),
-      );
-      return right(res);
-    } catch (e) {
-      return left(const VocabularyFailure.unexpected());
-    }
+      getAllWordsForSource({
+    required PaginationLimit limit,
+    required PaginationOffSet offset,
+    required WordsListKey source,
+  }) async {
+    return _handleLimitAndOffSetChecks(
+      () async {
+        final res = await _localDataSource.getAllWordsForSource(
+          source: source,
+          limit: limit.getOrCrash(),
+          offset: offset.getOrCrash(),
+        );
+        return right(res);
+      },
+    );
+  }
+
+  @override
+  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
+      getAllWordDetails({
+    required PaginationLimit limit,
+    required PaginationOffSet offset,
+    required int shownThreshold,
+  }) async {
+    return _handleLimitAndOffSetChecks(
+      () async {
+        final res = await _localDataSource.getAllWordDetails(
+          limit: limit.getOrCrash(),
+          offset: offset.getOrCrash(),
+          shownThreshold: shownThreshold,
+        );
+        return right(res);
+      },
+    );
   }
 
   @override
@@ -106,19 +118,11 @@ class VocabularyRepository implements VocabularyServiceFacade {
 
   @override
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
-      getAllShownWords(
-          {required PaginationLimit limit, required PaginationOffSet offset}) {
+      getAllShownWords({
+    required PaginationLimit limit,
+    required PaginationOffSet offset,
+  }) {
     // TODO: implement getAllShownWords
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
-      getAllWordDetails(
-          {required PaginationLimit limit,
-          required PaginationOffSet offset,
-          required int shownThreshold}) {
-    // TODO: implement getAllWordDetails
     throw UnimplementedError();
   }
 
@@ -185,5 +189,23 @@ class VocabularyRepository implements VocabularyServiceFacade {
   }) {
     // TODO: implement getAllWordsShownToday
     throw UnimplementedError();
+  }
+
+  Future<Either<VocabularyFailure, T>> _handleLimitAndOffSetChecks<T>(
+    Future<Either<VocabularyFailure, T>> Function() f,
+  ) async {
+    try {
+      return await f();
+    } on UnexpectedValueError catch (e) {
+      final res = e.valueFailure.maybeWhen<String>(
+        limitExceedMaxWordsFetch: (String message) => message,
+        limitNotUpToMinimum: (String message) => message,
+        orElse: () => "Unexpected Error",
+      );
+
+      return Future.value(left(VocabularyFailure.unexpected(message: res)));
+    } catch (e) {
+      return left(const VocabularyFailure.unexpected());
+    }
   }
 }

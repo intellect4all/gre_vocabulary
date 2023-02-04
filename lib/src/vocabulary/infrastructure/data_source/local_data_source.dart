@@ -3,6 +3,7 @@ import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/word_model.d
 
 import '../../core/constants.dart';
 import '../models/get_words_response_model.dart';
+import '../models/word_details_model.dart';
 
 abstract class LocalDataSource {
   Future<bool> areWordsLoaded();
@@ -19,5 +20,11 @@ abstract class LocalDataSource {
     required WordsListKey source,
     required int limit,
     required int offset,
+  });
+
+  Future<GetWordsResponseModel<WordDetailsModel>> getAllWordDetails({
+    required int limit,
+    required int offset,
+    required int shownThreshold,
   });
 }

@@ -4,9 +4,11 @@ import 'package:gre_vocabulary/src/core/common_domains/models/success_model.dart
 import 'package:gre_vocabulary/src/vocabulary/core/failures.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/get_words_response.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/entities/word_details.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/value_objects/value_objects.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/data_source/local_data_source.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/get_words_response_model.dart';
+import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/word_details_model.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/word_model.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/repository/vocabulary_repository.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/repository/wordlists_csv_parsers/csv_parser.dart';
@@ -415,6 +417,159 @@ void main() {
       expect(result.fold(id, id), isA<GetWordsResponse<Word>>());
       expect(
           (result.fold(id, id) as GetWordsResponse<Word>).words, tWordModels);
+    });
+  });
+
+  group('getAllWordDetails', () {
+    const tShownThreshold = 5;
+
+    final tWordDetailsModels = tWordModels
+        .map(
+          (e) => WordDetailsModel(
+            word: e,
+            timesShown: 0,
+            show: false,
+            isMemorized: false,
+            lastShownDate: DateTime.now(),
+          ),
+        )
+        .toList();
+    final tGetWordDetailsResponseModel =
+        GetWordsResponseModel<WordDetailsModel>(
+      words: tWordDetailsModels,
+      totalWords: 100,
+      currentPage: 1,
+      totalPages: 10,
+      wordsPerPage: 10,
+    );
+
+    final tLimit = PaginationLimit(10);
+    final tOffset = PaginationOffSet(0);
+
+    setUp(() {
+      when(
+        localDataSource.getAllWordDetails(
+            limit: anyNamed('limit'),
+            offset: anyNamed('offset'),
+            shownThreshold: anyNamed('shownThreshold')),
+      ).thenAnswer((_) async => tGetWordDetailsResponseModel);
+    });
+
+    test(
+        'should return [VocabularyFailure] when limit is more than maxWordsFetchLimit',
+        () async {
+      // arrange
+      final tLimit = PaginationLimit(101);
+      final tOffset = PaginationOffSet(0);
+
+      // act
+      final result = await vocabularyRepository.getAllWordDetails(
+        limit: tLimit,
+        offset: tOffset,
+        shownThreshold: tShownThreshold,
+      );
+      // assert
+
+      expect(result.isLeft(), true);
+
+      expect(result.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test(
+        'should return [VocabularyFailure] when limit is less than minWordsFetchLimit',
+        () async {
+      // arrange
+      final tLimit = PaginationLimit(4);
+      final tOffset = PaginationOffSet(0);
+
+      // act
+      final result = await vocabularyRepository.getAllWordDetails(
+        limit: tLimit,
+        offset: tOffset,
+        shownThreshold: tShownThreshold,
+      );
+
+      // assert
+      expect(result.isLeft(), true);
+      expect(result.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should return [VocabularyFailure] when offset is negative', () async {
+      // arrange
+
+      final tOffset = PaginationOffSet(-1);
+
+      // act
+      final result = await vocabularyRepository.getAllWordDetails(
+        limit: tLimit,
+        offset: tOffset,
+        shownThreshold: tShownThreshold,
+      );
+
+      // assert
+      expect(result.isLeft(), true);
+      expect(result.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test(
+        'should call local data source getAllWordDetails once to get all words details',
+        () async {
+      // act
+      final result = await vocabularyRepository.getAllWordDetails(
+        limit: tLimit,
+        offset: tOffset,
+        shownThreshold: tShownThreshold,
+      );
+
+      // assert
+      verify(
+        localDataSource.getAllWordDetails(
+          limit: tLimit.getOrElse(10),
+          offset: tOffset.getOrElse(0),
+          shownThreshold: tShownThreshold,
+        ),
+      ).called(1);
+    });
+
+    test('should return a failure when getAllWordDetails throws an exception',
+        () async {
+      // arrange
+
+      when(
+        localDataSource.getAllWordDetails(
+            limit: anyNamed('limit'),
+            offset: anyNamed('offset'),
+            shownThreshold: anyNamed('shownThreshold')),
+      ).thenThrow(Exception('Unable to get words'));
+
+      // act
+      final res = await vocabularyRepository.getAllWordDetails(
+        limit: tLimit,
+        offset: tOffset,
+        shownThreshold: tShownThreshold,
+      );
+
+      // assert
+      expect(res.isLeft(), true);
+      expect(res.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test(
+        'should return a GetWordsResponse<WordDetails> of words when everything goes well',
+        () async {
+      // act
+      final result = await vocabularyRepository.getAllWordDetails(
+        limit: tLimit,
+        offset: tOffset,
+        shownThreshold: tShownThreshold,
+      );
+
+      // assert
+      expect(result.isRight(), true);
+
+      expect(result.fold(id, id), isA<GetWordsResponse<WordDetails>>());
+      expect((result.fold(id, id) as GetWordsResponse<WordDetails>).words,
+          tWordDetailsModels);
     });
   });
 }

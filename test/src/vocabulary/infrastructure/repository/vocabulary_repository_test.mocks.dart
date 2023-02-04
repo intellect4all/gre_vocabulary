@@ -8,17 +8,19 @@ import 'dart:async' as _i6;
 import 'package:dartz/dartz.dart' as _i4;
 import 'package:gre_vocabulary/src/core/common_domains/models/success_model.dart'
     as _i2;
-import 'package:gre_vocabulary/src/vocabulary/core/failures.dart' as _i10;
+import 'package:gre_vocabulary/src/vocabulary/core/failures.dart' as _i11;
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/data_source/local_data_source.dart'
     as _i5;
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/get_words_response_model.dart'
     as _i3;
+import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/word_details_model.dart'
+    as _i8;
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/word_model.dart'
     as _i7;
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/repository/wordlists_csv_parsers/csv_parser.dart'
-    as _i8;
-import 'package:gre_vocabulary/src/vocabulary/infrastructure/repository/words_lists/base_words_list.dart'
     as _i9;
+import 'package:gre_vocabulary/src/vocabulary/infrastructure/repository/words_lists/base_words_list.dart'
+    as _i10;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -167,35 +169,67 @@ class MockLocalDataSource extends _i1.Mock implements _i5.LocalDataSource {
           ),
         )),
       ) as _i6.Future<_i3.GetWordsResponseModel<_i7.WordModel>>);
+  @override
+  _i6.Future<
+      _i3.GetWordsResponseModel<_i8.WordDetailsModel>> getAllWordDetails({
+    required int? limit,
+    required int? offset,
+    required int? shownThreshold,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getAllWordDetails,
+          [],
+          {
+            #limit: limit,
+            #offset: offset,
+            #shownThreshold: shownThreshold,
+          },
+        ),
+        returnValue:
+            _i6.Future<_i3.GetWordsResponseModel<_i8.WordDetailsModel>>.value(
+                _FakeGetWordsResponseModel_1<_i8.WordDetailsModel>(
+          this,
+          Invocation.method(
+            #getAllWordDetails,
+            [],
+            {
+              #limit: limit,
+              #offset: offset,
+              #shownThreshold: shownThreshold,
+            },
+          ),
+        )),
+      ) as _i6.Future<_i3.GetWordsResponseModel<_i8.WordDetailsModel>>);
 }
 
 /// A class which mocks [CSVListsParser].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCSVListsParser extends _i1.Mock implements _i8.CSVListsParser {
+class MockCSVListsParser extends _i1.Mock implements _i9.CSVListsParser {
   MockCSVListsParser() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  List<_i9.BaseWordsList> get wordsLists => (super.noSuchMethod(
+  List<_i10.BaseWordsList> get wordsLists => (super.noSuchMethod(
         Invocation.getter(#wordsLists),
-        returnValue: <_i9.BaseWordsList>[],
-      ) as List<_i9.BaseWordsList>);
+        returnValue: <_i10.BaseWordsList>[],
+      ) as List<_i10.BaseWordsList>);
   @override
-  _i4.Either<_i10.VocabularyFailure, _i8.CSVParsingResponse> parse() =>
+  _i4.Either<_i11.VocabularyFailure, _i9.CSVParsingResponse> parse() =>
       (super.noSuchMethod(
         Invocation.method(
           #parse,
           [],
         ),
         returnValue:
-            _FakeEither_2<_i10.VocabularyFailure, _i8.CSVParsingResponse>(
+            _FakeEither_2<_i11.VocabularyFailure, _i9.CSVParsingResponse>(
           this,
           Invocation.method(
             #parse,
             [],
           ),
         ),
-      ) as _i4.Either<_i10.VocabularyFailure, _i8.CSVParsingResponse>);
+      ) as _i4.Either<_i11.VocabularyFailure, _i9.CSVParsingResponse>);
 }

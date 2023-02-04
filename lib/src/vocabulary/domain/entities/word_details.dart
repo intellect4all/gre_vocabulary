@@ -15,7 +15,7 @@ class WordDetails {
   final bool isMemorized;
 
   /// the date the word was last shown
-  final String lastShownDate;
+  final DateTime lastShownDate;
 
   const WordDetails({
     required this.word,
