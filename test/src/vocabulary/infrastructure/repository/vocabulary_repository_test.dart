@@ -910,9 +910,96 @@ void main() {
       expect(res.fold(id, id), isA<VocabularyFailure>());
     });
 
-    test('should return a Success when everything goes well', () async {
+    test('should return a Success when clearWordShowHistory successful',
+        () async {
       // act
       final result = await vocabularyRepository.clearWordShowHistory(
+        word: tWordModel.value,
+      );
+
+      // assert
+      expect(result.isRight(), true);
+
+      expect(result.fold(id, id), isA<Success>());
+    });
+  });
+
+  group("markWordAsMemorized", () {
+    final tWordModel = WordModel(
+      value: WordObject('test'),
+      definition: "test",
+      example: "test",
+      isHitWord: false,
+    );
+
+    final tWordDetailsModel = WordDetailsModel(
+      word: tWordModel,
+      timesShown: 0,
+      show: false,
+      isMemorized: false,
+      lastShownDate: DateTime.now(),
+    );
+
+    setUp(() {
+      when(localDataSource.markWordAsMemorized(word: anyNamed('word')))
+          .thenAnswer((_) async => const SuccessModel());
+    });
+
+    test('should return a failure if word is not valid', () async {
+      // act
+      final t1 = await vocabularyRepository.markWordAsMemorized(
+        word: WordObject(''),
+      );
+
+      final t2 = await vocabularyRepository.markWordAsMemorized(
+        word: WordObject('a445dd'),
+      );
+      final t3 = await vocabularyRepository.markWordAsMemorized(
+        word: WordObject('8308_4'),
+      );
+
+      // assert
+      expect(t1.isLeft(), true);
+      expect(t1.fold(id, id), isA<VocabularyFailure>());
+      expect(t2.isLeft(), true);
+      expect(t2.fold(id, id), isA<VocabularyFailure>());
+      expect(t3.isLeft(), true);
+      expect(t3.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should call local data source markWordAsMemorized once', () async {
+      // act
+      await vocabularyRepository.markWordAsMemorized(
+        word: tWordModel.value,
+      );
+
+      // assert
+      verify(
+        localDataSource.markWordAsMemorized(word: "test"),
+      ).called(1);
+    });
+
+    test('should return a failure when markWordAsMemorized throws an exception',
+        () async {
+      // arrange
+
+      when(localDataSource.markWordAsMemorized(word: anyNamed('word')))
+          .thenThrow(Exception('Unable to mark word as memorized'));
+
+      // act
+      final res = await vocabularyRepository.markWordAsMemorized(
+        word: tWordModel.value,
+      );
+
+      // assert
+      expect(res.isLeft(), true);
+      expect(res.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should return a Success when markWordAsMemorized successful',
+        () async {
+      // act
+      final result = await vocabularyRepository.markWordAsMemorized(
         word: tWordModel.value,
       );
 

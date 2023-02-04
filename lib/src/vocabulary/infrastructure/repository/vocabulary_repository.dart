@@ -171,6 +171,21 @@ class VocabularyRepository implements VocabularyServiceFacade {
   }
 
   @override
+  Future<Either<VocabularyFailure, Success>> markWordAsMemorized({
+    required WordObject word,
+  }) async {
+    return _handleValidateValueObjects(
+      () async {
+        return right(
+          await _localDataSource.markWordAsMemorized(
+            word: word.getOrCrash(),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
       getAllMemorizedWords({
     required PaginationLimit limit,
@@ -201,13 +216,6 @@ class VocabularyRepository implements VocabularyServiceFacade {
       getAllWordsShownToday(
           {required PaginationLimit limit, required PaginationOffSet offset}) {
     // TODO: implement getAllWordsShownToday
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<VocabularyFailure, Success>> markWordAsMemorized(
-      {required WordObject word}) {
-    // TODO: implement markWordAsMemorized
     throw UnimplementedError();
   }
 
