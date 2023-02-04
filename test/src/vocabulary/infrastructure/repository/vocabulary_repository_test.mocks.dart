@@ -317,6 +317,139 @@ class MockLocalDataSource extends _i1.Mock implements _i6.LocalDataSource {
           ),
         )),
       ) as _i7.Future<_i2.SuccessModel>);
+  @override
+  _i7.Future<_i2.SuccessModel> removeWordFromToBeRemembered(
+          {required String? word}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #removeWordFromToBeRemembered,
+          [],
+          {#word: word},
+        ),
+        returnValue: _i7.Future<_i2.SuccessModel>.value(_FakeSuccessModel_0(
+          this,
+          Invocation.method(
+            #removeWordFromToBeRemembered,
+            [],
+            {#word: word},
+          ),
+        )),
+      ) as _i7.Future<_i2.SuccessModel>);
+  @override
+  _i7.Future<
+      _i3.GetWordsResponseModel<_i4.WordDetailsModel>> getAllMemorizedWords({
+    required int? limit,
+    required int? offset,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getAllMemorizedWords,
+          [],
+          {
+            #limit: limit,
+            #offset: offset,
+          },
+        ),
+        returnValue:
+            _i7.Future<_i3.GetWordsResponseModel<_i4.WordDetailsModel>>.value(
+                _FakeGetWordsResponseModel_1<_i4.WordDetailsModel>(
+          this,
+          Invocation.method(
+            #getAllMemorizedWords,
+            [],
+            {
+              #limit: limit,
+              #offset: offset,
+            },
+          ),
+        )),
+      ) as _i7.Future<_i3.GetWordsResponseModel<_i4.WordDetailsModel>>);
+  @override
+  _i7.Future<_i3.GetWordsResponseModel<_i4.WordDetailsModel>> getAllShownWords({
+    required int? limit,
+    required int? offset,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getAllShownWords,
+          [],
+          {
+            #limit: limit,
+            #offset: offset,
+          },
+        ),
+        returnValue:
+            _i7.Future<_i3.GetWordsResponseModel<_i4.WordDetailsModel>>.value(
+                _FakeGetWordsResponseModel_1<_i4.WordDetailsModel>(
+          this,
+          Invocation.method(
+            #getAllShownWords,
+            [],
+            {
+              #limit: limit,
+              #offset: offset,
+            },
+          ),
+        )),
+      ) as _i7.Future<_i3.GetWordsResponseModel<_i4.WordDetailsModel>>);
+  @override
+  _i7.Future<_i3.GetWordsResponseModel<_i4.WordDetailsModel>>
+      getAllToBeRememberedWords({
+    required int? limit,
+    required int? offset,
+  }) =>
+          (super.noSuchMethod(
+            Invocation.method(
+              #getAllToBeRememberedWords,
+              [],
+              {
+                #limit: limit,
+                #offset: offset,
+              },
+            ),
+            returnValue: _i7.Future<
+                    _i3.GetWordsResponseModel<_i4.WordDetailsModel>>.value(
+                _FakeGetWordsResponseModel_1<_i4.WordDetailsModel>(
+              this,
+              Invocation.method(
+                #getAllToBeRememberedWords,
+                [],
+                {
+                  #limit: limit,
+                  #offset: offset,
+                },
+              ),
+            )),
+          ) as _i7.Future<_i3.GetWordsResponseModel<_i4.WordDetailsModel>>);
+  @override
+  _i7.Future<
+      _i3.GetWordsResponseModel<_i4.WordDetailsModel>> getAllWordsShownToday({
+    required int? limit,
+    required int? offset,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getAllWordsShownToday,
+          [],
+          {
+            #limit: limit,
+            #offset: offset,
+          },
+        ),
+        returnValue:
+            _i7.Future<_i3.GetWordsResponseModel<_i4.WordDetailsModel>>.value(
+                _FakeGetWordsResponseModel_1<_i4.WordDetailsModel>(
+          this,
+          Invocation.method(
+            #getAllWordsShownToday,
+            [],
+            {
+              #limit: limit,
+              #offset: offset,
+            },
+          ),
+        )),
+      ) as _i7.Future<_i3.GetWordsResponseModel<_i4.WordDetailsModel>>);
 }
 
 /// A class which mocks [CSVListsParser].

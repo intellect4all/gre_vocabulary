@@ -201,10 +201,18 @@ class VocabularyRepository implements VocabularyServiceFacade {
   }
 
   @override
-  Future<Either<VocabularyFailure, Success>> removeWordFromToBeRemembered(
-      {required WordObject word}) {
-    // TODO: implement removeWordFromToBeRemembered
-    throw UnimplementedError();
+  Future<Either<VocabularyFailure, Success>> removeWordFromToBeRemembered({
+    required WordObject word,
+  }) async {
+    return _handleValidateValueObjects(
+      () async {
+        return right(
+          await _localDataSource.removeWordFromToBeRemembered(
+            word: word.getOrCrash(),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -213,32 +221,70 @@ class VocabularyRepository implements VocabularyServiceFacade {
     required PaginationLimit limit,
     required PaginationOffSet offset,
   }) async {
-    // TODO: implement getAllMemorizedWords
-    throw UnimplementedError();
+    return _handleValidateValueObjects(
+      () async {
+        return right(
+          await _localDataSource.getAllMemorizedWords(
+            limit: limit.getOrCrash(),
+            offset: offset.getOrCrash(),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
-      getAllShownWords(
-          {required PaginationLimit limit, required PaginationOffSet offset}) {
-    // TODO: implement getAllShownWords
-    throw UnimplementedError();
+      getAllShownWords({
+    required PaginationLimit limit,
+    required PaginationOffSet offset,
+  }) async {
+    return _handleValidateValueObjects(
+      () async {
+        return right(
+          await _localDataSource.getAllShownWords(
+            limit: limit.getOrCrash(),
+            offset: offset.getOrCrash(),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
-      getAllToBeRememberedWords(
-          {required PaginationLimit limit, required PaginationOffSet offset}) {
-    // TODO: implement getAllToBeRememberedWords
-    throw UnimplementedError();
+      getAllToBeRememberedWords({
+    required PaginationLimit limit,
+    required PaginationOffSet offset,
+  }) async {
+    return _handleValidateValueObjects(
+      () async {
+        return right(
+          await _localDataSource.getAllToBeRememberedWords(
+            limit: limit.getOrCrash(),
+            offset: offset.getOrCrash(),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
-      getAllWordsShownToday(
-          {required PaginationLimit limit, required PaginationOffSet offset}) {
-    // TODO: implement getAllWordsShownToday
-    throw UnimplementedError();
+      getAllWordsShownToday({
+    required PaginationLimit limit,
+    required PaginationOffSet offset,
+  }) async {
+    return _handleValidateValueObjects(
+      () async {
+        return right(
+          await _localDataSource.getAllWordsShownToday(
+            limit: limit.getOrCrash(),
+            offset: offset.getOrCrash(),
+          ),
+        );
+      },
+    );
   }
 
   Future<Either<VocabularyFailure, T>> _handleValidateValueObjects<T>(

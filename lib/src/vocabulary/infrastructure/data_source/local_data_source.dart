@@ -41,4 +41,26 @@ abstract class LocalDataSource {
   Future<SuccessModel> markWordAsMemorized({required String word});
 
   Future<SuccessModel> removeWordFromMemorized({required String word});
+
+  Future<SuccessModel> removeWordFromToBeRemembered({required String word});
+
+  Future<GetWordsResponseModel<WordDetailsModel>> getAllMemorizedWords({
+    required int limit,
+    required int offset,
+  });
+
+  Future<GetWordsResponseModel<WordDetailsModel>> getAllShownWords({
+    required int limit,
+    required int offset,
+  });
+
+  Future<GetWordsResponseModel<WordDetailsModel>> getAllToBeRememberedWords({
+    required int limit,
+    required int offset,
+  });
+
+  Future<GetWordsResponseModel<WordDetailsModel>> getAllWordsShownToday({
+    required int limit,
+    required int offset,
+  });
 }

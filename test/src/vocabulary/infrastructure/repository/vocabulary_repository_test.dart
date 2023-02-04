@@ -1097,4 +1097,665 @@ void main() {
       expect(result.fold(id, id), isA<Success>());
     });
   });
+
+  group("removeWordFromToBeRemembered", () {
+    final tWordModel = WordModel(
+      value: WordObject('test'),
+      definition: "test",
+      example: "test",
+      isHitWord: false,
+    );
+
+    final tWordDetailsModel = WordDetailsModel(
+      word: tWordModel,
+      timesShown: 0,
+      show: false,
+      isMemorized: false,
+      lastShownDate: DateTime.now(),
+    );
+
+    setUp(() {
+      when(localDataSource.removeWordFromToBeRemembered(word: anyNamed('word')))
+          .thenAnswer((_) async => const SuccessModel());
+    });
+
+    test('should return a failure if word is not valid', () async {
+      // act
+      final t1 = await vocabularyRepository.removeWordFromToBeRemembered(
+        word: WordObject(''),
+      );
+
+      final t2 = await vocabularyRepository.removeWordFromToBeRemembered(
+        word: WordObject('a445dd'),
+      );
+      final t3 = await vocabularyRepository.removeWordFromToBeRemembered(
+        word: WordObject('8308_4'),
+      );
+
+      // assert
+      expect(t1.isLeft(), true);
+      expect(t1.fold(id, id), isA<VocabularyFailure>());
+      expect(t2.isLeft(), true);
+      expect(t2.fold(id, id), isA<VocabularyFailure>());
+      expect(t3.isLeft(), true);
+      expect(t3.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should call local data source removeWordFromToBeRemembered once',
+        () async {
+      // act
+      await vocabularyRepository.removeWordFromToBeRemembered(
+        word: tWordModel.value,
+      );
+
+      // assert
+      verify(
+        localDataSource.removeWordFromToBeRemembered(word: "test"),
+      ).called(1);
+    });
+
+    test(
+        'should return a failure when removeWordFromToBeRemembered throws an exception',
+        () async {
+      // arrange
+
+      when(localDataSource.removeWordFromToBeRemembered(word: anyNamed('word')))
+          .thenThrow(Exception('Unable to remove word from to be remembered'));
+
+      // act
+      final res = await vocabularyRepository.removeWordFromToBeRemembered(
+        word: tWordModel.value,
+      );
+
+      // assert
+      expect(res.isLeft(), true);
+      expect(res.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test(
+        'should return a Success when removeWordFromToBeRemembered successful ',
+        () async {
+      // act
+      final result = await vocabularyRepository.removeWordFromToBeRemembered(
+        word: tWordModel.value,
+      );
+
+      // assert
+      expect(result.isRight(), true);
+
+      expect(result.fold(id, id), isA<Success>());
+    });
+  });
+
+  group(
+    "getAllMemorizedWords",
+    () {
+      final tLimit = PaginationLimit(10);
+      final tOffset = PaginationOffSet(0);
+
+      final tWordDetailsModels = tWordModels
+          .map(
+            (e) => WordDetailsModel(
+              word: e,
+              timesShown: 0,
+              show: false,
+              isMemorized: false,
+              lastShownDate: DateTime.now(),
+            ),
+          )
+          .toList();
+      final tGetWordDetailsResponseModel =
+          GetWordsResponseModel<WordDetailsModel>(
+        words: tWordDetailsModels,
+        totalWords: 100,
+        currentPage: 1,
+        totalPages: 10,
+        wordsPerPage: 10,
+      );
+
+      test(
+          'should return [VocabularyFailure] when limit is more than maxWordsFetchLimit',
+          () async {
+        // arrange
+        final tLimit = PaginationLimit(101);
+        final tOffset = PaginationOffSet(0);
+
+        // act
+        final result = await vocabularyRepository.getAllMemorizedWords(
+          limit: tLimit,
+          offset: tOffset,
+        );
+
+        // assert
+
+        expect(result.isLeft(), true);
+
+        expect(result.fold(id, id), isA<VocabularyFailure>());
+      });
+
+      test(
+          'should return [VocabularyFailure] when limit is less than minWordsFetchLimit',
+          () async {
+        // arrange
+        final tLimit = PaginationLimit(4);
+        final tOffset = PaginationOffSet(0);
+
+        // act
+        final result = await vocabularyRepository.getAllMemorizedWords(
+          limit: tLimit,
+          offset: tOffset,
+        );
+
+        // assert
+        expect(result.isLeft(), true);
+        expect(result.fold(id, id), isA<VocabularyFailure>());
+      });
+
+      test('should return [VocabularyFailure] when offset is negative',
+          () async {
+        // arrange
+        final tLimit = PaginationLimit(10);
+        final tOffset = PaginationOffSet(-1);
+
+        // act
+        final result = await vocabularyRepository.getAllMemorizedWords(
+          limit: tLimit,
+          offset: tOffset,
+        );
+
+        // assert
+        expect(result.isLeft(), true);
+        expect(result.fold(id, id), isA<VocabularyFailure>());
+      });
+
+      test('should call local data source getAllMemorizedWords once', () async {
+        // arrange
+        when(localDataSource.getAllMemorizedWords(
+          limit: anyNamed('limit'),
+          offset: anyNamed('offset'),
+        )).thenAnswer((_) async => tGetWordDetailsResponseModel);
+
+        // act
+        await vocabularyRepository.getAllMemorizedWords(
+          limit: tLimit,
+          offset: tOffset,
+        );
+
+        // assert
+        verify(
+          localDataSource.getAllMemorizedWords(
+            limit: 10,
+            offset: 0,
+          ),
+        ).called(1);
+      });
+
+      test(
+          'should return a failure when getAllMemorizedWords throws an exception',
+          () async {
+        // arrange
+        when(localDataSource.getAllMemorizedWords(
+          limit: anyNamed('limit'),
+          offset: anyNamed('offset'),
+        )).thenThrow(Exception('Unable to get all memorized words'));
+
+        // act
+        final res = await vocabularyRepository.getAllMemorizedWords(
+          limit: tLimit,
+          offset: tOffset,
+        );
+
+        // assert
+        expect(res.isLeft(), true);
+        expect(res.fold(id, id), isA<VocabularyFailure>());
+      });
+
+      test('should return a Success when getAllMemorizedWords successful ',
+          () async {
+        // arrange
+        when(localDataSource.getAllMemorizedWords(
+          limit: anyNamed('limit'),
+          offset: anyNamed('offset'),
+        )).thenAnswer((_) async => tGetWordDetailsResponseModel);
+
+        // act
+        final result = await vocabularyRepository.getAllMemorizedWords(
+          limit: tLimit,
+          offset: tOffset,
+        );
+
+        // assert
+        expect(result.isRight(), true);
+
+        expect(result.fold(id, id), isA<GetWordsResponseModel<WordDetails>>());
+      });
+    },
+  );
+
+  group("getAllShownWords", () {
+    final tLimit = PaginationLimit(10);
+    final tOffset = PaginationOffSet(0);
+
+    final tWordDetailsModels = tWordModels
+        .map(
+          (e) => WordDetailsModel(
+            word: e,
+            timesShown: 0,
+            show: false,
+            isMemorized: false,
+            lastShownDate: DateTime.now(),
+          ),
+        )
+        .toList();
+    final tGetWordDetailsResponseModel =
+        GetWordsResponseModel<WordDetailsModel>(
+      words: tWordDetailsModels,
+      totalWords: 100,
+      currentPage: 1,
+      totalPages: 10,
+      wordsPerPage: 10,
+    );
+
+    test(
+        'should return [VocabularyFailure] when limit is more than maxWordsFetchLimit',
+        () async {
+      // arrange
+      final tLimit = PaginationLimit(101);
+      final tOffset = PaginationOffSet(0);
+
+      // act
+      final result = await vocabularyRepository.getAllShownWords(
+        limit: tLimit,
+        offset: tOffset,
+      );
+
+      // assert
+
+      expect(result.isLeft(), true);
+
+      expect(result.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test(
+        'should return [VocabularyFailure] when limit is less than minWordsFetchLimit',
+        () async {
+      // arrange
+      final tLimit = PaginationLimit(4);
+      final tOffset = PaginationOffSet(0);
+
+      // act
+      final result = await vocabularyRepository.getAllShownWords(
+        limit: tLimit,
+        offset: tOffset,
+      );
+
+      // assert
+      expect(result.isLeft(), true);
+      expect(result.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should return [VocabularyFailure] when offset is negative', () async {
+      // arrange
+      final tLimit = PaginationLimit(10);
+      final tOffset = PaginationOffSet(-1);
+
+      // act
+      final result = await vocabularyRepository.getAllShownWords(
+        limit: tLimit,
+        offset: tOffset,
+      );
+
+      // assert
+      expect(result.isLeft(), true);
+      expect(result.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should call local data source getAllShownWords once', () async {
+      // arrange
+      when(localDataSource.getAllShownWords(
+        limit: anyNamed('limit'),
+        offset: anyNamed('offset'),
+      )).thenAnswer((_) async => tGetWordDetailsResponseModel);
+
+      // act
+      await vocabularyRepository.getAllShownWords(
+        limit: tLimit,
+        offset: tOffset,
+      );
+
+      // assert
+      verify(
+        localDataSource.getAllShownWords(
+          limit: 10,
+          offset: 0,
+        ),
+      ).called(1);
+    });
+
+    test('should return a failure when getAllShownWords throws an exception',
+        () async {
+      // arrange
+      when(localDataSource.getAllShownWords(
+        limit: anyNamed('limit'),
+        offset: anyNamed('offset'),
+      )).thenThrow(Exception('Unable to get all shown words'));
+
+      // act
+      final res = await vocabularyRepository.getAllShownWords(
+        limit: tLimit,
+        offset: tOffset,
+      );
+
+      // assert
+      expect(res.isLeft(), true);
+      expect(res.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should return a Success when getAllShownWords successful ', () async {
+      // arrange
+      when(localDataSource.getAllShownWords(
+        limit: anyNamed('limit'),
+        offset: anyNamed('offset'),
+      )).thenAnswer((_) async => tGetWordDetailsResponseModel);
+
+      // act
+      final result = await vocabularyRepository.getAllShownWords(
+        limit: tLimit,
+        offset: tOffset,
+      );
+
+      // assert
+      expect(result.isRight(), true);
+
+      expect(result.fold(id, id), isA<GetWordsResponseModel<WordDetails>>());
+    });
+  });
+
+  group("getAllToBeRememberedWords", () {
+    final tLimit = PaginationLimit(10);
+    final tOffset = PaginationOffSet(0);
+
+    final tWordDetailsModels = tWordModels
+        .map(
+          (e) => WordDetailsModel(
+            word: e,
+            timesShown: 0,
+            show: false,
+            isMemorized: false,
+            lastShownDate: DateTime.now(),
+          ),
+        )
+        .toList();
+    final tGetWordDetailsResponseModel =
+        GetWordsResponseModel<WordDetailsModel>(
+      words: tWordDetailsModels,
+      totalWords: 100,
+      currentPage: 1,
+      totalPages: 10,
+      wordsPerPage: 10,
+    );
+
+    test(
+        'should return [VocabularyFailure] when limit is more than maxWordsFetchLimit',
+        () async {
+      // arrange
+      final tLimit = PaginationLimit(101);
+      final tOffset = PaginationOffSet(0);
+
+      // act
+      final result = await vocabularyRepository.getAllToBeRememberedWords(
+        limit: tLimit,
+        offset: tOffset,
+      );
+
+      // assert
+
+      expect(result.isLeft(), true);
+
+      expect(result.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test(
+        'should return [VocabularyFailure] when limit is less than minWordsFetchLimit',
+        () async {
+      // arrange
+      final tLimit = PaginationLimit(4);
+      final tOffset = PaginationOffSet(0);
+
+      // act
+      final result = await vocabularyRepository.getAllToBeRememberedWords(
+        limit: tLimit,
+        offset: tOffset,
+      );
+
+      // assert
+      expect(result.isLeft(), true);
+      expect(result.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should return [VocabularyFailure] when offset is negative', () async {
+      // arrange
+      final tLimit = PaginationLimit(10);
+      final tOffset = PaginationOffSet(-1);
+
+      // act
+      final result = await vocabularyRepository.getAllToBeRememberedWords(
+        limit: tLimit,
+        offset: tOffset,
+      );
+
+      // assert
+      expect(result.isLeft(), true);
+      expect(result.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should call local data source getAllToBeRememberedWords once',
+        () async {
+      // arrange
+      when(localDataSource.getAllToBeRememberedWords(
+        limit: anyNamed('limit'),
+        offset: anyNamed('offset'),
+      )).thenAnswer((_) async => tGetWordDetailsResponseModel);
+
+      // act
+      await vocabularyRepository.getAllToBeRememberedWords(
+        limit: tLimit,
+        offset: tOffset,
+      );
+
+      // assert
+      verify(
+        localDataSource.getAllToBeRememberedWords(
+          limit: 10,
+          offset: 0,
+        ),
+      ).called(1);
+    });
+
+    test(
+        'should return a failure when getAllToBeRememberedWords throws an exception',
+        () async {
+      // arrange
+      when(localDataSource.getAllToBeRememberedWords(
+        limit: anyNamed('limit'),
+        offset: anyNamed('offset'),
+      )).thenThrow(Exception('Unable to get all shown words'));
+
+      // act
+      final res = await vocabularyRepository.getAllToBeRememberedWords(
+        limit: tLimit,
+        offset: tOffset,
+      );
+
+      // assert
+      expect(res.isLeft(), true);
+      expect(res.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should return a Success when getAllToBeRememberedWords successful ',
+        () async {
+      // arrange
+      when(localDataSource.getAllToBeRememberedWords(
+        limit: anyNamed('limit'),
+        offset: anyNamed('offset'),
+      )).thenAnswer((_) async => tGetWordDetailsResponseModel);
+
+      // act
+      final result = await vocabularyRepository.getAllToBeRememberedWords(
+        limit: tLimit,
+        offset: tOffset,
+      );
+
+      // assert
+      expect(result.isRight(), true);
+
+      expect(result.fold(id, id), isA<GetWordsResponseModel<WordDetails>>());
+    });
+  });
+
+  group(
+    "getAllWordsShownToday",
+    () {
+      final tLimit = PaginationLimit(10);
+      final tOffset = PaginationOffSet(0);
+
+      final tWordDetailsModels = tWordModels
+          .map(
+            (e) => WordDetailsModel(
+              word: e,
+              timesShown: 0,
+              show: false,
+              isMemorized: false,
+              lastShownDate: DateTime.now(),
+            ),
+          )
+          .toList();
+      final tGetWordDetailsResponseModel =
+          GetWordsResponseModel<WordDetailsModel>(
+        words: tWordDetailsModels,
+        totalWords: 100,
+        currentPage: 1,
+        totalPages: 10,
+        wordsPerPage: 10,
+      );
+
+      test(
+          'should return [VocabularyFailure] when limit is more than maxWordsFetchLimit',
+          () async {
+        // arrange
+        final tLimit = PaginationLimit(101);
+        final tOffset = PaginationOffSet(0);
+
+        // act
+        final result = await vocabularyRepository.getAllWordsShownToday(
+          limit: tLimit,
+          offset: tOffset,
+        );
+
+        // assert
+
+        expect(result.isLeft(), true);
+
+        expect(result.fold(id, id), isA<VocabularyFailure>());
+      });
+
+      test(
+          'should return [VocabularyFailure] when limit is less than minWordsFetchLimit',
+          () async {
+        // arrange
+        final tLimit = PaginationLimit(4);
+        final tOffset = PaginationOffSet(0);
+
+        // act
+        final result = await vocabularyRepository.getAllWordsShownToday(
+          limit: tLimit,
+          offset: tOffset,
+        );
+
+        // assert
+        expect(result.isLeft(), true);
+        expect(result.fold(id, id), isA<VocabularyFailure>());
+      });
+
+      test('should return [VocabularyFailure] when offset is negative',
+          () async {
+        // arrange
+        final tLimit = PaginationLimit(10);
+        final tOffset = PaginationOffSet(-1);
+
+        // act
+        final result = await vocabularyRepository.getAllWordsShownToday(
+          limit: tLimit,
+          offset: tOffset,
+        );
+
+        // assert
+        expect(result.isLeft(), true);
+        expect(result.fold(id, id), isA<VocabularyFailure>());
+      });
+
+      test('should call local data source getAllWordsShownToday once',
+          () async {
+        // arrange
+        when(localDataSource.getAllWordsShownToday(
+          limit: anyNamed('limit'),
+          offset: anyNamed('offset'),
+        )).thenAnswer((_) async => tGetWordDetailsResponseModel);
+
+        // act
+        await vocabularyRepository.getAllWordsShownToday(
+          limit: tLimit,
+          offset: tOffset,
+        );
+
+        // assert
+        verify(
+          localDataSource.getAllWordsShownToday(
+            limit: 10,
+            offset: 0,
+          ),
+        ).called(1);
+      });
+
+      test(
+          'should return a failure when getAllWordsShownToday throws an exception',
+          () async {
+        // arrange
+        when(localDataSource.getAllWordsShownToday(
+          limit: anyNamed('limit'),
+          offset: anyNamed('offset'),
+        )).thenThrow(Exception('Unable to get all shown words'));
+
+        // act
+        final res = await vocabularyRepository.getAllWordsShownToday(
+          limit: tLimit,
+          offset: tOffset,
+        );
+
+        // assert
+        expect(res.isLeft(), true);
+        expect(res.fold(id, id), isA<VocabularyFailure>());
+      });
+
+      test('should return a Success when getAllWordsShownToday successful ',
+          () async {
+        // arrange
+        when(localDataSource.getAllWordsShownToday(
+          limit: anyNamed('limit'),
+          offset: anyNamed('offset'),
+        )).thenAnswer((_) async => tGetWordDetailsResponseModel);
+
+        // act
+        final result = await vocabularyRepository.getAllWordsShownToday(
+          limit: tLimit,
+          offset: tOffset,
+        );
+
+        // assert
+        expect(result.isRight(), true);
+
+        expect(result.fold(id, id), isA<GetWordsResponseModel<WordDetails>>());
+      });
+    },
+  );
 }
