@@ -5,6 +5,7 @@ import 'package:gre_vocabulary/src/vocabulary/domain/entities/get_words_response
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word_details.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/services/vocabulary_service.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/value_objects/word.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/data_source/local_data_source.dart';
 
 import '../../core/constants.dart';
@@ -60,7 +61,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
     required PaginationLimit limit,
     required PaginationOffSet offset,
   }) async {
-    return _handleLimitAndOffSetChecks(
+    return _handleValidateValueObjects(
       () async {
         final res = await _localDataSource.getAllWords(
           limit: limit.getOrCrash(),
@@ -78,7 +79,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
     required PaginationOffSet offset,
     required WordsListKey source,
   }) async {
-    return _handleLimitAndOffSetChecks(
+    return _handleValidateValueObjects(
       () async {
         final res = await _localDataSource.getAllWordsForSource(
           source: source,
@@ -97,7 +98,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
     required PaginationOffSet offset,
     required int shownThreshold,
   }) async {
-    return _handleLimitAndOffSetChecks(
+    return _handleValidateValueObjects(
       () async {
         final res = await _localDataSource.getAllWordDetails(
           limit: limit.getOrCrash(),
@@ -110,88 +111,94 @@ class VocabularyRepository implements VocabularyServiceFacade {
   }
 
   @override
-  Future<Either<VocabularyFailure, WordDetails>> removeWordFromToBeRemembered(
-      {required int word}) {
-    // TODO: implement removeWordFromToBeRemembered
-    throw UnimplementedError();
+  Future<Either<VocabularyFailure, WordDetails>> getWordDetails({
+    required WordObject word,
+  }) async {
+    return _handleValidateValueObjects(
+      () async {
+        final res = await _localDataSource.getWordDetails(
+          word: word.getOrCrash(),
+        );
+        return right(res);
+      },
+    );
   }
 
   @override
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
-      getAllShownWords({
-    required PaginationLimit limit,
-    required PaginationOffSet offset,
-  }) {
-    // TODO: implement getAllShownWords
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<VocabularyFailure, WordDetails>> markWordAsMemorized(
-      {required String word}) {
-    // TODO: implement markWordAsMemorized
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<VocabularyFailure, WordDetails>> markWordAsNotShown(
-      {required String word}) {
-    // TODO: implement markWordAsNotShown
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<VocabularyFailure, WordDetails>> markWordAsShown(
-      {required String word}) {
-    // TODO: implement markWordAsShown
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<VocabularyFailure, WordDetails>> markWordAsToBeRemembered(
-      {required int word}) {
-    // TODO: implement markWordAsToBeRemembered
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<VocabularyFailure, WordDetails>> removeWordFromMemorized(
-      {required String word}) {
-    // TODO: implement removeWordFromMemorized
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
-      getAllMemorizedWords({
-    required PaginationLimit limit,
-    required PaginationOffSet offset,
-  }) {
+      getAllMemorizedWords(
+          {required PaginationLimit limit, required PaginationOffSet offset}) {
     // TODO: implement getAllMemorizedWords
     throw UnimplementedError();
   }
 
   @override
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
-      getAllToBeRememberedWords({
-    required PaginationLimit limit,
-    required PaginationOffSet offset,
-  }) {
+      getAllShownWords(
+          {required PaginationLimit limit, required PaginationOffSet offset}) {
+    // TODO: implement getAllShownWords
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
+      getAllToBeRememberedWords(
+          {required PaginationLimit limit, required PaginationOffSet offset}) {
     // TODO: implement getAllToBeRememberedWords
     throw UnimplementedError();
   }
 
   @override
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
-      getAllWordsShownToday({
-    required PaginationLimit limit,
-    required PaginationOffSet offset,
-  }) {
+      getAllWordsShownToday(
+          {required PaginationLimit limit, required PaginationOffSet offset}) {
     // TODO: implement getAllWordsShownToday
     throw UnimplementedError();
   }
 
-  Future<Either<VocabularyFailure, T>> _handleLimitAndOffSetChecks<T>(
+  @override
+  Future<Either<VocabularyFailure, WordDetails>> markWordAsMemorized(
+      {required WordObject word}) {
+    // TODO: implement markWordAsMemorized
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, WordDetails>> markWordAsNotShown(
+      {required WordObject word}) {
+    // TODO: implement markWordAsNotShown
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, WordDetails>> markWordAsShown(
+      {required WordObject word}) {
+    // TODO: implement markWordAsShown
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, WordDetails>> markWordAsToBeRemembered(
+      {required WordObject word}) {
+    // TODO: implement markWordAsToBeRemembered
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, WordDetails>> removeWordFromMemorized(
+      {required WordObject word}) {
+    // TODO: implement removeWordFromMemorized
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<VocabularyFailure, WordDetails>> removeWordFromToBeRemembered(
+      {required WordObject word}) {
+    // TODO: implement removeWordFromToBeRemembered
+    throw UnimplementedError();
+  }
+
+  Future<Either<VocabularyFailure, T>> _handleValidateValueObjects<T>(
     Future<Either<VocabularyFailure, T>> Function() f,
   ) async {
     try {

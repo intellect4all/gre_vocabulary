@@ -1,4 +1,5 @@
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/value_objects/word.dart';
 
 import 'wordlist_parser.dart';
 
@@ -33,7 +34,7 @@ class EconomicsHitListParser extends WordListParser {
       if (splitTexts.first == 'source:') {
         words.add(
           Word(
-            value: currentWord,
+            value: WordObject(currentWord),
             definition: currentWordMeaning,
             example: example,
             isHitWord: true,

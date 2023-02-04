@@ -8,6 +8,7 @@ import '../entities/get_words_response.dart';
 import '../entities/word_details.dart';
 import '../value_objects/limit.dart';
 import '../value_objects/offset.dart';
+import '../value_objects/word.dart';
 
 abstract class VocabularyServiceFacade {
   Future<Either<VocabularyFailure, Success>> loadAllWordsIntoDb();
@@ -32,12 +33,16 @@ abstract class VocabularyServiceFacade {
     required int shownThreshold,
   });
 
+  Future<Either<VocabularyFailure, WordDetails>> getWordDetails({
+    required WordObject word,
+  });
+
   Future<Either<VocabularyFailure, WordDetails>> markWordAsMemorized({
-    required String word,
+    required WordObject word,
   });
 
   Future<Either<VocabularyFailure, WordDetails>> removeWordFromMemorized({
-    required String word,
+    required WordObject word,
   });
 
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
@@ -47,11 +52,11 @@ abstract class VocabularyServiceFacade {
   });
 
   Future<Either<VocabularyFailure, WordDetails>> markWordAsShown({
-    required String word,
+    required WordObject word,
   });
 
   Future<Either<VocabularyFailure, WordDetails>> markWordAsNotShown({
-    required String word,
+    required WordObject word,
   });
 
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
@@ -61,11 +66,11 @@ abstract class VocabularyServiceFacade {
   });
 
   Future<Either<VocabularyFailure, WordDetails>> markWordAsToBeRemembered({
-    required int word,
+    required WordObject word,
   });
 
   Future<Either<VocabularyFailure, WordDetails>> removeWordFromToBeRemembered({
-    required int word,
+    required WordObject word,
   });
 
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>

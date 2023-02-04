@@ -1,5 +1,6 @@
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
 
+import '../../../domain/value_objects/word.dart';
 import 'wordlist_parser.dart';
 
 class OnlinePrepListParser extends WordListParser {
@@ -25,7 +26,7 @@ class OnlinePrepListParser extends WordListParser {
       if (string.startsWith(" ") && splitText.length == 1) {
         words.add(
           Word(
-            value: currentWord,
+            value: WordObject(currentWord),
             definition: currentWordMeaning,
             example: example,
           ),

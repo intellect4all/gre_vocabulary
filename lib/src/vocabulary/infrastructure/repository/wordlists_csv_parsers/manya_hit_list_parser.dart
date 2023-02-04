@@ -1,5 +1,6 @@
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
 
+import '../../../domain/value_objects/word.dart';
 import 'wordlist_parser.dart';
 
 class ManyaHitListParser extends WordListParser {
@@ -32,7 +33,7 @@ class ManyaHitListParser extends WordListParser {
         }
         words.add(
           Word(
-            value: currentWord,
+            value: WordObject(currentWord),
             definition: currentWordMeaning,
             example: '',
             isHitWord: true,
@@ -47,7 +48,7 @@ class ManyaHitListParser extends WordListParser {
     if (pending.isNotEmpty) {
       words.add(
         Word(
-          value: currentWord,
+          value: WordObject(currentWord),
           definition: currentWordMeaning,
           example: '',
           isHitWord: true,

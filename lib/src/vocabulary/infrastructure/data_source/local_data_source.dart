@@ -27,4 +27,6 @@ abstract class LocalDataSource {
     required int offset,
     required int shownThreshold,
   });
+
+  Future<WordDetailsModel> getWordDetails({required String word});
 }

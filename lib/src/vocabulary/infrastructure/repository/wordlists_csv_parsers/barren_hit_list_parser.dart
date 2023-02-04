@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
 
+import '../../../domain/value_objects/word.dart';
 import 'wordlist_parser.dart';
 
 class BarrenHitListParser extends WordListParser {
@@ -92,7 +93,10 @@ class BarrenHitListParser extends WordListParser {
         }
 
         words.add(
-          Word(value: currentWord, definition: currentWordMeaning, example: ''),
+          Word(
+              value: WordObject(currentWord),
+              definition: currentWordMeaning,
+              example: ''),
         );
 
         lastWord = currentWord.toString();

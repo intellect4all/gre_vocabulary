@@ -22,6 +22,7 @@ mixin _$ValueFailure<T> {
     required TResult Function(String message) limitExceedMaxWordsFetch,
     required TResult Function(String message) limitNotUpToMinimum,
     required TResult Function(String message) offsetNotUpToMinimum,
+    required TResult Function(String message, T failedValue) empty,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -30,6 +31,7 @@ mixin _$ValueFailure<T> {
     TResult? Function(String message)? limitExceedMaxWordsFetch,
     TResult? Function(String message)? limitNotUpToMinimum,
     TResult? Function(String message)? offsetNotUpToMinimum,
+    TResult? Function(String message, T failedValue)? empty,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,6 +40,7 @@ mixin _$ValueFailure<T> {
     TResult Function(String message)? limitExceedMaxWordsFetch,
     TResult Function(String message)? limitNotUpToMinimum,
     TResult Function(String message)? offsetNotUpToMinimum,
+    TResult Function(String message, T failedValue)? empty,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -50,6 +53,7 @@ mixin _$ValueFailure<T> {
         limitNotUpToMinimum,
     required TResult Function(_OffsetNotUpToMinimumFailure<T> value)
         offsetNotUpToMinimum,
+    required TResult Function(_EmptyFailure<T> value) empty,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -61,6 +65,7 @@ mixin _$ValueFailure<T> {
         limitNotUpToMinimum,
     TResult? Function(_OffsetNotUpToMinimumFailure<T> value)?
         offsetNotUpToMinimum,
+    TResult? Function(_EmptyFailure<T> value)? empty,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -71,6 +76,7 @@ mixin _$ValueFailure<T> {
     TResult Function(_LimitNotUpToMinimumFailure<T> value)? limitNotUpToMinimum,
     TResult Function(_OffsetNotUpToMinimumFailure<T> value)?
         offsetNotUpToMinimum,
+    TResult Function(_EmptyFailure<T> value)? empty,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -136,6 +142,7 @@ class _$_UnexpectedFailure<T> implements _UnexpectedFailure<T> {
     required TResult Function(String message) limitExceedMaxWordsFetch,
     required TResult Function(String message) limitNotUpToMinimum,
     required TResult Function(String message) offsetNotUpToMinimum,
+    required TResult Function(String message, T failedValue) empty,
   }) {
     return unexpected();
   }
@@ -147,6 +154,7 @@ class _$_UnexpectedFailure<T> implements _UnexpectedFailure<T> {
     TResult? Function(String message)? limitExceedMaxWordsFetch,
     TResult? Function(String message)? limitNotUpToMinimum,
     TResult? Function(String message)? offsetNotUpToMinimum,
+    TResult? Function(String message, T failedValue)? empty,
   }) {
     return unexpected?.call();
   }
@@ -158,6 +166,7 @@ class _$_UnexpectedFailure<T> implements _UnexpectedFailure<T> {
     TResult Function(String message)? limitExceedMaxWordsFetch,
     TResult Function(String message)? limitNotUpToMinimum,
     TResult Function(String message)? offsetNotUpToMinimum,
+    TResult Function(String message, T failedValue)? empty,
     required TResult orElse(),
   }) {
     if (unexpected != null) {
@@ -176,6 +185,7 @@ class _$_UnexpectedFailure<T> implements _UnexpectedFailure<T> {
         limitNotUpToMinimum,
     required TResult Function(_OffsetNotUpToMinimumFailure<T> value)
         offsetNotUpToMinimum,
+    required TResult Function(_EmptyFailure<T> value) empty,
   }) {
     return unexpected(this);
   }
@@ -190,6 +200,7 @@ class _$_UnexpectedFailure<T> implements _UnexpectedFailure<T> {
         limitNotUpToMinimum,
     TResult? Function(_OffsetNotUpToMinimumFailure<T> value)?
         offsetNotUpToMinimum,
+    TResult? Function(_EmptyFailure<T> value)? empty,
   }) {
     return unexpected?.call(this);
   }
@@ -203,6 +214,7 @@ class _$_UnexpectedFailure<T> implements _UnexpectedFailure<T> {
     TResult Function(_LimitNotUpToMinimumFailure<T> value)? limitNotUpToMinimum,
     TResult Function(_OffsetNotUpToMinimumFailure<T> value)?
         offsetNotUpToMinimum,
+    TResult Function(_EmptyFailure<T> value)? empty,
     required TResult orElse(),
   }) {
     if (unexpected != null) {
@@ -292,6 +304,7 @@ class _$_LimitExceedMaxWordsFetchFailure<T>
     required TResult Function(String message) limitExceedMaxWordsFetch,
     required TResult Function(String message) limitNotUpToMinimum,
     required TResult Function(String message) offsetNotUpToMinimum,
+    required TResult Function(String message, T failedValue) empty,
   }) {
     return limitExceedMaxWordsFetch(message);
   }
@@ -303,6 +316,7 @@ class _$_LimitExceedMaxWordsFetchFailure<T>
     TResult? Function(String message)? limitExceedMaxWordsFetch,
     TResult? Function(String message)? limitNotUpToMinimum,
     TResult? Function(String message)? offsetNotUpToMinimum,
+    TResult? Function(String message, T failedValue)? empty,
   }) {
     return limitExceedMaxWordsFetch?.call(message);
   }
@@ -314,6 +328,7 @@ class _$_LimitExceedMaxWordsFetchFailure<T>
     TResult Function(String message)? limitExceedMaxWordsFetch,
     TResult Function(String message)? limitNotUpToMinimum,
     TResult Function(String message)? offsetNotUpToMinimum,
+    TResult Function(String message, T failedValue)? empty,
     required TResult orElse(),
   }) {
     if (limitExceedMaxWordsFetch != null) {
@@ -332,6 +347,7 @@ class _$_LimitExceedMaxWordsFetchFailure<T>
         limitNotUpToMinimum,
     required TResult Function(_OffsetNotUpToMinimumFailure<T> value)
         offsetNotUpToMinimum,
+    required TResult Function(_EmptyFailure<T> value) empty,
   }) {
     return limitExceedMaxWordsFetch(this);
   }
@@ -346,6 +362,7 @@ class _$_LimitExceedMaxWordsFetchFailure<T>
         limitNotUpToMinimum,
     TResult? Function(_OffsetNotUpToMinimumFailure<T> value)?
         offsetNotUpToMinimum,
+    TResult? Function(_EmptyFailure<T> value)? empty,
   }) {
     return limitExceedMaxWordsFetch?.call(this);
   }
@@ -359,6 +376,7 @@ class _$_LimitExceedMaxWordsFetchFailure<T>
     TResult Function(_LimitNotUpToMinimumFailure<T> value)? limitNotUpToMinimum,
     TResult Function(_OffsetNotUpToMinimumFailure<T> value)?
         offsetNotUpToMinimum,
+    TResult Function(_EmptyFailure<T> value)? empty,
     required TResult orElse(),
   }) {
     if (limitExceedMaxWordsFetch != null) {
@@ -454,6 +472,7 @@ class _$_LimitNotUpToMinimumFailure<T>
     required TResult Function(String message) limitExceedMaxWordsFetch,
     required TResult Function(String message) limitNotUpToMinimum,
     required TResult Function(String message) offsetNotUpToMinimum,
+    required TResult Function(String message, T failedValue) empty,
   }) {
     return limitNotUpToMinimum(message);
   }
@@ -465,6 +484,7 @@ class _$_LimitNotUpToMinimumFailure<T>
     TResult? Function(String message)? limitExceedMaxWordsFetch,
     TResult? Function(String message)? limitNotUpToMinimum,
     TResult? Function(String message)? offsetNotUpToMinimum,
+    TResult? Function(String message, T failedValue)? empty,
   }) {
     return limitNotUpToMinimum?.call(message);
   }
@@ -476,6 +496,7 @@ class _$_LimitNotUpToMinimumFailure<T>
     TResult Function(String message)? limitExceedMaxWordsFetch,
     TResult Function(String message)? limitNotUpToMinimum,
     TResult Function(String message)? offsetNotUpToMinimum,
+    TResult Function(String message, T failedValue)? empty,
     required TResult orElse(),
   }) {
     if (limitNotUpToMinimum != null) {
@@ -494,6 +515,7 @@ class _$_LimitNotUpToMinimumFailure<T>
         limitNotUpToMinimum,
     required TResult Function(_OffsetNotUpToMinimumFailure<T> value)
         offsetNotUpToMinimum,
+    required TResult Function(_EmptyFailure<T> value) empty,
   }) {
     return limitNotUpToMinimum(this);
   }
@@ -508,6 +530,7 @@ class _$_LimitNotUpToMinimumFailure<T>
         limitNotUpToMinimum,
     TResult? Function(_OffsetNotUpToMinimumFailure<T> value)?
         offsetNotUpToMinimum,
+    TResult? Function(_EmptyFailure<T> value)? empty,
   }) {
     return limitNotUpToMinimum?.call(this);
   }
@@ -521,6 +544,7 @@ class _$_LimitNotUpToMinimumFailure<T>
     TResult Function(_LimitNotUpToMinimumFailure<T> value)? limitNotUpToMinimum,
     TResult Function(_OffsetNotUpToMinimumFailure<T> value)?
         offsetNotUpToMinimum,
+    TResult Function(_EmptyFailure<T> value)? empty,
     required TResult orElse(),
   }) {
     if (limitNotUpToMinimum != null) {
@@ -615,6 +639,7 @@ class _$_OffsetNotUpToMinimumFailure<T>
     required TResult Function(String message) limitExceedMaxWordsFetch,
     required TResult Function(String message) limitNotUpToMinimum,
     required TResult Function(String message) offsetNotUpToMinimum,
+    required TResult Function(String message, T failedValue) empty,
   }) {
     return offsetNotUpToMinimum(message);
   }
@@ -626,6 +651,7 @@ class _$_OffsetNotUpToMinimumFailure<T>
     TResult? Function(String message)? limitExceedMaxWordsFetch,
     TResult? Function(String message)? limitNotUpToMinimum,
     TResult? Function(String message)? offsetNotUpToMinimum,
+    TResult? Function(String message, T failedValue)? empty,
   }) {
     return offsetNotUpToMinimum?.call(message);
   }
@@ -637,6 +663,7 @@ class _$_OffsetNotUpToMinimumFailure<T>
     TResult Function(String message)? limitExceedMaxWordsFetch,
     TResult Function(String message)? limitNotUpToMinimum,
     TResult Function(String message)? offsetNotUpToMinimum,
+    TResult Function(String message, T failedValue)? empty,
     required TResult orElse(),
   }) {
     if (offsetNotUpToMinimum != null) {
@@ -655,6 +682,7 @@ class _$_OffsetNotUpToMinimumFailure<T>
         limitNotUpToMinimum,
     required TResult Function(_OffsetNotUpToMinimumFailure<T> value)
         offsetNotUpToMinimum,
+    required TResult Function(_EmptyFailure<T> value) empty,
   }) {
     return offsetNotUpToMinimum(this);
   }
@@ -669,6 +697,7 @@ class _$_OffsetNotUpToMinimumFailure<T>
         limitNotUpToMinimum,
     TResult? Function(_OffsetNotUpToMinimumFailure<T> value)?
         offsetNotUpToMinimum,
+    TResult? Function(_EmptyFailure<T> value)? empty,
   }) {
     return offsetNotUpToMinimum?.call(this);
   }
@@ -682,6 +711,7 @@ class _$_OffsetNotUpToMinimumFailure<T>
     TResult Function(_LimitNotUpToMinimumFailure<T> value)? limitNotUpToMinimum,
     TResult Function(_OffsetNotUpToMinimumFailure<T> value)?
         offsetNotUpToMinimum,
+    TResult Function(_EmptyFailure<T> value)? empty,
     required TResult orElse(),
   }) {
     if (offsetNotUpToMinimum != null) {
@@ -699,4 +729,178 @@ abstract class _OffsetNotUpToMinimumFailure<T> implements ValueFailure<T> {
   @JsonKey(ignore: true)
   _$$_OffsetNotUpToMinimumFailureCopyWith<T, _$_OffsetNotUpToMinimumFailure<T>>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$_EmptyFailureCopyWith<T, $Res> {
+  factory _$$_EmptyFailureCopyWith(
+          _$_EmptyFailure<T> value, $Res Function(_$_EmptyFailure<T>) then) =
+      __$$_EmptyFailureCopyWithImpl<T, $Res>;
+  @useResult
+  $Res call({String message, T failedValue});
+}
+
+/// @nodoc
+class __$$_EmptyFailureCopyWithImpl<T, $Res>
+    extends _$ValueFailureCopyWithImpl<T, $Res, _$_EmptyFailure<T>>
+    implements _$$_EmptyFailureCopyWith<T, $Res> {
+  __$$_EmptyFailureCopyWithImpl(
+      _$_EmptyFailure<T> _value, $Res Function(_$_EmptyFailure<T>) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = null,
+    Object? failedValue = freezed,
+  }) {
+    return _then(_$_EmptyFailure<T>(
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      failedValue: freezed == failedValue
+          ? _value.failedValue
+          : failedValue // ignore: cast_nullable_to_non_nullable
+              as T,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_EmptyFailure<T> implements _EmptyFailure<T> {
+  const _$_EmptyFailure(
+      {this.message = "Cannot be empty", required this.failedValue});
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final T failedValue;
+
+  @override
+  String toString() {
+    return 'ValueFailure<$T>.empty(message: $message, failedValue: $failedValue)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_EmptyFailure<T> &&
+            (identical(other.message, message) || other.message == message) &&
+            const DeepCollectionEquality()
+                .equals(other.failedValue, failedValue));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, message, const DeepCollectionEquality().hash(failedValue));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_EmptyFailureCopyWith<T, _$_EmptyFailure<T>> get copyWith =>
+      __$$_EmptyFailureCopyWithImpl<T, _$_EmptyFailure<T>>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() unexpected,
+    required TResult Function(String message) limitExceedMaxWordsFetch,
+    required TResult Function(String message) limitNotUpToMinimum,
+    required TResult Function(String message) offsetNotUpToMinimum,
+    required TResult Function(String message, T failedValue) empty,
+  }) {
+    return empty(message, failedValue);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? unexpected,
+    TResult? Function(String message)? limitExceedMaxWordsFetch,
+    TResult? Function(String message)? limitNotUpToMinimum,
+    TResult? Function(String message)? offsetNotUpToMinimum,
+    TResult? Function(String message, T failedValue)? empty,
+  }) {
+    return empty?.call(message, failedValue);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? unexpected,
+    TResult Function(String message)? limitExceedMaxWordsFetch,
+    TResult Function(String message)? limitNotUpToMinimum,
+    TResult Function(String message)? offsetNotUpToMinimum,
+    TResult Function(String message, T failedValue)? empty,
+    required TResult orElse(),
+  }) {
+    if (empty != null) {
+      return empty(message, failedValue);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_UnexpectedFailure<T> value) unexpected,
+    required TResult Function(_LimitExceedMaxWordsFetchFailure<T> value)
+        limitExceedMaxWordsFetch,
+    required TResult Function(_LimitNotUpToMinimumFailure<T> value)
+        limitNotUpToMinimum,
+    required TResult Function(_OffsetNotUpToMinimumFailure<T> value)
+        offsetNotUpToMinimum,
+    required TResult Function(_EmptyFailure<T> value) empty,
+  }) {
+    return empty(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_UnexpectedFailure<T> value)? unexpected,
+    TResult? Function(_LimitExceedMaxWordsFetchFailure<T> value)?
+        limitExceedMaxWordsFetch,
+    TResult? Function(_LimitNotUpToMinimumFailure<T> value)?
+        limitNotUpToMinimum,
+    TResult? Function(_OffsetNotUpToMinimumFailure<T> value)?
+        offsetNotUpToMinimum,
+    TResult? Function(_EmptyFailure<T> value)? empty,
+  }) {
+    return empty?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_UnexpectedFailure<T> value)? unexpected,
+    TResult Function(_LimitExceedMaxWordsFetchFailure<T> value)?
+        limitExceedMaxWordsFetch,
+    TResult Function(_LimitNotUpToMinimumFailure<T> value)? limitNotUpToMinimum,
+    TResult Function(_OffsetNotUpToMinimumFailure<T> value)?
+        offsetNotUpToMinimum,
+    TResult Function(_EmptyFailure<T> value)? empty,
+    required TResult orElse(),
+  }) {
+    if (empty != null) {
+      return empty(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _EmptyFailure<T> implements ValueFailure<T> {
+  const factory _EmptyFailure(
+      {final String message,
+      required final T failedValue}) = _$_EmptyFailure<T>;
+
+  String get message;
+  T get failedValue;
+  @JsonKey(ignore: true)
+  _$$_EmptyFailureCopyWith<T, _$_EmptyFailure<T>> get copyWith =>
+      throw _privateConstructorUsedError;
 }

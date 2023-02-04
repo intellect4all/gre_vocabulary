@@ -3,20 +3,20 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
+import 'dart:async' as _i7;
 
-import 'package:dartz/dartz.dart' as _i4;
+import 'package:dartz/dartz.dart' as _i5;
 import 'package:gre_vocabulary/src/core/common_domains/models/success_model.dart'
     as _i2;
 import 'package:gre_vocabulary/src/vocabulary/core/failures.dart' as _i11;
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/data_source/local_data_source.dart'
-    as _i5;
+    as _i6;
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/get_words_response_model.dart'
     as _i3;
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/word_details_model.dart'
-    as _i8;
+    as _i4;
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/word_model.dart'
-    as _i7;
+    as _i8;
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/repository/wordlists_csv_parsers/csv_parser.dart'
     as _i9;
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/repository/words_lists/base_words_list.dart'
@@ -55,8 +55,19 @@ class _FakeGetWordsResponseModel_1<T> extends _i1.SmartFake
         );
 }
 
-class _FakeEither_2<L, R> extends _i1.SmartFake implements _i4.Either<L, R> {
-  _FakeEither_2(
+class _FakeWordDetailsModel_2 extends _i1.SmartFake
+    implements _i4.WordDetailsModel {
+  _FakeWordDetailsModel_2(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeEither_3<L, R> extends _i1.SmartFake implements _i5.Either<L, R> {
+  _FakeEither_3(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -68,52 +79,52 @@ class _FakeEither_2<L, R> extends _i1.SmartFake implements _i4.Either<L, R> {
 /// A class which mocks [LocalDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLocalDataSource extends _i1.Mock implements _i5.LocalDataSource {
+class MockLocalDataSource extends _i1.Mock implements _i6.LocalDataSource {
   MockLocalDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<bool> areWordsLoaded() => (super.noSuchMethod(
+  _i7.Future<bool> areWordsLoaded() => (super.noSuchMethod(
         Invocation.method(
           #areWordsLoaded,
           [],
         ),
-        returnValue: _i6.Future<bool>.value(false),
-      ) as _i6.Future<bool>);
+        returnValue: _i7.Future<bool>.value(false),
+      ) as _i7.Future<bool>);
   @override
-  _i6.Future<_i2.SuccessModel> saveAllWords(List<_i7.WordModel>? allWords) =>
+  _i7.Future<_i2.SuccessModel> saveAllWords(List<_i8.WordModel>? allWords) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveAllWords,
           [allWords],
         ),
-        returnValue: _i6.Future<_i2.SuccessModel>.value(_FakeSuccessModel_0(
+        returnValue: _i7.Future<_i2.SuccessModel>.value(_FakeSuccessModel_0(
           this,
           Invocation.method(
             #saveAllWords,
             [allWords],
           ),
         )),
-      ) as _i6.Future<_i2.SuccessModel>);
+      ) as _i7.Future<_i2.SuccessModel>);
   @override
-  _i6.Future<_i2.SuccessModel> saveWordsToSource(
-          Map<String, List<_i7.WordModel>>? wordsToSource) =>
+  _i7.Future<_i2.SuccessModel> saveWordsToSource(
+          Map<String, List<_i8.WordModel>>? wordsToSource) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveWordsToSource,
           [wordsToSource],
         ),
-        returnValue: _i6.Future<_i2.SuccessModel>.value(_FakeSuccessModel_0(
+        returnValue: _i7.Future<_i2.SuccessModel>.value(_FakeSuccessModel_0(
           this,
           Invocation.method(
             #saveWordsToSource,
             [wordsToSource],
           ),
         )),
-      ) as _i6.Future<_i2.SuccessModel>);
+      ) as _i7.Future<_i2.SuccessModel>);
   @override
-  _i6.Future<_i3.GetWordsResponseModel<_i7.WordModel>> getAllWords({
+  _i7.Future<_i3.GetWordsResponseModel<_i8.WordModel>> getAllWords({
     required int? limit,
     required int? offset,
   }) =>
@@ -126,8 +137,8 @@ class MockLocalDataSource extends _i1.Mock implements _i5.LocalDataSource {
             #offset: offset,
           },
         ),
-        returnValue: _i6.Future<_i3.GetWordsResponseModel<_i7.WordModel>>.value(
-            _FakeGetWordsResponseModel_1<_i7.WordModel>(
+        returnValue: _i7.Future<_i3.GetWordsResponseModel<_i8.WordModel>>.value(
+            _FakeGetWordsResponseModel_1<_i8.WordModel>(
           this,
           Invocation.method(
             #getAllWords,
@@ -138,9 +149,9 @@ class MockLocalDataSource extends _i1.Mock implements _i5.LocalDataSource {
             },
           ),
         )),
-      ) as _i6.Future<_i3.GetWordsResponseModel<_i7.WordModel>>);
+      ) as _i7.Future<_i3.GetWordsResponseModel<_i8.WordModel>>);
   @override
-  _i6.Future<_i3.GetWordsResponseModel<_i7.WordModel>> getAllWordsForSource({
+  _i7.Future<_i3.GetWordsResponseModel<_i8.WordModel>> getAllWordsForSource({
     required String? source,
     required int? limit,
     required int? offset,
@@ -155,8 +166,8 @@ class MockLocalDataSource extends _i1.Mock implements _i5.LocalDataSource {
             #offset: offset,
           },
         ),
-        returnValue: _i6.Future<_i3.GetWordsResponseModel<_i7.WordModel>>.value(
-            _FakeGetWordsResponseModel_1<_i7.WordModel>(
+        returnValue: _i7.Future<_i3.GetWordsResponseModel<_i8.WordModel>>.value(
+            _FakeGetWordsResponseModel_1<_i8.WordModel>(
           this,
           Invocation.method(
             #getAllWordsForSource,
@@ -168,10 +179,10 @@ class MockLocalDataSource extends _i1.Mock implements _i5.LocalDataSource {
             },
           ),
         )),
-      ) as _i6.Future<_i3.GetWordsResponseModel<_i7.WordModel>>);
+      ) as _i7.Future<_i3.GetWordsResponseModel<_i8.WordModel>>);
   @override
-  _i6.Future<
-      _i3.GetWordsResponseModel<_i8.WordDetailsModel>> getAllWordDetails({
+  _i7.Future<
+      _i3.GetWordsResponseModel<_i4.WordDetailsModel>> getAllWordDetails({
     required int? limit,
     required int? offset,
     required int? shownThreshold,
@@ -187,8 +198,8 @@ class MockLocalDataSource extends _i1.Mock implements _i5.LocalDataSource {
           },
         ),
         returnValue:
-            _i6.Future<_i3.GetWordsResponseModel<_i8.WordDetailsModel>>.value(
-                _FakeGetWordsResponseModel_1<_i8.WordDetailsModel>(
+            _i7.Future<_i3.GetWordsResponseModel<_i4.WordDetailsModel>>.value(
+                _FakeGetWordsResponseModel_1<_i4.WordDetailsModel>(
           this,
           Invocation.method(
             #getAllWordDetails,
@@ -200,7 +211,25 @@ class MockLocalDataSource extends _i1.Mock implements _i5.LocalDataSource {
             },
           ),
         )),
-      ) as _i6.Future<_i3.GetWordsResponseModel<_i8.WordDetailsModel>>);
+      ) as _i7.Future<_i3.GetWordsResponseModel<_i4.WordDetailsModel>>);
+  @override
+  _i7.Future<_i4.WordDetailsModel> getWordDetails({required String? word}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getWordDetails,
+          [],
+          {#word: word},
+        ),
+        returnValue:
+            _i7.Future<_i4.WordDetailsModel>.value(_FakeWordDetailsModel_2(
+          this,
+          Invocation.method(
+            #getWordDetails,
+            [],
+            {#word: word},
+          ),
+        )),
+      ) as _i7.Future<_i4.WordDetailsModel>);
 }
 
 /// A class which mocks [CSVListsParser].
@@ -217,19 +246,19 @@ class MockCSVListsParser extends _i1.Mock implements _i9.CSVListsParser {
         returnValue: <_i10.BaseWordsList>[],
       ) as List<_i10.BaseWordsList>);
   @override
-  _i4.Either<_i11.VocabularyFailure, _i9.CSVParsingResponse> parse() =>
+  _i5.Either<_i11.VocabularyFailure, _i9.CSVParsingResponse> parse() =>
       (super.noSuchMethod(
         Invocation.method(
           #parse,
           [],
         ),
         returnValue:
-            _FakeEither_2<_i11.VocabularyFailure, _i9.CSVParsingResponse>(
+            _FakeEither_3<_i11.VocabularyFailure, _i9.CSVParsingResponse>(
           this,
           Invocation.method(
             #parse,
             [],
           ),
         ),
-      ) as _i4.Either<_i11.VocabularyFailure, _i9.CSVParsingResponse>);
+      ) as _i5.Either<_i11.VocabularyFailure, _i9.CSVParsingResponse>);
 }

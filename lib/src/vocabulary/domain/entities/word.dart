@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/value_objects/word.dart';
 
 /// this is more like a value object
 class Word extends Equatable {
-  final String value;
+  final WordObject value;
   final String definition;
   final String example;
   final bool isHitWord;
@@ -12,8 +13,7 @@ class Word extends Equatable {
     required this.definition,
     required this.example,
     this.isHitWord = false,
-  })  : assert(value.isNotEmpty),
-        assert(definition.isNotEmpty);
+  }) : assert(definition.isNotEmpty);
 
   @override
   List<Object?> get props => [value, definition, example, isHitWord];

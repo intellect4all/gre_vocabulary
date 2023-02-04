@@ -6,6 +6,7 @@ import 'package:gre_vocabulary/src/vocabulary/domain/entities/get_words_response
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word_details.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/value_objects/value_objects.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/value_objects/word.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/data_source/local_data_source.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/get_words_response_model.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/word_details_model.dart';
@@ -28,7 +29,7 @@ void main() {
     // generate 10 random Words
     for (var i = 0; i < 10; i++)
       WordModel(
-        value: 'word$i',
+        value: WordObject('word$i'),
         definition: 'meaning$i',
         example: 'example$i',
         isHitWord: i % 2 == 0,
@@ -570,6 +571,94 @@ void main() {
       expect(result.fold(id, id), isA<GetWordsResponse<WordDetails>>());
       expect((result.fold(id, id) as GetWordsResponse<WordDetails>).words,
           tWordDetailsModels);
+    });
+  });
+
+  group('getWordDetails', () {
+    final tWordModel = WordModel(
+      value: WordObject('test'),
+      definition: "test",
+      example: "test",
+      isHitWord: false,
+    );
+
+    final tWordDetailsModel = WordDetailsModel(
+      word: tWordModel,
+      timesShown: 0,
+      show: false,
+      isMemorized: false,
+      lastShownDate: DateTime.now(),
+    );
+
+    setUp(() {
+      when(localDataSource.getWordDetails(word: anyNamed('word')))
+          .thenAnswer((_) async => tWordDetailsModel);
+    });
+
+    test('should return a failure if word is not valid', () async {
+      // act
+      final t1 = await vocabularyRepository.getWordDetails(
+        word: WordObject(''),
+      );
+
+      final t2 = await vocabularyRepository.getWordDetails(
+        word: WordObject('a445dd'),
+      );
+      final t3 = await vocabularyRepository.getWordDetails(
+        word: WordObject('8308_4'),
+      );
+
+      // assert
+      expect(t1.isLeft(), true);
+      expect(t1.fold(id, id), isA<VocabularyFailure>());
+      expect(t2.isLeft(), true);
+      expect(t2.fold(id, id), isA<VocabularyFailure>());
+      expect(t3.isLeft(), true);
+      expect(t3.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test(
+        'should call local data source getWordDetails once to get word details',
+        () async {
+      // act
+      final result = await vocabularyRepository.getWordDetails(
+        word: tWordModel.value,
+      );
+
+      // assert
+      verify(
+        localDataSource.getWordDetails(word: "test"),
+      ).called(1);
+    });
+
+    test('should return a failure when getWordDetails throws an exception',
+        () async {
+      // arrange
+
+      when(localDataSource.getWordDetails(word: anyNamed('word')))
+          .thenThrow(Exception('Unable to get word details'));
+
+      // act
+      final res = await vocabularyRepository.getWordDetails(
+        word: tWordModel.value,
+      );
+
+      // assert
+      expect(res.isLeft(), true);
+      expect(res.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should return a WordDetails when everything goes well', () async {
+      // act
+      final result = await vocabularyRepository.getWordDetails(
+        word: tWordModel.value,
+      );
+
+      // assert
+      expect(result.isRight(), true);
+
+      expect(result.fold(id, id), isA<WordDetails>());
+      expect((result.fold(id, id) as WordDetails).word, tWordDetailsModel.word);
     });
   });
 }

@@ -18,4 +18,9 @@ class ValueFailure<T> with _$ValueFailure<T> {
   const factory ValueFailure.offsetNotUpToMinimum({
     @Default("Offset cannot be negative") String message,
   }) = _OffsetNotUpToMinimumFailure;
+
+  const factory ValueFailure.empty({
+    @Default("Cannot be empty") String message,
+    required T failedValue,
+  }) = _EmptyFailure;
 }

@@ -1,4 +1,5 @@
 import '../../domain/entities/word.dart';
+import '../../domain/value_objects/word.dart';
 
 class WordModel extends Word {
   WordModel({
@@ -10,7 +11,7 @@ class WordModel extends Word {
 
   factory WordModel.fromJson(Map<String, dynamic> json) {
     return WordModel(
-      value: json['value'],
+      value: WordObject(json['value']),
       definition: json['definition'],
       example: json['example'] ?? '',
       isHitWord: json['isHitWord'] ?? false,
@@ -19,7 +20,7 @@ class WordModel extends Word {
 
   Map<String, dynamic> toJson() {
     return {
-      'value': value,
+      'value': value.realValue,
       'definition': definition,
       'example': example,
       'isHitWord': isHitWord,
