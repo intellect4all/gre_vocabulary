@@ -1009,4 +1009,92 @@ void main() {
       expect(result.fold(id, id), isA<Success>());
     });
   });
+
+  group("removeWordFromMemorized", () {
+    final tWordModel = WordModel(
+      value: WordObject('test'),
+      definition: "test",
+      example: "test",
+      isHitWord: false,
+    );
+
+    final tWordDetailsModel = WordDetailsModel(
+      word: tWordModel,
+      timesShown: 0,
+      show: false,
+      isMemorized: false,
+      lastShownDate: DateTime.now(),
+    );
+
+    setUp(() {
+      when(localDataSource.removeWordFromMemorized(word: anyNamed('word')))
+          .thenAnswer((_) async => const SuccessModel());
+    });
+
+    test('should return a failure if word is not valid', () async {
+      // act
+      final t1 = await vocabularyRepository.removeWordFromMemorized(
+        word: WordObject(''),
+      );
+
+      final t2 = await vocabularyRepository.removeWordFromMemorized(
+        word: WordObject('a445dd'),
+      );
+      final t3 = await vocabularyRepository.removeWordFromMemorized(
+        word: WordObject('8308_4'),
+      );
+
+      // assert
+      expect(t1.isLeft(), true);
+      expect(t1.fold(id, id), isA<VocabularyFailure>());
+      expect(t2.isLeft(), true);
+      expect(t2.fold(id, id), isA<VocabularyFailure>());
+      expect(t3.isLeft(), true);
+      expect(t3.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should call local data source removeWordFromMemorized once',
+        () async {
+      // act
+      await vocabularyRepository.removeWordFromMemorized(
+        word: tWordModel.value,
+      );
+
+      // assert
+      verify(
+        localDataSource.removeWordFromMemorized(word: "test"),
+      ).called(1);
+    });
+
+    test(
+        'should return a failure when removeWordFromMemorized throws an exception',
+        () async {
+      // arrange
+
+      when(localDataSource.removeWordFromMemorized(word: anyNamed('word')))
+          .thenThrow(Exception('Unable to remove word from memorized'));
+
+      // act
+      final res = await vocabularyRepository.removeWordFromMemorized(
+        word: tWordModel.value,
+      );
+
+      // assert
+      expect(res.isLeft(), true);
+      expect(res.fold(id, id), isA<VocabularyFailure>());
+    });
+
+    test('should return a Success when removeWordFromMemorized successful ',
+        () async {
+      // act
+      final result = await vocabularyRepository.removeWordFromMemorized(
+        word: tWordModel.value,
+      );
+
+      // assert
+      expect(result.isRight(), true);
+
+      expect(result.fold(id, id), isA<Success>());
+    });
+  });
 }

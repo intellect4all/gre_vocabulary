@@ -39,4 +39,6 @@ abstract class LocalDataSource {
   Future<SuccessModel> clearWordShowHistory({required String word});
 
   Future<SuccessModel> markWordAsMemorized({required String word});
+
+  Future<SuccessModel> removeWordFromMemorized({required String word});
 }

@@ -299,6 +299,24 @@ class MockLocalDataSource extends _i1.Mock implements _i6.LocalDataSource {
           ),
         )),
       ) as _i7.Future<_i2.SuccessModel>);
+  @override
+  _i7.Future<_i2.SuccessModel> removeWordFromMemorized(
+          {required String? word}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #removeWordFromMemorized,
+          [],
+          {#word: word},
+        ),
+        returnValue: _i7.Future<_i2.SuccessModel>.value(_FakeSuccessModel_0(
+          this,
+          Invocation.method(
+            #removeWordFromMemorized,
+            [],
+            {#word: word},
+          ),
+        )),
+      ) as _i7.Future<_i2.SuccessModel>);
 }
 
 /// A class which mocks [CSVListsParser].
