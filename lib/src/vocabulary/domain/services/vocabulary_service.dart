@@ -51,7 +51,7 @@ abstract class VocabularyServiceFacade {
     required PaginationOffSet offset,
   });
 
-  Future<Either<VocabularyFailure, WordDetails>> markWordAsShown({
+  Future<Either<VocabularyFailure, Success>> markWordAsShown({
     required WordObject word,
   });
 

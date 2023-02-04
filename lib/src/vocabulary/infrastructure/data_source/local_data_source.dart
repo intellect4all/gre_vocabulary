@@ -29,4 +29,6 @@ abstract class LocalDataSource {
   });
 
   Future<WordDetailsModel> getWordDetails({required String word});
+
+  Future<SuccessModel> markWordAsShown({required String word});
 }
