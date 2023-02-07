@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:dartz/dartz.dart';
 import 'package:gre_vocabulary/src/core/common_domains/entities/success.dart';
 import 'package:gre_vocabulary/src/core/errors.dart';
@@ -38,10 +40,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
         (failure) async => left(failure),
         (parsingResponse) async {
           try {
-            await _localDataSource.saveAllWords(parsingResponse.allWords);
-
-            await _localDataSource
-                .saveWordsToSource(parsingResponse.wordsToSource);
+            await _localDataSource.saveAllWords(parsingResponse);
           } catch (e) {
             return left(
               const VocabularyFailure.unexpected(),
@@ -303,5 +302,62 @@ class VocabularyRepository implements VocabularyServiceFacade {
     } catch (e) {
       return left(const VocabularyFailure.unexpected());
     }
+  }
+
+  @override
+  Future<Either<VocabularyFailure, List<WordDetails>>> getNextWordsToBeShown({
+    required int noOfWords,
+    required int shownThreshold,
+  }) async {
+    return _handleValidateValueObjects(
+      () async {
+        final words = _getWordsToBeShown(
+          noOfWords,
+          shownThreshold,
+        );
+
+        return right(words);
+      },
+    );
+  }
+
+  _getWordsToBeShown(
+    int noOfWords,
+    int shownThreshold,
+  ) async {
+    // Get all memorized words
+    final memorizedWordsIndexes = await _localDataSource.allMemorizedIndex();
+
+    // Get all recently shown words
+    final recentlyShownWordsIndexes =
+        await _localDataSource.allRecentlyShownIndex();
+
+    // Get all words count
+    final allWordsCount = await _localDataSource.allWordsCount();
+
+    if (memorizedWordsIndexes.length == allWordsCount) {
+      return [];
+    }
+
+    final indexesToBeShown = <int>[];
+
+    // Get the number of words to be shown
+    final indexesToBeShownCount =
+        math.min(noOfWords, allWordsCount - memorizedWordsIndexes.length);
+
+    while (indexesToBeShown.length < indexesToBeShownCount) {
+      final randomIndex = math.Random().nextInt(allWordsCount);
+      if (memorizedWordsIndexes.contains(randomIndex) ||
+          recentlyShownWordsIndexes.contains(randomIndex)) {
+        continue;
+      }
+      indexesToBeShown.add(randomIndex);
+    }
+
+    final wordsToBeShown = await _localDataSource.getWordsByIndex(
+      indexesToBeShown,
+    );
+
+    return wordsToBeShown;
   }
 }

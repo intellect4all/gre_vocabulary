@@ -4,7 +4,8 @@ import '../../../domain/value_objects/word.dart';
 import 'wordlist_parser.dart';
 
 class ManyaHitListParser extends WordListParser {
-  const ManyaHitListParser(super.rawList);
+  const ManyaHitListParser(
+      {required super.rawList, required super.wordsListKey});
 
   @override
   List<Word> getWords() {
@@ -37,6 +38,7 @@ class ManyaHitListParser extends WordListParser {
             definition: currentWordMeaning,
             example: '',
             isHitWord: true,
+            source: wordsListKey,
           ),
         );
         pending = '';
@@ -52,6 +54,7 @@ class ManyaHitListParser extends WordListParser {
           definition: currentWordMeaning,
           example: '',
           isHitWord: true,
+          source: wordsListKey,
         ),
       );
     }

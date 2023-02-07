@@ -84,4 +84,12 @@ abstract class VocabularyServiceFacade {
     required PaginationLimit limit,
     required PaginationOffSet offset,
   });
+
+  Future<Either<VocabularyFailure, List<WordDetails>>> getNextWordsToBeShown({
+    /// number of words to be returned
+    required int noOfWords,
+
+    /// words shown times above this threshold will not be returned
+    required int shownThreshold,
+  });
 }

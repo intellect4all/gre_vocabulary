@@ -11,10 +11,13 @@ abstract class LocalDataSource {
   Future<SuccessModel> saveAllWords(List<WordModel> allWords);
 
   Future<SuccessModel> saveWordsToSource(
-      Map<WordsListKey, List<WordModel>> wordsToSource);
+    Map<WordsListKey, List<WordModel>> wordsToSource,
+  );
 
-  Future<GetWordsResponseModel<WordModel>> getAllWords(
-      {required int limit, required int offset});
+  Future<GetWordsResponseModel<WordModel>> getAllWords({
+    required int limit,
+    required int offset,
+  });
 
   Future<GetWordsResponseModel<WordModel>> getAllWordsForSource({
     required WordsListKey source,
@@ -63,4 +66,12 @@ abstract class LocalDataSource {
     required int limit,
     required int offset,
   });
+
+  Future<List<int>> allMemorizedIndex();
+
+  Future<int> allWordsCount();
+
+  Future<List<int>> allRecentlyShownIndex();
+
+  Future<List<WordDetailsModel>> getWordsByIndex(List<int> indexesToBeShown);
 }

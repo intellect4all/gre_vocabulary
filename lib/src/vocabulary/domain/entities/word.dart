@@ -8,13 +8,20 @@ class Word extends Equatable {
   final String example;
   final bool isHitWord;
 
+  /// this is a unique id for the word
+  /// This enables to index and easily randomize the words later
+  final int? id;
+  final String source;
+
   Word({
     required this.value,
     required this.definition,
     required this.example,
     this.isHitWord = false,
+    this.id,
+    required this.source,
   }) : assert(definition.isNotEmpty);
 
   @override
-  List<Object?> get props => [value, definition, example, isHitWord];
+  List<Object?> get props => [value, definition, example, isHitWord, id];
 }

@@ -4,7 +4,8 @@ import 'package:gre_vocabulary/src/vocabulary/domain/value_objects/word.dart';
 import 'wordlist_parser.dart';
 
 class EconomicsHitListParser extends WordListParser {
-  const EconomicsHitListParser(super.rawList);
+  const EconomicsHitListParser(
+      {required super.rawList, required super.wordsListKey});
 
   @override
   List<Word> getWords() {
@@ -38,6 +39,7 @@ class EconomicsHitListParser extends WordListParser {
             definition: currentWordMeaning,
             example: example,
             isHitWord: true,
+            source: wordsListKey,
           ),
         );
 

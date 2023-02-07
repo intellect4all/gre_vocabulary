@@ -4,7 +4,8 @@ import 'package:gre_vocabulary/src/vocabulary/domain/value_objects/word.dart';
 import 'wordlist_parser.dart';
 
 class ManyaPrincetonHitListParser extends WordListParser {
-  const ManyaPrincetonHitListParser(super.rawList);
+  const ManyaPrincetonHitListParser(
+      {required super.rawList, required super.wordsListKey});
 
   @override
   List<Word> getWords() {
@@ -43,6 +44,7 @@ class ManyaPrincetonHitListParser extends WordListParser {
             definition: "$currentWordMeaning $pending",
             example: '',
             isHitWord: false,
+            source: wordsListKey,
           ),
         );
         pending = '';
@@ -60,6 +62,7 @@ class ManyaPrincetonHitListParser extends WordListParser {
           definition: "$currentWordMeaning $pending",
           example: '',
           isHitWord: false,
+          source: wordsListKey,
         ),
       );
     }

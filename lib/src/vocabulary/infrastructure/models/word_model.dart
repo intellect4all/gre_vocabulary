@@ -7,14 +7,18 @@ class WordModel extends Word {
     required super.definition,
     required super.example,
     super.isHitWord = false,
+    super.id,
+    required super.source,
   });
 
   factory WordModel.fromJson(Map<String, dynamic> json) {
     return WordModel(
+      id: json["id"],
       value: WordObject(json['value']),
       definition: json['definition'],
       example: json['example'] ?? '',
       isHitWord: json['isHitWord'] ?? false,
+      source: json['source'],
     );
   }
 
@@ -24,6 +28,8 @@ class WordModel extends Word {
       'definition': definition,
       'example': example,
       'isHitWord': isHitWord,
+      'id': id,
+      'source': source,
     };
   }
 }

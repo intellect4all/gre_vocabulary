@@ -4,7 +4,7 @@ import 'package:gre_vocabulary/src/vocabulary/domain/value_objects/word.dart';
 import 'wordlist_parser.dart';
 
 class GrePreListParser extends WordListParser {
-  GrePreListParser(super.rawList);
+  GrePreListParser({required super.rawList, required super.wordsListKey});
 
   @override
   List<Word> getWords() {
@@ -18,6 +18,7 @@ class GrePreListParser extends WordListParser {
           value: WordObject(row[0].toString().toLowerCase().trim()),
           definition: row[1].toString().toLowerCase().trim(),
           example: '',
+          source: wordsListKey,
         ),
       );
     }

@@ -4,7 +4,7 @@ import '../../../domain/value_objects/word.dart';
 import 'wordlist_parser.dart';
 
 class OnlinePrepListParser extends WordListParser {
-  OnlinePrepListParser(super.rawList);
+  OnlinePrepListParser({required super.rawList, required super.wordsListKey});
 
   @override
   List<Word> getWords() {
@@ -29,6 +29,7 @@ class OnlinePrepListParser extends WordListParser {
             value: WordObject(currentWord),
             definition: currentWordMeaning,
             example: example,
+            source: wordsListKey,
           ),
         );
 

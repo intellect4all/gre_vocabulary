@@ -24,7 +24,15 @@ void main() {
   late MockLocalDataSource localDataSource;
   late MockCSVListsParser csvListsParser;
   late VocabularyRepository vocabularyRepository;
-  late CSVParsingResponse tCsvParsingResponse;
+  late List<WordModel> tCsvParsingResponse;
+
+  final tWordModel = WordModel(
+    value: WordObject('test'),
+    definition: "test",
+    example: "test",
+    isHitWord: false,
+    source: "test",
+  );
 
   final tWordModels = [
     // generate 10 random Words
@@ -34,6 +42,7 @@ void main() {
         definition: 'meaning$i',
         example: 'example$i',
         isHitWord: i % 2 == 0,
+        source: 'source$i',
       )
   ];
 
@@ -48,10 +57,7 @@ void main() {
     localDataSource = MockLocalDataSource();
     csvListsParser = MockCSVListsParser();
 
-    tCsvParsingResponse = const CSVParsingResponse(
-      allWords: [],
-      wordsToSource: {},
-    );
+    tCsvParsingResponse = [];
 
     vocabularyRepository = VocabularyRepository(
       localDataSource: localDataSource,
@@ -125,11 +131,7 @@ void main() {
       // act
       await vocabularyRepository.loadAllWordsIntoDb();
       // assert
-      verify(localDataSource.saveAllWords(tCsvParsingResponse.allWords))
-          .called(1);
-      verify(localDataSource
-              .saveWordsToSource(tCsvParsingResponse.wordsToSource))
-          .called(1);
+      verify(localDataSource.saveAllWords(tCsvParsingResponse)).called(1);
     });
 
     test(
@@ -225,8 +227,7 @@ void main() {
           .thenAnswer((_) async => tGetWordsResponseModel);
 
       // act
-      final result = await vocabularyRepository.getAllWords(
-          limit: tLimit, offset: tOffset);
+      await vocabularyRepository.getAllWords(limit: tLimit, offset: tOffset);
 
       // assert
       verify(
@@ -355,7 +356,7 @@ void main() {
       ).thenAnswer((_) async => tGetWordsResponseModel);
 
       // act
-      final result = await vocabularyRepository.getAllWordsForSource(
+      await vocabularyRepository.getAllWordsForSource(
           source: tSource, limit: tLimit, offset: tOffset);
 
       // assert
@@ -517,7 +518,7 @@ void main() {
         'should call local data source getAllWordDetails once to get all words details',
         () async {
       // act
-      final result = await vocabularyRepository.getAllWordDetails(
+      await vocabularyRepository.getAllWordDetails(
         limit: tLimit,
         offset: tOffset,
         shownThreshold: tShownThreshold,
@@ -581,6 +582,7 @@ void main() {
       definition: "test",
       example: "test",
       isHitWord: false,
+      source: "test",
     );
 
     final tWordDetailsModel = WordDetailsModel(
@@ -622,7 +624,7 @@ void main() {
         'should call local data source getWordDetails once to get word details',
         () async {
       // act
-      final result = await vocabularyRepository.getWordDetails(
+      await vocabularyRepository.getWordDetails(
         word: tWordModel.value,
       );
 
@@ -664,21 +666,6 @@ void main() {
   });
 
   group("markWordAsShown", () {
-    final tWordModel = WordModel(
-      value: WordObject('test'),
-      definition: "test",
-      example: "test",
-      isHitWord: false,
-    );
-
-    final tWordDetailsModel = WordDetailsModel(
-      word: tWordModel,
-      timesShown: 0,
-      show: false,
-      isMemorized: false,
-      lastShownDate: DateTime.now(),
-    );
-
     setUp(() {
       when(localDataSource.markWordAsShown(word: anyNamed('word')))
           .thenAnswer((_) async => const SuccessModel());
@@ -751,21 +738,6 @@ void main() {
   });
 
   group("markWordAsToBeRemembered", () {
-    final tWordModel = WordModel(
-      value: WordObject('test'),
-      definition: "test",
-      example: "test",
-      isHitWord: false,
-    );
-
-    final tWordDetailsModel = WordDetailsModel(
-      word: tWordModel,
-      timesShown: 0,
-      show: false,
-      isMemorized: false,
-      lastShownDate: DateTime.now(),
-    );
-
     setUp(() {
       when(localDataSource.markWordAsToBeRemembered(word: anyNamed('word')))
           .thenAnswer((_) async => const SuccessModel());
@@ -838,21 +810,6 @@ void main() {
   });
 
   group("clearWordShowHistory", () {
-    final tWordModel = WordModel(
-      value: WordObject('test'),
-      definition: "test",
-      example: "test",
-      isHitWord: false,
-    );
-
-    final tWordDetailsModel = WordDetailsModel(
-      word: tWordModel,
-      timesShown: 0,
-      show: false,
-      isMemorized: false,
-      lastShownDate: DateTime.now(),
-    );
-
     setUp(() {
       when(localDataSource.clearWordShowHistory(word: anyNamed('word')))
           .thenAnswer((_) async => const SuccessModel());
@@ -925,21 +882,6 @@ void main() {
   });
 
   group("markWordAsMemorized", () {
-    final tWordModel = WordModel(
-      value: WordObject('test'),
-      definition: "test",
-      example: "test",
-      isHitWord: false,
-    );
-
-    final tWordDetailsModel = WordDetailsModel(
-      word: tWordModel,
-      timesShown: 0,
-      show: false,
-      isMemorized: false,
-      lastShownDate: DateTime.now(),
-    );
-
     setUp(() {
       when(localDataSource.markWordAsMemorized(word: anyNamed('word')))
           .thenAnswer((_) async => const SuccessModel());
@@ -1011,21 +953,6 @@ void main() {
   });
 
   group("removeWordFromMemorized", () {
-    final tWordModel = WordModel(
-      value: WordObject('test'),
-      definition: "test",
-      example: "test",
-      isHitWord: false,
-    );
-
-    final tWordDetailsModel = WordDetailsModel(
-      word: tWordModel,
-      timesShown: 0,
-      show: false,
-      isMemorized: false,
-      lastShownDate: DateTime.now(),
-    );
-
     setUp(() {
       when(localDataSource.removeWordFromMemorized(word: anyNamed('word')))
           .thenAnswer((_) async => const SuccessModel());
@@ -1099,21 +1026,6 @@ void main() {
   });
 
   group("removeWordFromToBeRemembered", () {
-    final tWordModel = WordModel(
-      value: WordObject('test'),
-      definition: "test",
-      example: "test",
-      isHitWord: false,
-    );
-
-    final tWordDetailsModel = WordDetailsModel(
-      word: tWordModel,
-      timesShown: 0,
-      show: false,
-      isMemorized: false,
-      lastShownDate: DateTime.now(),
-    );
-
     setUp(() {
       when(localDataSource.removeWordFromToBeRemembered(word: anyNamed('word')))
           .thenAnswer((_) async => const SuccessModel());

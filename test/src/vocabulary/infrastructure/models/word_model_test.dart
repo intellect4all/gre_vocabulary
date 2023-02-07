@@ -9,6 +9,7 @@ void main() {
     definition: "test definition",
     example: "test example",
     isHitWord: true,
+    source: "test source",
   );
 
   final tWordModelJson = {
@@ -16,6 +17,7 @@ void main() {
     "definition": "test definition",
     "example": "test example",
     "isHitWord": true,
+    "source": "test source",
   };
 
   final tWordModel2 = WordModel(
@@ -23,6 +25,7 @@ void main() {
     definition: "test definition 2",
     example: "test example 2",
     isHitWord: false,
+    source: "test source",
   );
 
   final tWordModelJson2 = {
@@ -30,6 +33,7 @@ void main() {
     "definition": "test definition 2",
     "example": "test example 2",
     "isHitWord": false,
+    "source": "test source",
   };
 
   test('should be a subclass of Word entity', () async {

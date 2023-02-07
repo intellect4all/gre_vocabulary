@@ -1,10 +1,15 @@
+import 'package:gre_vocabulary/src/vocabulary/core/constants.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
 
 /// Abstract class that all wordlist parsers should implement
 abstract class WordListParser {
   final List<List> rawList;
+  final WordsListKey wordsListKey;
 
-  const WordListParser(this.rawList);
+  const WordListParser({
+    required this.rawList,
+    required this.wordsListKey,
+  });
 
   /// takes a list of lists of words and returns a list of words
   ///

@@ -450,6 +450,41 @@ class MockLocalDataSource extends _i1.Mock implements _i6.LocalDataSource {
           ),
         )),
       ) as _i7.Future<_i3.GetWordsResponseModel<_i4.WordDetailsModel>>);
+  @override
+  _i7.Future<List<int>> allMemorizedIndex() => (super.noSuchMethod(
+        Invocation.method(
+          #allMemorizedIndex,
+          [],
+        ),
+        returnValue: _i7.Future<List<int>>.value(<int>[]),
+      ) as _i7.Future<List<int>>);
+  @override
+  _i7.Future<int> allWordsCount() => (super.noSuchMethod(
+        Invocation.method(
+          #allWordsCount,
+          [],
+        ),
+        returnValue: _i7.Future<int>.value(0),
+      ) as _i7.Future<int>);
+  @override
+  _i7.Future<List<int>> allRecentlyShownIndex() => (super.noSuchMethod(
+        Invocation.method(
+          #allRecentlyShownIndex,
+          [],
+        ),
+        returnValue: _i7.Future<List<int>>.value(<int>[]),
+      ) as _i7.Future<List<int>>);
+  @override
+  _i7.Future<List<_i4.WordDetailsModel>> getWordsByIndex(
+          List<int>? indexesToBeShown) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getWordsByIndex,
+          [indexesToBeShown],
+        ),
+        returnValue: _i7.Future<List<_i4.WordDetailsModel>>.value(
+            <_i4.WordDetailsModel>[]),
+      ) as _i7.Future<List<_i4.WordDetailsModel>>);
 }
 
 /// A class which mocks [CSVListsParser].
@@ -466,19 +501,18 @@ class MockCSVListsParser extends _i1.Mock implements _i9.CSVListsParser {
         returnValue: <_i10.BaseWordsList>[],
       ) as List<_i10.BaseWordsList>);
   @override
-  _i5.Either<_i11.VocabularyFailure, _i9.CSVParsingResponse> parse() =>
+  _i5.Either<_i11.VocabularyFailure, List<_i8.WordModel>> parse() =>
       (super.noSuchMethod(
         Invocation.method(
           #parse,
           [],
         ),
-        returnValue:
-            _FakeEither_3<_i11.VocabularyFailure, _i9.CSVParsingResponse>(
+        returnValue: _FakeEither_3<_i11.VocabularyFailure, List<_i8.WordModel>>(
           this,
           Invocation.method(
             #parse,
             [],
           ),
         ),
-      ) as _i5.Either<_i11.VocabularyFailure, _i9.CSVParsingResponse>);
+      ) as _i5.Either<_i11.VocabularyFailure, List<_i8.WordModel>>);
 }

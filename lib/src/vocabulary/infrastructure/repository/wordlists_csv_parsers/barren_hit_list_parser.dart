@@ -6,7 +6,8 @@ import '../../../domain/value_objects/word.dart';
 import 'wordlist_parser.dart';
 
 class BarrenHitListParser extends WordListParser {
-  const BarrenHitListParser(super.rawList);
+  const BarrenHitListParser(
+      {required super.rawList, required super.wordsListKey});
 
   static const abc = [
     "a",
@@ -94,9 +95,11 @@ class BarrenHitListParser extends WordListParser {
 
         words.add(
           Word(
-              value: WordObject(currentWord),
-              definition: currentWordMeaning,
-              example: ''),
+            value: WordObject(currentWord),
+            definition: currentWordMeaning,
+            example: '',
+            source: wordsListKey,
+          ),
         );
 
         lastWord = currentWord.toString();
