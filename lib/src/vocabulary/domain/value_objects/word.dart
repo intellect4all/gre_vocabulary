@@ -12,7 +12,7 @@ class WordObject extends ValueObject<String> {
     );
   }
 
-  String get realValue => value.getOrElse(() => "");
+  String get valueOrEmpty => value.getOrElse(() => "");
 
   const WordObject._(this.value);
 

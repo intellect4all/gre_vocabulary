@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:gre_vocabulary/src/vocabulary/core/constants.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/core/constants.dart';
 
 part 'failures.freezed.dart';
 

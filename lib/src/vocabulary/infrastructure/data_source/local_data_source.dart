@@ -1,7 +1,7 @@
 import 'package:gre_vocabulary/src/core/common_domains/models/success_model.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/core/constants.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/word_model.dart';
 
-import '../../core/constants.dart';
 import '../models/get_words_response_model.dart';
 import '../models/word_details_model.dart';
 
@@ -10,14 +10,12 @@ abstract class LocalDataSource {
 
   Future<SuccessModel> saveAllWords(List<WordModel> allWords);
 
-  Future<SuccessModel> saveWordsToSource(
-    Map<WordsListKey, List<WordModel>> wordsToSource,
-  );
-
   Future<GetWordsResponseModel<WordModel>> getAllWords({
     required int limit,
     required int offset,
   });
+
+  Future<WordModel> getWord(String word);
 
   Future<GetWordsResponseModel<WordModel>> getAllWordsForSource({
     required WordsListKey source,
@@ -28,7 +26,6 @@ abstract class LocalDataSource {
   Future<GetWordsResponseModel<WordDetailsModel>> getAllWordDetails({
     required int limit,
     required int offset,
-    required int shownThreshold,
   });
 
   Future<WordDetailsModel> getWordDetails({required String word});
@@ -73,5 +70,5 @@ abstract class LocalDataSource {
 
   Future<List<int>> allRecentlyShownIndex();
 
-  Future<List<WordDetailsModel>> getWordsByIndex(List<int> indexesToBeShown);
+  Future<List<WordDetailsModel>> getWordsByIndexes(List<int> indexesToBeShown);
 }

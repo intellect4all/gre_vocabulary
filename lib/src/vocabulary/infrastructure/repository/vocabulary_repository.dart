@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:dartz/dartz.dart';
 import 'package:gre_vocabulary/src/core/common_domains/entities/success.dart';
 import 'package:gre_vocabulary/src/core/errors.dart';
+import 'package:gre_vocabulary/src/core/failures.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/core/constants.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/get_words_response.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word_details.dart';
@@ -10,8 +13,8 @@ import 'package:gre_vocabulary/src/vocabulary/domain/services/vocabulary_service
 import 'package:gre_vocabulary/src/vocabulary/domain/value_objects/word.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/data_source/local_data_source.dart';
 
-import '../../core/constants.dart';
-import '../../core/failures.dart';
+import '../../domain/core/exceptions.dart';
+import '../../domain/core/failures.dart';
 import '../../domain/value_objects/value_objects.dart';
 import 'wordlists_csv_parsers/csv_parser.dart';
 
@@ -60,7 +63,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
     required PaginationLimit limit,
     required PaginationOffSet offset,
   }) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         final res = await _localDataSource.getAllWords(
           limit: limit.getOrCrash(),
@@ -78,7 +81,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
     required PaginationOffSet offset,
     required WordsListKey source,
   }) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         final res = await _localDataSource.getAllWordsForSource(
           source: source,
@@ -95,15 +98,13 @@ class VocabularyRepository implements VocabularyServiceFacade {
       getAllWordDetails({
     required PaginationLimit limit,
     required PaginationOffSet offset,
-    required int shownThreshold,
   }) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         return right(
           await _localDataSource.getAllWordDetails(
             limit: limit.getOrCrash(),
             offset: offset.getOrCrash(),
-            shownThreshold: shownThreshold,
           ),
         );
       },
@@ -114,7 +115,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
   Future<Either<VocabularyFailure, WordDetails>> getWordDetails({
     required WordObject word,
   }) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         return right(
           await _localDataSource.getWordDetails(
@@ -129,7 +130,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
   Future<Either<VocabularyFailure, Success>> markWordAsShown({
     required WordObject word,
   }) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         return right(
           await _localDataSource.markWordAsShown(
@@ -143,7 +144,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
   @override
   Future<Either<VocabularyFailure, Success>> markWordAsToBeRemembered(
       {required WordObject word}) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         return right(
           await _localDataSource.markWordAsToBeRemembered(
@@ -158,7 +159,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
   Future<Either<VocabularyFailure, Success>> clearWordShowHistory({
     required WordObject word,
   }) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         return right(
           await _localDataSource.clearWordShowHistory(
@@ -173,7 +174,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
   Future<Either<VocabularyFailure, Success>> markWordAsMemorized({
     required WordObject word,
   }) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         return right(
           await _localDataSource.markWordAsMemorized(
@@ -188,7 +189,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
   Future<Either<VocabularyFailure, Success>> removeWordFromMemorized({
     required WordObject word,
   }) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         return right(
           await _localDataSource.removeWordFromMemorized(
@@ -203,7 +204,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
   Future<Either<VocabularyFailure, Success>> removeWordFromToBeRemembered({
     required WordObject word,
   }) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         return right(
           await _localDataSource.removeWordFromToBeRemembered(
@@ -220,7 +221,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
     required PaginationLimit limit,
     required PaginationOffSet offset,
   }) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         return right(
           await _localDataSource.getAllMemorizedWords(
@@ -238,7 +239,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
     required PaginationLimit limit,
     required PaginationOffSet offset,
   }) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         return right(
           await _localDataSource.getAllShownWords(
@@ -256,7 +257,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
     required PaginationLimit limit,
     required PaginationOffSet offset,
   }) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         return right(
           await _localDataSource.getAllToBeRememberedWords(
@@ -274,7 +275,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
     required PaginationLimit limit,
     required PaginationOffSet offset,
   }) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         return right(
           await _localDataSource.getAllWordsShownToday(
@@ -286,19 +287,19 @@ class VocabularyRepository implements VocabularyServiceFacade {
     );
   }
 
-  Future<Either<VocabularyFailure, T>> _handleValidateValueObjects<T>(
-    Future<Either<VocabularyFailure, T>> Function() f,
+  VocabularyResponse<T> _handleFailure<T>(
+    VocabularyResponse<T> Function() f,
   ) async {
     try {
       return await f();
-    } on UnexpectedValueError catch (e) {
-      final res = e.valueFailure.maybeWhen<String>(
-        limitExceedMaxWordsFetch: (String message) => message,
-        limitNotUpToMinimum: (String message) => message,
-        orElse: () => "Unexpected Error",
+    } on VocabularyException catch (e) {
+      return e.when(
+        wordNotFound: _wordNotFound,
+        unableToParseCSV: _unableToParseCSV,
+        valueError: _handleValueFailure,
       );
-
-      return Future.value(left(VocabularyFailure.unexpected(message: res)));
+    } on UnexpectedValueError catch (e) {
+      return _handleValueFailure(e.valueFailure);
     } catch (e) {
       return left(const VocabularyFailure.unexpected());
     }
@@ -309,7 +310,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
     required int noOfWords,
     required int shownThreshold,
   }) async {
-    return _handleValidateValueObjects(
+    return _handleFailure(
       () async {
         final words = _getWordsToBeShown(
           noOfWords,
@@ -354,10 +355,30 @@ class VocabularyRepository implements VocabularyServiceFacade {
       indexesToBeShown.add(randomIndex);
     }
 
-    final wordsToBeShown = await _localDataSource.getWordsByIndex(
+    final wordsToBeShown = await _localDataSource.getWordsByIndexes(
       indexesToBeShown,
     );
 
     return wordsToBeShown;
   }
+
+  VocabularyResponse<T> _handleValueFailure<T>(ValueFailure valueFailure) {
+    final res = valueFailure.maybeWhen<String>(
+      limitExceedMaxWordsFetch: (String message) => message,
+      limitNotUpToMinimum: (String message) => message,
+      orElse: () => "Unexpected Error",
+    );
+
+    return left(VocabularyFailure.valueError(message: res));
+  }
+
+  VocabularyResponse<T> _unableToParseCSV<T>() {
+    return left(const VocabularyFailure.unableToParseCSV());
+  }
+
+  VocabularyResponse<T> _wordNotFound<T>(String message, String word) {
+    return left(VocabularyFailure.wordNotFound(message: message, word: word));
+  }
 }
+
+typedef VocabularyResponse<T> = FutureOr<Either<VocabularyFailure, T>>;

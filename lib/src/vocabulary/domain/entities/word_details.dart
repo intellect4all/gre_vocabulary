@@ -6,7 +6,7 @@ class WordDetails {
   final Word word;
 
   /// the number of times the word has been shown
-  final int timesShown;
+  final int shownCount;
 
   /// whether the word should be shown or not
   final bool show;
@@ -19,7 +19,7 @@ class WordDetails {
 
   const WordDetails({
     required this.word,
-    required this.timesShown,
+    required this.shownCount,
     required this.show,
     required this.isMemorized,
     required this.lastShownDate,

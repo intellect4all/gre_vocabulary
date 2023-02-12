@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:gre_vocabulary/src/core/failures.dart';
 import 'package:gre_vocabulary/src/core/value_object.dart';
-import 'package:gre_vocabulary/src/vocabulary/core/constants.dart';
+
+import '../core/constants.dart';
 
 class PaginationLimit extends ValueObject<int> {
   @override

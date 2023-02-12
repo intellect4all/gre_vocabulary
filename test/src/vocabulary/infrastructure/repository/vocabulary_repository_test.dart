@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gre_vocabulary/src/core/common_domains/entities/success.dart';
 import 'package:gre_vocabulary/src/core/common_domains/models/success_model.dart';
-import 'package:gre_vocabulary/src/vocabulary/core/failures.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/core/failures.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/get_words_response.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word_details.dart';
@@ -69,8 +69,6 @@ void main() {
   group('loadAllWordsIntoLocalDb', () {
     setUp(() {
       when(localDataSource.saveAllWords(any))
-          .thenAnswer((_) async => const SuccessModel());
-      when(localDataSource.saveWordsToSource(any))
           .thenAnswer((_) async => const SuccessModel());
     });
 
@@ -154,8 +152,6 @@ void main() {
       wordsLoadedState(areWordsLoaded: false);
       when(csvListsParser.parse())
           .thenAnswer((_) => Right(tCsvParsingResponse));
-      when(localDataSource.saveWordsToSource(any))
-          .thenAnswer((_) async => const SuccessModel());
       // act
       final result = await vocabularyRepository.loadAllWordsIntoDb();
       // assert
@@ -430,7 +426,7 @@ void main() {
         .map(
           (e) => WordDetailsModel(
             word: e,
-            timesShown: 0,
+            shownCount: 0,
             show: false,
             isMemorized: false,
             lastShownDate: DateTime.now(),
@@ -452,9 +448,9 @@ void main() {
     setUp(() {
       when(
         localDataSource.getAllWordDetails(
-            limit: anyNamed('limit'),
-            offset: anyNamed('offset'),
-            shownThreshold: anyNamed('shownThreshold')),
+          limit: anyNamed('limit'),
+          offset: anyNamed('offset'),
+        ),
       ).thenAnswer((_) async => tGetWordDetailsResponseModel);
     });
 
@@ -469,7 +465,6 @@ void main() {
       final result = await vocabularyRepository.getAllWordDetails(
         limit: tLimit,
         offset: tOffset,
-        shownThreshold: tShownThreshold,
       );
       // assert
 
@@ -489,7 +484,6 @@ void main() {
       final result = await vocabularyRepository.getAllWordDetails(
         limit: tLimit,
         offset: tOffset,
-        shownThreshold: tShownThreshold,
       );
 
       // assert
@@ -506,7 +500,6 @@ void main() {
       final result = await vocabularyRepository.getAllWordDetails(
         limit: tLimit,
         offset: tOffset,
-        shownThreshold: tShownThreshold,
       );
 
       // assert
@@ -521,7 +514,6 @@ void main() {
       await vocabularyRepository.getAllWordDetails(
         limit: tLimit,
         offset: tOffset,
-        shownThreshold: tShownThreshold,
       );
 
       // assert
@@ -529,7 +521,6 @@ void main() {
         localDataSource.getAllWordDetails(
           limit: tLimit.getOrElse(10),
           offset: tOffset.getOrElse(0),
-          shownThreshold: tShownThreshold,
         ),
       ).called(1);
     });
@@ -537,19 +528,17 @@ void main() {
     test('should return a failure when getAllWordDetails throws an exception',
         () async {
       // arrange
-
       when(
         localDataSource.getAllWordDetails(
-            limit: anyNamed('limit'),
-            offset: anyNamed('offset'),
-            shownThreshold: anyNamed('shownThreshold')),
+          limit: anyNamed('limit'),
+          offset: anyNamed('offset'),
+        ),
       ).thenThrow(Exception('Unable to get words'));
 
       // act
       final res = await vocabularyRepository.getAllWordDetails(
         limit: tLimit,
         offset: tOffset,
-        shownThreshold: tShownThreshold,
       );
 
       // assert
@@ -564,7 +553,6 @@ void main() {
       final result = await vocabularyRepository.getAllWordDetails(
         limit: tLimit,
         offset: tOffset,
-        shownThreshold: tShownThreshold,
       );
 
       // assert
@@ -587,7 +575,7 @@ void main() {
 
     final tWordDetailsModel = WordDetailsModel(
       word: tWordModel,
-      timesShown: 0,
+      shownCount: 0,
       show: false,
       isMemorized: false,
       lastShownDate: DateTime.now(),
@@ -1109,7 +1097,7 @@ void main() {
           .map(
             (e) => WordDetailsModel(
               word: e,
-              timesShown: 0,
+              shownCount: 0,
               show: false,
               isMemorized: false,
               lastShownDate: DateTime.now(),
@@ -1252,7 +1240,7 @@ void main() {
         .map(
           (e) => WordDetailsModel(
             word: e,
-            timesShown: 0,
+            shownCount: 0,
             show: false,
             isMemorized: false,
             lastShownDate: DateTime.now(),
@@ -1391,7 +1379,7 @@ void main() {
         .map(
           (e) => WordDetailsModel(
             word: e,
-            timesShown: 0,
+            shownCount: 0,
             show: false,
             isMemorized: false,
             lastShownDate: DateTime.now(),
@@ -1535,7 +1523,7 @@ void main() {
           .map(
             (e) => WordDetailsModel(
               word: e,
-              timesShown: 0,
+              shownCount: 0,
               show: false,
               isMemorized: false,
               lastShownDate: DateTime.now(),

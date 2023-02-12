@@ -1,7 +1,6 @@
-import 'dart:developer';
-
-import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/word_model.dart';
 import 'package:isar/isar.dart';
+
+import 'word_model.dart';
 
 part 'isar_word_model.g.dart';
 
@@ -9,10 +8,13 @@ part 'isar_word_model.g.dart';
 class IsarWordModel {
   Id? id;
 
+  @Index()
   String value;
   String definition;
   String example;
   bool isHitWord;
+
+  @Index()
   String source;
 
   IsarWordModel({
@@ -25,7 +27,6 @@ class IsarWordModel {
   });
 
   static IsarWordModel fromWordModel(WordModel e) {
-    log('fromWordModel: ${e}');
     return IsarWordModel(
       value: e.value.getOrCrash(),
       definition: e.definition,

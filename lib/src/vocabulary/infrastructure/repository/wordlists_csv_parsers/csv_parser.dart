@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import '../../../core/failures.dart';
+import '../../../domain/core/failures.dart';
 import '../../models/word_model.dart';
 import '../words_lists/base_words_list.dart';
 

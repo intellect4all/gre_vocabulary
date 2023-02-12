@@ -24,7 +24,7 @@ class WordModel extends Word {
 
   Map<String, dynamic> toJson() {
     return {
-      'value': value.realValue,
+      'value': value.valueOrEmpty,
       'definition': definition,
       'example': example,
       'isHitWord': isHitWord,

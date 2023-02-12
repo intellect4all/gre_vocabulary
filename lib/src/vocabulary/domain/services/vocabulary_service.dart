@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:gre_vocabulary/src/core/common_domains/entities/success.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/core/failures.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
 
-import '../../core/constants.dart';
-import '../../core/failures.dart';
+import '../core/constants.dart';
 import '../entities/get_words_response.dart';
 import '../entities/word_details.dart';
 import '../value_objects/limit.dart';
@@ -24,13 +24,11 @@ abstract class VocabularyServiceFacade {
     required WordsListKey source,
   });
 
+  ///
   Future<Either<VocabularyFailure, GetWordsResponse<WordDetails>>>
       getAllWordDetails({
     required PaginationLimit limit,
     required PaginationOffSet offset,
-
-    /// words shown times above this threshold will not be shown
-    required int shownThreshold,
   });
 
   Future<Either<VocabularyFailure, WordDetails>> getWordDetails({

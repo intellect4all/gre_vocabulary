@@ -1,5 +1,6 @@
-import 'package:gre_vocabulary/src/vocabulary/core/constants.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
+
+import '../../../domain/core/constants.dart';
 
 /// Abstract class that all wordlist parsers should implement
 abstract class WordListParser {

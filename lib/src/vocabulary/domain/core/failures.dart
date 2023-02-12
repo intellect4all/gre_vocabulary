@@ -12,4 +12,8 @@ class VocabularyFailure with _$VocabularyFailure {
   const factory VocabularyFailure.valueError({
     required String message,
   }) = _VocabularyValueError;
+  const factory VocabularyFailure.wordNotFound({
+    @Default('Word Not found in DB') String message,
+    required String word,
+  }) = _WordNotFoundException;
 }
