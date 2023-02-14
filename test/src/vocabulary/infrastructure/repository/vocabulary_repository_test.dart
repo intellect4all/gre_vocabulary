@@ -34,17 +34,41 @@ void main() {
     source: "test",
   );
 
-  final tWordModels = [
-    // generate 10 random Words
-    for (var i = 0; i < 10; i++)
-      WordModel(
-        value: WordObject('word$i'),
-        definition: 'meaning$i',
-        example: 'example$i',
-        isHitWord: i % 2 == 0,
-        source: 'source$i',
-      )
+  const tWords = [
+    'abandon',
+    'ability',
+    'able',
+    'abortion',
+    'about',
+    'above',
+    'abroad',
+    'absence',
+    'absolute',
+    'absolutely',
   ];
+
+  final tWordModels = List.generate(
+    10,
+    (index) => WordModel(
+      id: index + 1,
+      value: WordObject(tWords[index]),
+      definition: 'test definition $index',
+      example: 'test example $index',
+      isHitWord: index % 2 == 0,
+      source: 'test source $index',
+    ),
+  );
+
+  List<WordDetailsModel> getTWordDetails() => tWordModels
+      .map((word) => WordDetailsModel(
+            word: word,
+            shownCount: 0,
+            show: true,
+            isMemorized: false,
+            isToBeRemembered: false,
+            lastShownDate: DateTime.now(),
+          ))
+      .toList();
 
   final tGetWordsResponseModel = GetWordsResponseModel<WordModel>(
     words: tWordModels,
@@ -420,8 +444,6 @@ void main() {
   });
 
   group('getAllWordDetails', () {
-    const tShownThreshold = 5;
-
     final tWordDetailsModels = tWordModels
         .map(
           (e) => WordDetailsModel(
@@ -429,6 +451,7 @@ void main() {
             shownCount: 0,
             show: false,
             isMemorized: false,
+            isToBeRemembered: false,
             lastShownDate: DateTime.now(),
           ),
         )
@@ -578,6 +601,7 @@ void main() {
       shownCount: 0,
       show: false,
       isMemorized: false,
+      isToBeRemembered: false,
       lastShownDate: DateTime.now(),
     );
 
@@ -1100,6 +1124,7 @@ void main() {
               shownCount: 0,
               show: false,
               isMemorized: false,
+              isToBeRemembered: false,
               lastShownDate: DateTime.now(),
             ),
           )
@@ -1241,6 +1266,7 @@ void main() {
           (e) => WordDetailsModel(
             word: e,
             shownCount: 0,
+            isToBeRemembered: false,
             show: false,
             isMemorized: false,
             lastShownDate: DateTime.now(),
@@ -1380,6 +1406,7 @@ void main() {
           (e) => WordDetailsModel(
             word: e,
             shownCount: 0,
+            isToBeRemembered: false,
             show: false,
             isMemorized: false,
             lastShownDate: DateTime.now(),
@@ -1526,6 +1553,7 @@ void main() {
               shownCount: 0,
               show: false,
               isMemorized: false,
+              isToBeRemembered: false,
               lastShownDate: DateTime.now(),
             ),
           )
@@ -1656,6 +1684,109 @@ void main() {
 
         expect(result.fold(id, id), isA<GetWordsResponseModel<WordDetails>>());
       });
+    },
+  );
+
+  group(
+    "getNextWordsToBeShown",
+    () {
+      final memorizedWordsIndexes = [0, 1, 2];
+      final recentlyShownWordsIndexes = [3, 4];
+      const allWordsCount = 10;
+
+      test('returns empty list when all words are memorized', () async {
+        when(localDataSource.allMemorizedIndexes()).thenAnswer(
+          (_) => Future.value([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+        );
+        when(localDataSource.allRecentlyShownIndexes(any)).thenAnswer(
+          (_) => Future.value([1, 2, 3, 4, 5]),
+        );
+        when(localDataSource.allWordsCount()).thenAnswer(
+          (_) => Future.value(allWordsCount),
+        );
+
+        final result = await vocabularyRepository.getNextWordsToBeShown(
+            noOfWords: 5, shownThreshold: 3);
+
+        expect(result.isRight(), true);
+        expect(result.fold(id, id) as List<Word>, isEmpty);
+      });
+
+      test('returns correct number of words to be shown', () async {
+        when(localDataSource.allMemorizedIndexes())
+            .thenAnswer((_) => Future.value(memorizedWordsIndexes));
+        when(localDataSource.allRecentlyShownIndexes(any))
+            .thenAnswer((_) => Future.value(recentlyShownWordsIndexes));
+        when(localDataSource.allWordsCount())
+            .thenAnswer((_) => Future.value(allWordsCount));
+        when(localDataSource.getWordsByIndexes(any)).thenAnswer(
+          (_) => Future.value(
+            tWordModels.sublist(0, 5),
+          ),
+        );
+
+        final result = await vocabularyRepository.getNextWordsToBeShown(
+            noOfWords: 5, shownThreshold: 3);
+
+        expect(result.isRight(), true);
+        expect(result.fold(id, id), isA<List<Word>>());
+        expect(result.fold(id, id), hasLength(5));
+        expect(
+          result.fold(id, id),
+          containsAll(
+            tWordModels.sublist(0, 5),
+          ),
+        );
+      });
+
+      test(
+        "should return a non-repeating list of words to be shown",
+        () async {
+          when(localDataSource.allMemorizedIndexes())
+              .thenAnswer((_) => Future.value(memorizedWordsIndexes));
+          when(localDataSource.allRecentlyShownIndexes(any))
+              .thenAnswer((_) => Future.value(recentlyShownWordsIndexes));
+          when(localDataSource.allWordsCount())
+              .thenAnswer((_) => Future.value(allWordsCount));
+          when(localDataSource.getWordsByIndexes(any)).thenAnswer(
+            (_) => Future.value(
+              tWordModels.sublist(0, 10),
+            ),
+          );
+
+          final result = await vocabularyRepository.getNextWordsToBeShown(
+              noOfWords: 5, shownThreshold: 3);
+
+          expect(result.isRight(), true);
+          expect(result.fold(id, id), isA<List<Word>>());
+          expect((result.fold(id, id) as List<Word>).toSet(), hasLength(10));
+          expect(
+            (result.fold(id, id) as List<Word>).toSet(),
+            containsAll(
+              tWordModels.sublist(0, 10),
+            ),
+          );
+        },
+      );
+
+      test(
+        "should return vocabulary failure if noOfWords or shownThreshold is less than 1",
+        () async {
+          // arrange
+          const tNoOfWords = 0;
+          const tShownThreshold = 0;
+
+          // act
+          final result = await vocabularyRepository.getNextWordsToBeShown(
+            noOfWords: tNoOfWords,
+            shownThreshold: tShownThreshold,
+          );
+
+          // assert
+          expect(result.isLeft(), true);
+          expect(result.fold(id, id), isA<VocabularyValueFailure>());
+        },
+      );
     },
   );
 }

@@ -190,6 +190,33 @@ class MockLocalDataSource extends _i1.Mock implements _i7.LocalDataSource {
         )),
       ) as _i8.Future<_i3.GetWordsResponseModel<_i4.WordModel>>);
   @override
+  _i8.Future<_i3.GetWordsResponseModel<_i4.WordModel>> getHitWords({
+    required int? limit,
+    required int? offset,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getHitWords,
+          [],
+          {
+            #limit: limit,
+            #offset: offset,
+          },
+        ),
+        returnValue: _i8.Future<_i3.GetWordsResponseModel<_i4.WordModel>>.value(
+            _FakeGetWordsResponseModel_1<_i4.WordModel>(
+          this,
+          Invocation.method(
+            #getHitWords,
+            [],
+            {
+              #limit: limit,
+              #offset: offset,
+            },
+          ),
+        )),
+      ) as _i8.Future<_i3.GetWordsResponseModel<_i4.WordModel>>);
+  @override
   _i8.Future<
       _i3.GetWordsResponseModel<_i5.WordDetailsModel>> getAllWordDetails({
     required int? limit,
@@ -457,9 +484,9 @@ class MockLocalDataSource extends _i1.Mock implements _i7.LocalDataSource {
         )),
       ) as _i8.Future<_i3.GetWordsResponseModel<_i5.WordDetailsModel>>);
   @override
-  _i8.Future<List<int>> allMemorizedIndex() => (super.noSuchMethod(
+  _i8.Future<List<int>> allMemorizedIndexes() => (super.noSuchMethod(
         Invocation.method(
-          #allMemorizedIndex,
+          #allMemorizedIndexes,
           [],
         ),
         returnValue: _i8.Future<List<int>>.value(<int>[]),
@@ -473,24 +500,24 @@ class MockLocalDataSource extends _i1.Mock implements _i7.LocalDataSource {
         returnValue: _i8.Future<int>.value(0),
       ) as _i8.Future<int>);
   @override
-  _i8.Future<List<int>> allRecentlyShownIndex() => (super.noSuchMethod(
+  _i8.Future<List<int>> allRecentlyShownIndexes(Duration? duration) =>
+      (super.noSuchMethod(
         Invocation.method(
-          #allRecentlyShownIndex,
-          [],
+          #allRecentlyShownIndexes,
+          [duration],
         ),
         returnValue: _i8.Future<List<int>>.value(<int>[]),
       ) as _i8.Future<List<int>>);
   @override
-  _i8.Future<List<_i5.WordDetailsModel>> getWordsByIndexes(
+  _i8.Future<List<_i4.WordModel>> getWordsByIndexes(
           List<int>? indexesToBeShown) =>
       (super.noSuchMethod(
         Invocation.method(
           #getWordsByIndexes,
           [indexesToBeShown],
         ),
-        returnValue: _i8.Future<List<_i5.WordDetailsModel>>.value(
-            <_i5.WordDetailsModel>[]),
-      ) as _i8.Future<List<_i5.WordDetailsModel>>);
+        returnValue: _i8.Future<List<_i4.WordModel>>.value(<_i4.WordModel>[]),
+      ) as _i8.Future<List<_i4.WordModel>>);
 }
 
 /// A class which mocks [CSVListsParser].

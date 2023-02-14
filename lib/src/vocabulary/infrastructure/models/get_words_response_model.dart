@@ -18,4 +18,14 @@ class GetWordsResponseModel<T> extends GetWordsResponse<T> {
       wordsPerPage: json['itemsPerPage'] as int,
     );
   }
+
+  factory GetWordsResponseModel.empty() {
+    return const GetWordsResponseModel(
+      words: [],
+      totalWords: 0,
+      currentPage: 0,
+      totalPages: 0,
+      wordsPerPage: 0,
+    );
+  }
 }

@@ -83,7 +83,7 @@ abstract class VocabularyServiceFacade {
     required PaginationOffSet offset,
   });
 
-  Future<Either<VocabularyFailure, List<WordDetails>>> getNextWordsToBeShown({
+  Future<Either<VocabularyFailure, List<Word>>> getNextWordsToBeShown({
     /// number of words to be returned
     required int noOfWords,
 

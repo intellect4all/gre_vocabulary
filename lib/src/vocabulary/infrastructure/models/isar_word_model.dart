@@ -1,3 +1,4 @@
+import 'package:gre_vocabulary/src/vocabulary/domain/value_objects/word.dart';
 import 'package:isar/isar.dart';
 
 import 'word_model.dart';
@@ -33,6 +34,17 @@ class IsarWordModel {
       example: e.example,
       isHitWord: e.isHitWord,
       source: e.source,
+    );
+  }
+
+  WordModel toWordModel() {
+    return WordModel(
+      id: id,
+      value: WordObject(value),
+      definition: definition,
+      example: example,
+      isHitWord: isHitWord,
+      source: source,
     );
   }
 }

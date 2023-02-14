@@ -15,4 +15,7 @@ class VocabularyException with _$VocabularyException implements Exception {
   const factory VocabularyException.valueError({
     required ValueFailure valueFailure,
   }) = _VocabularyValueError;
+  const factory VocabularyException.wordSourceNotListed({
+    @Default('Word Source Not found in DB') String message,
+  }) = WordSourceNotListedException;
 }

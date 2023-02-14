@@ -297,6 +297,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
         wordNotFound: _wordNotFound,
         unableToParseCSV: _unableToParseCSV,
         valueError: _handleValueFailure,
+        wordSourceNotListed: _wordSourceNotListed,
       );
     } on UnexpectedValueError catch (e) {
       return _handleValueFailure(e.valueFailure);
@@ -306,13 +307,24 @@ class VocabularyRepository implements VocabularyServiceFacade {
   }
 
   @override
-  Future<Either<VocabularyFailure, List<WordDetails>>> getNextWordsToBeShown({
+  Future<Either<VocabularyFailure, List<Word>>> getNextWordsToBeShown({
     required int noOfWords,
     required int shownThreshold,
   }) async {
     return _handleFailure(
       () async {
-        final words = _getWordsToBeShown(
+        String message = "";
+        if (noOfWords < 1) {
+          message = "Number of words to be shown should be greater than 0";
+        }
+        if (shownThreshold < 1) {
+          message = "Shown threshold should be greater than 0";
+        }
+        if (message.isNotEmpty) {
+          return left(VocabularyFailure.valueError(message: message));
+        }
+
+        final words = await _getWordsToBeShown(
           noOfWords,
           shownThreshold,
         );
@@ -322,16 +334,18 @@ class VocabularyRepository implements VocabularyServiceFacade {
     );
   }
 
-  _getWordsToBeShown(
+  Future<List<Word>> _getWordsToBeShown(
     int noOfWords,
     int shownThreshold,
   ) async {
     // Get all memorized words
-    final memorizedWordsIndexes = await _localDataSource.allMemorizedIndex();
+    final memorizedWordsIndexes = await _localDataSource.allMemorizedIndexes();
 
     // Get all recently shown words
     final recentlyShownWordsIndexes =
-        await _localDataSource.allRecentlyShownIndex();
+        await _localDataSource.allRecentlyShownIndexes(
+      const Duration(days: 3),
+    ); // TODO: Make this configurable
 
     // Get all words count
     final allWordsCount = await _localDataSource.allWordsCount();
@@ -378,6 +392,10 @@ class VocabularyRepository implements VocabularyServiceFacade {
 
   VocabularyResponse<T> _wordNotFound<T>(String message, String word) {
     return left(VocabularyFailure.wordNotFound(message: message, word: word));
+  }
+
+  VocabularyResponse<T> _wordSourceNotListed<T>(String message) {
+    return left(VocabularyFailure.wordSourceNotListed(message: message));
   }
 }
 

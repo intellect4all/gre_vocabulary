@@ -10,6 +10,7 @@ void main() {
     example: "test example",
     isHitWord: true,
     source: "test source",
+    id: 1,
   );
 
   final tWordModelJson = {
@@ -18,22 +19,24 @@ void main() {
     "example": "test example",
     "isHitWord": true,
     "source": "test source",
+    "id": 1,
   };
 
   final tWordModel2 = WordModel(
-    value: WordObject("test 2"),
-    definition: "test definition 2",
-    example: "test example 2",
-    isHitWord: false,
-    source: "test source",
-  );
+      value: WordObject("tester"),
+      definition: "test definition 2",
+      example: "test example 2",
+      isHitWord: false,
+      source: "test source",
+      id: 2);
 
   final tWordModelJson2 = {
-    "value": "test 2",
+    "value": "tester",
     "definition": "test definition 2",
     "example": "test example 2",
     "isHitWord": false,
     "source": "test source",
+    "id": 2,
   };
 
   test('should be a subclass of Word entity', () async {
@@ -54,6 +57,22 @@ void main() {
       final result = WordModel.fromJson(tWordModelJson2);
       // assert
       expect(result, tWordModel2);
+    });
+  });
+
+  group('toJson', () {
+    test('should return a JSON map containing the proper data', () async {
+      // act
+      final result = tWordModel.toJson();
+      // assert
+      expect(result, tWordModelJson);
+    });
+
+    test('should return a JSON map containing the proper data', () async {
+      // act
+      final result = tWordModel2.toJson();
+      // assert
+      expect(result, tWordModelJson2);
     });
   });
 }

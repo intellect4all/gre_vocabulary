@@ -24,12 +24,30 @@ class WordModel extends Word {
 
   Map<String, dynamic> toJson() {
     return {
-      'value': value.valueOrEmpty,
+      'value': value.getOrCrash(),
       'definition': definition,
       'example': example,
       'isHitWord': isHitWord,
       'id': id,
       'source': source,
     };
+  }
+
+  WordModel copyWith({
+    WordObject? value,
+    String? definition,
+    String? example,
+    bool? isHitWord,
+    int? id,
+    String? source,
+  }) {
+    return WordModel(
+      value: value ?? this.value,
+      definition: definition ?? this.definition,
+      example: example ?? this.example,
+      isHitWord: isHitWord ?? this.isHitWord,
+      id: id ?? this.id,
+      source: source ?? this.source,
+    );
   }
 }

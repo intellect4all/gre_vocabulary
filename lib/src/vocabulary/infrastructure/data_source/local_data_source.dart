@@ -23,6 +23,11 @@ abstract class LocalDataSource {
     required int offset,
   });
 
+  Future<GetWordsResponseModel<WordModel>> getHitWords({
+    required int limit,
+    required int offset,
+  });
+
   Future<GetWordsResponseModel<WordDetailsModel>> getAllWordDetails({
     required int limit,
     required int offset,
@@ -64,11 +69,11 @@ abstract class LocalDataSource {
     required int offset,
   });
 
-  Future<List<int>> allMemorizedIndex();
+  Future<List<int>> allMemorizedIndexes();
 
   Future<int> allWordsCount();
 
-  Future<List<int>> allRecentlyShownIndex();
+  Future<List<int>> allRecentlyShownIndexes(Duration duration);
 
-  Future<List<WordDetailsModel>> getWordsByIndexes(List<int> indexesToBeShown);
+  Future<List<WordModel>> getWordsByIndexes(List<int> indexesToBeShown);
 }

@@ -9,6 +9,8 @@ class WordDetailsModel extends WordDetails {
     required super.show,
     required super.isMemorized,
     required super.lastShownDate,
+    super.dateMemorized,
+    required super.isToBeRemembered,
   });
 
   factory WordDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +20,10 @@ class WordDetailsModel extends WordDetails {
       show: json['show'] as bool,
       isMemorized: json['isMemorized'] as bool,
       lastShownDate: DateTime.parse(json['lastShownDate'] as String),
+      dateMemorized: json['dateMemorized'] == null
+          ? null
+          : DateTime.parse(json['dateMemorized'] as String),
+      isToBeRemembered: json['isToBeRemembered'] ?? false,
     );
   }
 
@@ -28,6 +34,40 @@ class WordDetailsModel extends WordDetails {
       'show': show,
       'isMemorized': isMemorized,
       'lastShownDate': lastShownDate,
+      'dateMemorized': dateMemorized,
+      'isToBeRemembered': isToBeRemembered,
     };
+  }
+
+  WordDetailsModel copyWith({
+    WordModel? word,
+    int? shownCount,
+    bool? show,
+    bool? isMemorized,
+    DateTime? lastShownDate,
+    DateTime? dateMemorized,
+    bool? isToBeRemembered,
+  }) {
+    return WordDetailsModel(
+      word: word ?? this.word,
+      shownCount: shownCount ?? this.shownCount,
+      show: show ?? this.show,
+      isMemorized: isMemorized ?? this.isMemorized,
+      lastShownDate: lastShownDate ?? this.lastShownDate,
+      dateMemorized: dateMemorized ?? this.dateMemorized,
+      isToBeRemembered: isToBeRemembered ?? this.isToBeRemembered,
+    );
+  }
+
+  factory WordDetailsModel.freshFromWordModel(WordModel word) {
+    return WordDetailsModel(
+      word: word,
+      shownCount: 0,
+      show: true,
+      isMemorized: false,
+      lastShownDate: DateTime.now(),
+      dateMemorized: null,
+      isToBeRemembered: false,
+    );
   }
 }
