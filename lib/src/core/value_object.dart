@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import 'errors.dart';
-import 'failures.dart';
+import 'value_failure.dart';
 
 abstract class IValidatable {
   bool isValid();

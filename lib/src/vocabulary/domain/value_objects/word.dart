@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:gre_vocabulary/src/core/failures.dart';
+import 'package:gre_vocabulary/src/core/value_failure.dart';
 import 'package:gre_vocabulary/src/core/value_object.dart';
 
 class WordObject extends ValueObject<String> {
@@ -26,10 +26,12 @@ class WordObject extends ValueObject<String> {
     // check that input is not a number
     try {
       int.parse(input);
-      return left(ValueFailure.empty(
-        failedValue: input,
-        message: "Word cannot be a number",
-      ));
+      return left(
+        ValueFailure.empty(
+          failedValue: input,
+          message: "Word cannot be a number",
+        ),
+      );
     } catch (e) {
       // do nothing
     }

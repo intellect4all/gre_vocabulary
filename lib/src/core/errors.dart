@@ -1,4 +1,4 @@
-import 'package:gre_vocabulary/src/core/failures.dart';
+import 'package:gre_vocabulary/src/core/value_failure.dart';
 
 class UnexpectedValueError extends Error {
   final ValueFailure valueFailure;

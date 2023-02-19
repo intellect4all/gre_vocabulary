@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:gre_vocabulary/src/core/common_domains/entities/success.dart';
+import 'package:gre_vocabulary/src/core/core.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/core/failures.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
 

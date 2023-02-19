@@ -2,7 +2,7 @@ import 'package:gre_vocabulary/src/vocabulary/domain/core/constants.dart';
 
 import '../wordlists_csv_parsers/wordlist_parser.dart';
 
-abstract class BaseWordsList {
+class BaseWordsList {
   final WordListParser wordsParser;
   final String path;
   final WordsListKey wordsListKey;

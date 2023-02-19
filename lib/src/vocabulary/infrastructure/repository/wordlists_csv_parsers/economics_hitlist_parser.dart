@@ -1,15 +1,18 @@
-import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/core/constants.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/value_objects/word.dart';
+import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/word_model.dart';
 
 import 'wordlist_parser.dart';
 
 class EconomicsHitListParser extends WordListParser {
-  const EconomicsHitListParser(
-      {required super.rawList, required super.wordsListKey});
+  const EconomicsHitListParser();
 
   @override
-  List<Word> getWords() {
-    final words = <Word>[];
+  List<WordModel> getWords({
+    required List<List> rawList,
+    required WordsListKey wordsListKey,
+  }) {
+    final words = <WordModel>[];
     String currentWord = '';
     String currentWordMeaning = '';
     String example = '';
@@ -34,7 +37,7 @@ class EconomicsHitListParser extends WordListParser {
       }
       if (splitTexts.first == 'source:') {
         words.add(
-          Word(
+          WordModel(
             value: WordObject(currentWord),
             definition: currentWordMeaning,
             example: example,

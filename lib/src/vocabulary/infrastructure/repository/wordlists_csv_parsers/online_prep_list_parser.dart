@@ -1,14 +1,18 @@
-import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/core/constants.dart';
 
 import '../../../domain/value_objects/word.dart';
+import '../../models/word_model.dart';
 import 'wordlist_parser.dart';
 
 class OnlinePrepListParser extends WordListParser {
-  OnlinePrepListParser({required super.rawList, required super.wordsListKey});
+  OnlinePrepListParser();
 
   @override
-  List<Word> getWords() {
-    final words = <Word>[];
+  List<WordModel> getWords({
+    required List<List> rawList,
+    required WordsListKey wordsListKey,
+  }) {
+    final words = <WordModel>[];
     String currentWord = '';
     String currentWordMeaning = '';
     String example = '';
@@ -25,7 +29,7 @@ class OnlinePrepListParser extends WordListParser {
       final splitText = string.trim().split(' ');
       if (string.startsWith(" ") && splitText.length == 1) {
         words.add(
-          Word(
+          WordModel(
             value: WordObject(currentWord),
             definition: currentWordMeaning,
             example: example,

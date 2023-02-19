@@ -6,8 +6,7 @@
 import 'dart:async' as _i8;
 
 import 'package:dartz/dartz.dart' as _i6;
-import 'package:gre_vocabulary/src/core/common_domains/models/success_model.dart'
-    as _i2;
+import 'package:gre_vocabulary/src/core/core.dart' as _i2;
 import 'package:gre_vocabulary/src/vocabulary/domain/core/failures.dart'
     as _i11;
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/data_source/local_data_source.dart'
@@ -534,18 +533,28 @@ class MockCSVListsParser extends _i1.Mock implements _i9.CSVListsParser {
         returnValue: <_i10.BaseWordsList>[],
       ) as List<_i10.BaseWordsList>);
   @override
-  _i6.Either<_i11.VocabularyFailure, List<_i4.WordModel>> parse() =>
+  _i8.Future<_i6.Either<_i11.VocabularyFailure, List<_i4.WordModel>>> parse() =>
       (super.noSuchMethod(
         Invocation.method(
           #parse,
           [],
         ),
-        returnValue: _FakeEither_4<_i11.VocabularyFailure, List<_i4.WordModel>>(
+        returnValue: _i8.Future<
+                _i6.Either<_i11.VocabularyFailure, List<_i4.WordModel>>>.value(
+            _FakeEither_4<_i11.VocabularyFailure, List<_i4.WordModel>>(
           this,
           Invocation.method(
             #parse,
             [],
           ),
+        )),
+      ) as _i8.Future<_i6.Either<_i11.VocabularyFailure, List<_i4.WordModel>>>);
+  @override
+  _i8.Future<String> getCsvStringData(String? filePath) => (super.noSuchMethod(
+        Invocation.method(
+          #getCsvStringData,
+          [filePath],
         ),
-      ) as _i6.Either<_i11.VocabularyFailure, List<_i4.WordModel>>);
+        returnValue: _i8.Future<String>.value(''),
+      ) as _i8.Future<String>);
 }

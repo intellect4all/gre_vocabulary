@@ -1,13 +1,12 @@
 import 'dart:developer';
 
-import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
-
+import '../../../domain/core/constants.dart';
 import '../../../domain/value_objects/word.dart';
+import '../../models/word_model.dart';
 import 'wordlist_parser.dart';
 
 class BarrenHitListParser extends WordListParser {
-  const BarrenHitListParser(
-      {required super.rawList, required super.wordsListKey});
+  const BarrenHitListParser();
 
   static const abc = [
     "a",
@@ -39,9 +38,12 @@ class BarrenHitListParser extends WordListParser {
   ];
 
   @override
-  List<Word> getWords() {
+  List<WordModel> getWords({
+    required List<List> rawList,
+    required WordsListKey wordsListKey,
+  }) {
     int currentRow = 0;
-    final words = <Word>[];
+    final words = <WordModel>[];
     String lastWord = '';
     String currentWord = '';
     String currentWordMeaning = '';
@@ -94,7 +96,7 @@ class BarrenHitListParser extends WordListParser {
         }
 
         words.add(
-          Word(
+          WordModel(
             value: WordObject(currentWord),
             definition: currentWordMeaning,
             example: '',

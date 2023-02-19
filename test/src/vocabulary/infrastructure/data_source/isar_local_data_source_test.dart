@@ -95,7 +95,6 @@ void main() {
     // clear all boxes
     dataBase = DB(
       generalDataBox: tGeneralBox,
-      memorizedWordsBox: tMemorizedWordsBox,
       isar: tIsar,
     );
     isarLocalDataSource = IsarLocalDataSource(hiveBoxes: dataBase);

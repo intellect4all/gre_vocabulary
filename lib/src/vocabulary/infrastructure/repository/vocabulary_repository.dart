@@ -2,9 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:dartz/dartz.dart';
-import 'package:gre_vocabulary/src/core/common_domains/entities/success.dart';
-import 'package:gre_vocabulary/src/core/errors.dart';
-import 'package:gre_vocabulary/src/core/failures.dart';
+import 'package:gre_vocabulary/src/core/core.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/core/constants.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/get_words_response.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
@@ -37,7 +35,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
       if (areWordsLoaded) {
         return right(const Success(message: 'Words are already loaded'));
       }
-      final parsingResponseOrFailure = _csvListsParser.parse();
+      final parsingResponseOrFailure = await _csvListsParser.parse();
       final res = parsingResponseOrFailure
           .fold<Future<Either<VocabularyFailure, Success>>>(
         (failure) async => left(failure),

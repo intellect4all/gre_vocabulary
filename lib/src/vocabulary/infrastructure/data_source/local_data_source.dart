@@ -1,4 +1,4 @@
-import 'package:gre_vocabulary/src/core/common_domains/models/success_model.dart';
+import 'package:gre_vocabulary/src/core/core.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/core/constants.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/word_model.dart';
 

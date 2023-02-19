@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:gre_vocabulary/src/core/failures.dart';
+import 'package:gre_vocabulary/src/core/value_failure.dart';
 
 part 'exceptions.freezed.dart';
 

@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:gre_vocabulary/src/core/failures.dart';
+import 'package:gre_vocabulary/src/core/value_failure.dart';
 import 'package:gre_vocabulary/src/core/value_object.dart';
 
 import '../core/constants.dart';

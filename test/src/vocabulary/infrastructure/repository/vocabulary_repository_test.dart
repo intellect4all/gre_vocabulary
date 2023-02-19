@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gre_vocabulary/src/core/common_domains/entities/success.dart';
-import 'package:gre_vocabulary/src/core/common_domains/models/success_model.dart';
+import 'package:gre_vocabulary/src/core/core.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/core/failures.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/get_words_response.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
@@ -126,7 +125,7 @@ void main() {
       // arrange
       wordsLoadedState(areWordsLoaded: false);
       when(csvListsParser.parse())
-          .thenAnswer((_) => Right(tCsvParsingResponse));
+          .thenAnswer((_) => Future.value(Right(tCsvParsingResponse)));
       // act
       await vocabularyRepository.loadAllWordsIntoDb();
       // assert
@@ -136,8 +135,8 @@ void main() {
     test('should return a failure when the csv parser fails', () async {
       // arrange
       wordsLoadedState(areWordsLoaded: false);
-      when(csvListsParser.parse())
-          .thenAnswer((_) => left(const VocabularyFailure.unableToParseCSV()));
+      when(csvListsParser.parse()).thenAnswer((_) =>
+          Future.value(left(const VocabularyFailure.unableToParseCSV())));
 
       // act
       final result = await vocabularyRepository.loadAllWordsIntoDb();
@@ -149,7 +148,7 @@ void main() {
       // arrange
       wordsLoadedState(areWordsLoaded: false);
       when(csvListsParser.parse())
-          .thenAnswer((_) => Right(tCsvParsingResponse));
+          .thenAnswer((_) => Future.value(Right(tCsvParsingResponse)));
       // act
       await vocabularyRepository.loadAllWordsIntoDb();
       // assert
@@ -162,7 +161,7 @@ void main() {
       // arrange
       wordsLoadedState(areWordsLoaded: false);
       when(csvListsParser.parse())
-          .thenAnswer((_) => Right(tCsvParsingResponse));
+          .thenAnswer((_) => Future.value(Right(tCsvParsingResponse)));
       when(localDataSource.saveAllWords(any))
           .thenThrow(Exception('Unable to save words'));
       // act
@@ -175,7 +174,7 @@ void main() {
       // arrange
       wordsLoadedState(areWordsLoaded: false);
       when(csvListsParser.parse())
-          .thenAnswer((_) => Right(tCsvParsingResponse));
+          .thenAnswer((_) => Future.value(Right(tCsvParsingResponse)));
       // act
       final result = await vocabularyRepository.loadAllWordsIntoDb();
       // assert

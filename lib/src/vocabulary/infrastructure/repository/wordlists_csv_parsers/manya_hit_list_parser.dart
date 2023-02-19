@@ -1,15 +1,18 @@
-import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/core/constants.dart';
 
 import '../../../domain/value_objects/word.dart';
+import '../../models/word_model.dart';
 import 'wordlist_parser.dart';
 
 class ManyaHitListParser extends WordListParser {
-  const ManyaHitListParser(
-      {required super.rawList, required super.wordsListKey});
+  const ManyaHitListParser();
 
   @override
-  List<Word> getWords() {
-    final words = <Word>[];
+  List<WordModel> getWords({
+    required List<List> rawList,
+    required WordsListKey wordsListKey,
+  }) {
+    final words = <WordModel>[];
     String currentWord = '';
     String currentWordMeaning = '';
     String pending = '';
@@ -33,7 +36,7 @@ class ManyaHitListParser extends WordListParser {
           continue;
         }
         words.add(
-          Word(
+          WordModel(
             value: WordObject(currentWord),
             definition: currentWordMeaning,
             example: '',
@@ -49,7 +52,7 @@ class ManyaHitListParser extends WordListParser {
     }
     if (pending.isNotEmpty) {
       words.add(
-        Word(
+        WordModel(
           value: WordObject(currentWord),
           definition: currentWordMeaning,
           example: '',

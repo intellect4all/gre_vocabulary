@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:clock/clock.dart';
-import 'package:gre_vocabulary/src/core/common_domains/models/success_model.dart';
+import 'package:gre_vocabulary/src/core/core.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/core/exceptions.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/get_words_response_model.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/models/isar_word_details_model.dart';
@@ -16,12 +16,10 @@ import 'db_keys.dart';
 import 'local_data_source.dart';
 
 abstract class IDataBase {
-  final Box<int> memorizedWordsBox;
   final Box generalDataBox;
   final Isar isar;
 
   const IDataBase({
-    required this.memorizedWordsBox,
     required this.generalDataBox,
     required this.isar,
   });
@@ -29,7 +27,6 @@ abstract class IDataBase {
 
 class DB extends IDataBase {
   DB({
-    required super.memorizedWordsBox,
     required super.generalDataBox,
     required super.isar,
   });

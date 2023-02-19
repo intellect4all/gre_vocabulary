@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gre_vocabulary/src/vocabulary/domain/core/constants.dart';
 
-part 'failures.freezed.dart';
+part 'value_failure.freezed.dart';
 
 @freezed
 class ValueFailure<T> with _$ValueFailure<T> {
