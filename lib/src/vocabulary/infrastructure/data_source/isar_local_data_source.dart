@@ -627,4 +627,17 @@ class IsarLocalDataSource implements LocalDataSource {
         .findAll();
     return words.map((e) => e.toWordModel()).toList();
   }
+
+  @override
+  Future<List<WordDetailsModel>> getWordsDetailsByWords(
+      List<WordModel> wordsToBeShown) async {
+    final wordsWithDetails = <WordDetailsModel>[];
+    for (final word in wordsToBeShown) {
+      final value = word.value.getOrElse("");
+      if (value.isEmpty) continue;
+      final wordDetails = await getWordDetails(word: value);
+      wordsWithDetails.add(wordDetails);
+    }
+    return wordsWithDetails;
+  }
 }

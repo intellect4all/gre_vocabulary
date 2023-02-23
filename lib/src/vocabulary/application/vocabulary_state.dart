@@ -28,4 +28,12 @@ class VocabularyState with _$VocabularyState {
   const factory VocabularyState.searchError({
     required String error,
   }) = SearchErrorVocabularyState;
+
+  const factory VocabularyState.loadWordsToBeShownFailure({
+    required String error,
+  }) = LoadWordsToBeShownFailureState;
+
+  const factory VocabularyState.nextWordsLoaded({
+    required List<WordDetails> words,
+  }) = NextWordsLoadedState;
 }

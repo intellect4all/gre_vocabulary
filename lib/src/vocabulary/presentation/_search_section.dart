@@ -159,7 +159,6 @@ class SearchResultSection extends ConsumerWidget {
       ),
     );
 
-    log("Search results: $searchResults");
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       height: searchResults.isEmpty ? 0 : 200,

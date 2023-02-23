@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/value_objects/word.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/data_source/db_keys.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -37,5 +38,33 @@ class VocabularyController extends StateNotifier<VocabularyState> {
 
   void clearSearch() {
     state = const SearchSuccessVocabularyState(words: []);
+  }
+
+  Future<void> loadWordsToBeShown() async {
+    final result = await _service.getNextWordsToBeShown(
+      noOfWords: 50,
+      shownThreshold: 5, // TODO: make this configurable
+    );
+    result.fold(
+      (failure) => state = LoadWordsToBeShownFailureState(
+        error: failure.maybeWhen(
+          orElse: () => "Something went wrong",
+          unexpected: (message) => message,
+        ),
+      ),
+      (words) => state = NextWordsLoadedState(words: words),
+    );
+  }
+
+  Future<void> markWordAsShown(WordObject word) async {
+    await _service.markWordAsShown(word: word);
+  }
+
+  Future<void> markWordAsMemorized(WordObject word) async {
+    await _service.markWordAsMemorized(word: word);
+  }
+
+  Future<void> saveWordForLater(WordObject word) async {
+    await _service.markWordAsToBeRemembered(word: word);
   }
 }

@@ -34,16 +34,14 @@ class VocabularyRepository implements VocabularyServiceFacade {
     try {
       final areWordsLoaded = await _localDataSource.areWordsLoaded();
       if (areWordsLoaded) {
-        log('Words are already loaded');
         return right(const Success(message: 'Words are already loaded'));
       }
-      log("Parsing words from csv file...");
+
       final parsingResponseOrFailure = await _csvListsParser.parse();
-      log("Parsing finished: $parsingResponseOrFailure");
+
       final res = parsingResponseOrFailure
           .fold<Future<Either<VocabularyFailure, Success>>>(
         (failure) async {
-          log("Parsing failed: $failure");
           return left(failure);
         },
         (parsingResponse) async {
@@ -328,7 +326,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
   }
 
   @override
-  Future<Either<VocabularyFailure, List<Word>>> getNextWordsToBeShown({
+  Future<Either<VocabularyFailure, List<WordDetails>>> getNextWordsToBeShown({
     required int noOfWords,
     required int shownThreshold,
   }) async {
@@ -355,7 +353,7 @@ class VocabularyRepository implements VocabularyServiceFacade {
     );
   }
 
-  Future<List<Word>> _getWordsToBeShown(
+  Future<List<WordDetails>> _getWordsToBeShown(
     int noOfWords,
     int shownThreshold,
   ) async {
@@ -394,7 +392,12 @@ class VocabularyRepository implements VocabularyServiceFacade {
       indexesToBeShown,
     );
 
-    return wordsToBeShown;
+    // get the words details from words to be shown
+    final wordsToBeShownDetails = await _localDataSource.getWordsDetailsByWords(
+      wordsToBeShown,
+    );
+
+    return wordsToBeShownDetails;
   }
 
   VocabularyResponse<T> _handleValueFailure<T>(ValueFailure valueFailure) {
