@@ -14,17 +14,22 @@ class GrePreListParser extends WordListParser {
   }) {
     final words = <WordModel>[];
     for (var row in rawList) {
-      if (row.isEmpty) {
-        continue;
+      try {
+        if (row.isEmpty) {
+          continue;
+        }
+        words.add(
+          WordModel(
+            value: WordObject(row[0].toString().toLowerCase().trim()),
+            definition: row[1].toString().toLowerCase().trim(),
+            example: '',
+            source: wordsListKey,
+          ),
+        );
+      } catch (e) {
+        print('error at row: $row');
+        print(e);
       }
-      words.add(
-        WordModel(
-          value: WordObject(row[0].toString().toLowerCase().trim()),
-          definition: row[1].toString().toLowerCase().trim(),
-          example: '',
-          source: wordsListKey,
-        ),
-      );
     }
     return words;
   }

@@ -51,15 +51,27 @@ class IsarLocalDataSource implements LocalDataSource {
       await _hiveBoxes.isar.words.clear();
     });
 
-    await _hiveBoxes.isar.writeTxn(() async {
-      final words =
-          allWords.map((e) => IsarWordModel.fromWordModel(e)).toList();
-      words.sort(
-        (a, b) => a.value.compareTo(b.value),
-      );
+    try {
+      final words = <IsarWordModel>[];
 
-      await _hiveBoxes.isar.words.putAll(words);
-    });
+      for (final word in allWords) {
+        try {
+          words.add(IsarWordModel.fromWordModel(word));
+        } catch (e) {
+          log("Error at word: ${word.value} $e");
+        }
+      }
+
+      await _hiveBoxes.isar.writeTxn(() async {
+        words.sort(
+          (a, b) => a.value.compareTo(b.value),
+        );
+
+        await _hiveBoxes.isar.words.putAll(words);
+      });
+    } catch (e) {
+      log(e.toString());
+    }
 
     await _hiveBoxes.generalDataBox.put(DBKeys.wordsLoaded, true);
 
@@ -603,5 +615,16 @@ class IsarLocalDataSource implements LocalDataSource {
   DateTime _getToday() {
     final now = DateTime.now();
     return DateTime(now.year, now.month, now.day);
+  }
+
+  @override
+  Future<List<WordModel>> searchWord({required String query}) async {
+    final words = await _hiveBoxes.isar.words
+        .filter()
+        .valueStartsWith(query)
+        .sortByValue()
+        .limit(20)
+        .findAll();
+    return words.map((e) => e.toWordModel()).toList();
   }
 }

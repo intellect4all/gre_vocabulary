@@ -90,4 +90,6 @@ abstract class VocabularyServiceFacade {
     /// words shown times above this threshold will not be returned
     required int shownThreshold,
   });
+
+  Future<Either<VocabularyFailure, List<Word>>> searchWord(String query);
 }

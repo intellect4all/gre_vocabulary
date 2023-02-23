@@ -1788,4 +1788,86 @@ void main() {
       );
     },
   );
+
+  group(
+    "searchWord",
+    () {
+      const tSearchWord = "abs";
+      const tWords = [
+        'Abscess',
+        'Abscessed',
+        'Abscesses',
+        'Abscessing',
+        'Absolution',
+        'Absolute',
+        'Absoluteness',
+        'Absolutes',
+        'Absolutely',
+        'Abscond',
+        'Absconded',
+        'Absconding',
+      ];
+      final tSearchWordResponseModel = tWords
+          .map(
+            (word) => WordModel(
+              value: WordObject(word),
+              definition: "Definition of $word",
+              example: "Example of $word",
+              source: 'Oxford',
+            ),
+          )
+          .toList();
+
+      test(
+        "should return a failure when searchWord throws an exception",
+        () async {
+          // arrange
+          when(localDataSource.searchWord(query: anyNamed("query"))).thenThrow(
+            Exception("Unable to search word"),
+          );
+
+          // act
+          final result = await vocabularyRepository.searchWord(tSearchWord);
+
+          // assert
+          expect(result.isLeft(), true);
+          expect(result.fold(id, id), isA<VocabularyFailure>());
+        },
+      );
+
+      test(
+        "should call local data source searchWord once",
+        () async {
+          // arrange
+          when(localDataSource.searchWord(query: anyNamed("query"))).thenAnswer(
+            (_) async => tSearchWordResponseModel,
+          );
+
+          // act
+          await vocabularyRepository.searchWord(tSearchWord);
+
+          // assert
+          verify(localDataSource.searchWord(query: "abs")).called(1);
+        },
+      );
+
+      test(
+        "should return a Success when searchWord successful",
+        () async {
+          // arrange
+          when(localDataSource.searchWord(query: anyNamed("query"))).thenAnswer(
+            (_) async => tSearchWordResponseModel,
+          );
+
+          // act
+          final result = await vocabularyRepository.searchWord(tSearchWord);
+
+          // assert
+          expect(result.isRight(), true);
+          expect(result.fold(id, id), isA<List<WordModel>>());
+          expect(result.fold(id, id), tSearchWordResponseModel);
+        },
+      );
+    },
+  );
 }

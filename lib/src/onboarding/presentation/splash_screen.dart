@@ -7,7 +7,9 @@ import 'package:gre_vocabulary/gen/assets.gen.dart';
 import 'package:gre_vocabulary/src/core/configs/router.dart';
 import 'package:gre_vocabulary/src/core/extensions.dart';
 
+import '../../vocabulary/vocabulary_di.dart';
 import '../_onboarding.dart';
+import 'onboarding_screen.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({
@@ -49,8 +51,12 @@ class __SplashPageState extends ConsumerState<_SplashPage> {
   Future<void> _initOnboardingCheck() async {
     final onboardingController =
         ref.read(onboardingControllerProvider.notifier);
+    final vocabularyController =
+        ref.read(vocabularyControllerProvider.notifier);
 
     await Future.delayed(const Duration(seconds: 2));
+    await vocabularyController.init();
+
     onboardingController.checkOnboardingStatus();
   }
 
@@ -63,9 +69,13 @@ class __SplashPageState extends ConsumerState<_SplashPage> {
           orElse: () {
             log("onboardingControllerProvider: orElse");
           },
-          onboardingNotCompleted: () {
+          onboardingNotCompleted: () async {
             log("onboardingNotCompleted");
-            context.go(AppRoutePaths.onboarding);
+            // precache onboarding images
+            for (final image in getOnboardingScreenData()) {
+              await precacheImage(AssetImage(image.iconPath), context);
+            }
+            _navigateToOnboarding();
           },
           onboardingCompleted: () {
             log("onboardingCompleted");
@@ -97,5 +107,9 @@ class __SplashPageState extends ConsumerState<_SplashPage> {
         ),
       ),
     );
+  }
+
+  void _navigateToOnboarding() {
+    context.go(AppRoutePaths.onboarding);
   }
 }

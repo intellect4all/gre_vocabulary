@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:dartz/dartz.dart';
@@ -33,15 +34,24 @@ class VocabularyRepository implements VocabularyServiceFacade {
     try {
       final areWordsLoaded = await _localDataSource.areWordsLoaded();
       if (areWordsLoaded) {
+        log('Words are already loaded');
         return right(const Success(message: 'Words are already loaded'));
       }
+      log("Parsing words from csv file...");
       final parsingResponseOrFailure = await _csvListsParser.parse();
+      log("Parsing finished: $parsingResponseOrFailure");
       final res = parsingResponseOrFailure
           .fold<Future<Either<VocabularyFailure, Success>>>(
-        (failure) async => left(failure),
+        (failure) async {
+          log("Parsing failed: $failure");
+          return left(failure);
+        },
         (parsingResponse) async {
           try {
+            log("Saving words into db...");
+            log("Words count: ${parsingResponse.length}");
             await _localDataSource.saveAllWords(parsingResponse);
+            log("Words saved");
           } catch (e) {
             return left(
               const VocabularyFailure.unexpected(),
@@ -279,6 +289,19 @@ class VocabularyRepository implements VocabularyServiceFacade {
           await _localDataSource.getAllWordsShownToday(
             limit: limit.getOrCrash(),
             offset: offset.getOrCrash(),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Future<Either<VocabularyFailure, List<Word>>> searchWord(String query) async {
+    return _handleFailure(
+      () async {
+        return right(
+          await _localDataSource.searchWord(
+            query: query,
           ),
         );
       },

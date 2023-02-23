@@ -18,11 +18,17 @@ class $AssetsCsvGen {
   /// File path: assets/csv/economist_hit_list.csv
   String get economistHitList => 'assets/csv/economist_hit_list.csv';
 
+  /// File path: assets/csv/gre_prep_list.csv
+  String get grePrepList => 'assets/csv/gre_prep_list.csv';
+
   /// File path: assets/csv/manya_hit_list.csv
   String get manyaHitList => 'assets/csv/manya_hit_list.csv';
 
   /// File path: assets/csv/manya_princeton_list.csv
   String get manyaPrincetonList => 'assets/csv/manya_princeton_list.csv';
+
+  /// File path: assets/csv/online_prep_list.csv
+  String get onlinePrepList => 'assets/csv/online_prep_list.csv';
 
   /// File path: assets/csv/princeton_hit_parade.csv
   String get princetonHitParade => 'assets/csv/princeton_hit_parade.csv';
@@ -30,22 +36,16 @@ class $AssetsCsvGen {
   /// File path: assets/csv/princeton_list.csv
   String get princetonList => 'assets/csv/princeton_list.csv';
 
-  /// File path: assets/csv/random_list.csv
-  String get randomList => 'assets/csv/random_list.csv';
-
-  /// File path: assets/csv/random_list_2.csv
-  String get randomList2 => 'assets/csv/random_list_2.csv';
-
   /// List of all assets
   List<String> get values => [
         barrenHit,
         economistHitList,
+        grePrepList,
         manyaHitList,
         manyaPrincetonList,
+        onlinePrepList,
         princetonHitParade,
-        princetonList,
-        randomList,
-        randomList2
+        princetonList
       ];
 }
 
@@ -62,12 +62,32 @@ class $AssetsImagesGen {
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
 
+  /// File path: assets/images/onboarding_image_1.jpg
+  AssetGenImage get onboardingImage1 =>
+      const AssetGenImage('assets/images/onboarding_image_1.jpg');
+
+  /// File path: assets/images/onboarding_image_2.jpg
+  AssetGenImage get onboardingImage2 =>
+      const AssetGenImage('assets/images/onboarding_image_2.jpg');
+
+  /// File path: assets/images/onboarding_image_3.jpg
+  AssetGenImage get onboardingImage3 =>
+      const AssetGenImage('assets/images/onboarding_image_3.jpg');
+
   /// File path: assets/images/twitter_icon.png
   AssetGenImage get twitterIcon =>
       const AssetGenImage('assets/images/twitter_icon.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [gmail, linkedIn, logo, twitterIcon];
+  List<AssetGenImage> get values => [
+        gmail,
+        linkedIn,
+        logo,
+        onboardingImage1,
+        onboardingImage2,
+        onboardingImage3,
+        twitterIcon
+      ];
 }
 
 class Assets {

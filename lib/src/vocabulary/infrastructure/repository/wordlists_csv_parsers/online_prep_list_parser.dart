@@ -5,7 +5,7 @@ import '../../models/word_model.dart';
 import 'wordlist_parser.dart';
 
 class OnlinePrepListParser extends WordListParser {
-  OnlinePrepListParser();
+  const OnlinePrepListParser();
 
   @override
   List<WordModel> getWords({
@@ -28,15 +28,19 @@ class OnlinePrepListParser extends WordListParser {
       }
       final splitText = string.trim().split(' ');
       if (string.startsWith(" ") && splitText.length == 1) {
-        words.add(
-          WordModel(
-            value: WordObject(currentWord),
-            definition: currentWordMeaning,
-            example: example,
-            source: wordsListKey,
-          ),
-        );
-
+        try {
+          words.add(
+            WordModel(
+              value: WordObject(currentWord),
+              definition: currentWordMeaning,
+              example: example,
+              source: wordsListKey,
+            ),
+          );
+        } catch (e) {
+          print('error online prep at row: $row');
+          print(e);
+        }
         currentWord = string.trim();
         currentWordMeaning = '';
         example = '';

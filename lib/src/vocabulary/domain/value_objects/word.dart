@@ -37,7 +37,7 @@ class WordObject extends ValueObject<String> {
     }
 
     // check that input has no special characters
-    final RegExp regExp = RegExp(r'^[a-zA-Z]+$');
+    final RegExp regExp = RegExp(r'^[a-zA-Z\u00C0-\u00FF]*$');
     if (!regExp.hasMatch(input)) {
       return left(ValueFailure.empty(
         failedValue: input,

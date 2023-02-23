@@ -13,4 +13,7 @@ class OnboardingState with _$OnboardingState {
       OnboardingCompletedState;
   const factory OnboardingState.onboardingNotCompleted() =
       IncompleteOnboardingState;
+
+  const factory OnboardingState.onboardingInProgress(int currentStep) =
+      OnboardingInProgressState;
 }

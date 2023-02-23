@@ -1437,4 +1437,53 @@ void main() {
       );
     },
   );
+
+  group("searchWord", () {
+    test("should return empty list when no words found", () async {
+      // arrange
+      await isarLocalDataSource.saveAllWords(tAllWords);
+
+      // act
+      final words = await isarLocalDataSource.searchWord(query: "dove");
+
+      // assert
+      expect(words, []);
+    });
+
+    test("should return words when words found", () async {
+      // arrange
+      await isarLocalDataSource.saveAllWords(tAllWords);
+
+      // act
+      final searchA = await isarLocalDataSource.searchWord(query: "a");
+      final searchAb = await isarLocalDataSource.searchWord(query: "ab");
+      final searchAbo = await isarLocalDataSource.searchWord(query: "abo");
+      final searchAbs = await isarLocalDataSource.searchWord(query: "abs");
+
+      // 'abandon',
+      // 'ability',
+      // 'able',
+      // 'abortion',
+      // 'about',
+      // 'above',
+      // 'abroad',
+      // 'absence',
+      // 'absolute',
+      // 'absolutely',
+
+      // assert
+      expect(searchA.length, 5);
+      expect(searchAb.length, 5);
+      expect(searchAbo.length, 3);
+      expect(searchAbs.length, 3);
+      expect(searchAbo.map((e) => e.value.getOrElse("defaultValue")).toList(),
+          ['abortion', 'about', 'above']);
+      expect(searchAbs.map((e) => e.value.getOrElse("defaultValue")).toList(),
+          ['absence', 'absolute', 'absolutely']);
+      expect(searchA.map((e) => e.value.getOrElse("defaultValue")).toList(),
+          ['abandon', 'ability', 'able', 'abortion', 'about']);
+      expect(searchAb.map((e) => e.value.getOrElse("defaultValue")).toList(),
+          ['abandon', 'ability', 'able', 'abortion', 'about']);
+    });
+  });
 }

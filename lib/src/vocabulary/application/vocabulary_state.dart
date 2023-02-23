@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/entities/word.dart';
+import 'package:gre_vocabulary/src/vocabulary/domain/entities/word_details.dart';
 
 part 'vocabulary_state.freezed.dart';
 
@@ -14,4 +16,16 @@ class VocabularyState with _$VocabularyState {
   const factory VocabularyState.error({
     required String error,
   }) = ErrorVocabularyState;
+
+  const factory VocabularyState.searching({
+    required String data,
+  }) = SearchingVocabularyState;
+
+  const factory VocabularyState.searchSuccess({
+    required List<Word> words,
+  }) = SearchSuccessVocabularyState;
+
+  const factory VocabularyState.searchError({
+    required String error,
+  }) = SearchErrorVocabularyState;
 }

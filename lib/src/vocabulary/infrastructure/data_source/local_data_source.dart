@@ -76,4 +76,6 @@ abstract class LocalDataSource {
   Future<List<int>> allRecentlyShownIndexes(Duration duration);
 
   Future<List<WordModel>> getWordsByIndexes(List<int> indexesToBeShown);
+
+  Future<List<WordModel>> searchWord({required String query});
 }

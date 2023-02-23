@@ -29,7 +29,7 @@ class IsarWordModel {
 
   static IsarWordModel fromWordModel(WordModel e) {
     return IsarWordModel(
-      value: e.value.getOrCrash(),
+      value: e.value.getOrCrash().trim(),
       definition: e.definition,
       example: e.example,
       isHitWord: e.isHitWord,
@@ -41,10 +41,10 @@ class IsarWordModel {
     return WordModel(
       id: id,
       value: WordObject(value),
-      definition: definition,
-      example: example,
+      definition: definition.trim(),
+      example: example.trim(),
       isHitWord: isHitWord,
-      source: source,
+      source: source.trim(),
     );
   }
 }

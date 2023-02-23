@@ -29,15 +29,48 @@ class CSVListsParserImpl extends CSVListsParser {
 
   @override
   Future<Either<VocabularyFailure, List<WordModel>>> parse() async {
-    final words = <WordModel>[];
+    final allWords = <WordModel>[];
     for (final wordsList in wordsLists) {
-      final rawCsv = await getCsvStringData(wordsList.path);
-      final convertedCsv = csvToListConverter.convert(rawCsv);
-      final words = wordsList.wordsParser.getWords(
-          rawList: convertedCsv, wordsListKey: wordsList.wordsListKey);
-      words.addAll(words);
+      try {
+        final rawCsv = await getCsvStringData(wordsList.path);
+
+        final convertedCsv = csvToListConverter.convert(rawCsv);
+
+        final words = wordsList.wordsParser.getWords(
+            rawList: convertedCsv, wordsListKey: wordsList.wordsListKey);
+
+        allWords.addAll(words);
+      } catch (_) {}
     }
 
-    return right(words);
+    final wordsWithDuplicates = _flattenDuplicatedWords(allWords);
+
+    return right(wordsWithDuplicates);
+  }
+
+  List<WordModel> _flattenDuplicatedWords(List<WordModel> allWords) {
+    final Map<String, WordModel> allWordsMap = {};
+
+    for (final word in allWords) {
+      try {
+        final wordValue = word.value.getOrCrash().trim().toLowerCase();
+        if (!allWordsMap.containsKey(wordValue)) {
+          allWordsMap[wordValue] = word;
+          continue;
+        }
+
+        final wordInMap = allWordsMap[wordValue];
+        if (wordInMap != null) {
+          allWordsMap[wordValue] = wordInMap.copyWith(
+            definition: "${wordInMap.definition} | ${word.definition}",
+            example: "${wordInMap.example} | ${word.example}",
+            isHitWord: wordInMap.isHitWord || word.isHitWord,
+            source: wordInMap.isHitWord ? wordInMap.source : word.source,
+          );
+        }
+      } catch (_) {}
+    }
+
+    return allWordsMap.values.toList();
   }
 }

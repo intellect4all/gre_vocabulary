@@ -517,6 +517,16 @@ class MockLocalDataSource extends _i1.Mock implements _i7.LocalDataSource {
         ),
         returnValue: _i8.Future<List<_i4.WordModel>>.value(<_i4.WordModel>[]),
       ) as _i8.Future<List<_i4.WordModel>>);
+  @override
+  _i8.Future<List<_i4.WordModel>> searchWord({required String? query}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #searchWord,
+          [],
+          {#query: query},
+        ),
+        returnValue: _i8.Future<List<_i4.WordModel>>.value(<_i4.WordModel>[]),
+      ) as _i8.Future<List<_i4.WordModel>>);
 }
 
 /// A class which mocks [CSVListsParser].
