@@ -11,6 +11,9 @@ class WordsToBeShownQueue {
 
   void addWords(List<WordDetails> words) {
     _words.addAll(words);
+    final set = _words.toSet().toList();
+    _words.clear();
+    _words.addAll(set);
   }
 
   void addWord(WordDetails word) {

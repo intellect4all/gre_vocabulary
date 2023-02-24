@@ -200,8 +200,12 @@ class _WordShowingNowSectionState extends ConsumerState<WordShowingNowSection> {
         next.maybeWhen(
             orElse: () {},
             nextWordsLoaded: (words) {
+              final wordLenght = _wordStack.size();
               _wordStack.addWords(words);
-              _setNextWord();
+
+              if (wordLenght == 0) {
+                _setNextWord();
+              }
             });
       },
     );
