@@ -194,7 +194,6 @@ class _WordShowingNowSectionState extends ConsumerState<WordShowingNowSection> {
   }
 
   void _startListeningToWordsState() {
-    log("start listener called");
     ref.listen(
       vocabularyControllerProvider,
       (previous, next) {

@@ -17,11 +17,16 @@ final router = GoRouter(
       path: AppRoutePaths.home,
       builder: (context, state) => const VocabularyHomeScreen(),
     ),
+    GoRoute(
+      path: AppRoutePaths.flashCards,
+      builder: (context, state) => const FlashCardsScreen(),
+    ),
   ],
 );
 
 class AppRoutePaths {
-  static const String splash = '/';
-  static const String onboarding = '/onboarding';
-  static const String home = '/home';
+  static const splash = '/';
+  static const onboarding = '/onboarding';
+  static const home = '/home';
+  static const flashCards = '/flash-cards';
 }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:csv/csv.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gre_vocabulary/gen/assets.gen.dart';
 import 'package:gre_vocabulary/src/vocabulary/application/vocabulary_controller.dart';
@@ -17,11 +18,20 @@ import 'package:gre_vocabulary/src/vocabulary/infrastructure/repository/wordlist
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/repository/wordlists_csv_parsers/manya_hit_list_parser.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/repository/wordlists_csv_parsers/manya_princeton_hitlist_parser.dart';
 import 'package:gre_vocabulary/src/vocabulary/infrastructure/repository/wordlists_csv_parsers/online_prep_list_parser.dart';
+import 'package:gre_vocabulary/src/vocabulary/presentation/words_to_be_shown_queue.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:isar/isar.dart';
 
+import 'domain/entities/word_details.dart';
 import 'infrastructure/repository/vocabulary_repository.dart';
 import 'infrastructure/repository/words_lists/base_words_list.dart';
+
+final wordDetailsProvider = StateProvider<WordDetails?>((ref) => null);
+
+final wordStackProvider =
+    StateProvider.family<WordsToBeShownQueue, ValueSetter<WordDetails>>(
+  (ref, callbackOnShowWord) => WordsToBeShownQueue(callbackOnShowWord),
+);
 
 final isarProvider = FutureProvider<Isar>(
   (ref) async => await Isar.open(
